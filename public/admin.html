@@ -284,7 +284,8 @@
   <script>
     let adminUsers = JSON.parse(localStorage.getItem('admin_users') || '[{"username":"admin@gamehub.com","password":"admin123","name":"Master Admin"}]');
     
-    let inventory = JSON.parse(localStorage.getItem('admin_inventory') || JSON.stringify([
+    // Shared key 'gamehub_inventory' connects admin inventory directly to the customer site
+    let inventory = JSON.parse(localStorage.getItem('gamehub_inventory') || JSON.stringify([
       { 
         id: "st1", 
         name: "EA SPORTS FC 25", 
@@ -331,9 +332,8 @@
     };
 
     function checkAuthState() {
-      // Use dedicated admin session key to prevent collision with customer portal sessions
+      // Dedicated session key for admin users
       const activeAdminSession = localStorage.getItem('active_admin_session');
-      
       if (activeAdminSession) {
         document.getElementById('auth-section').style.display = 'none';
         document.getElementById('dashboard-section').style.display = 'flex';
@@ -434,25 +434,25 @@
         name: document.getElementById('inv-name').value,
         platform: document.getElementById('inv-platform').value,
         price: Number(document.getElementById('inv-price').value),
-        image: document.getElementById('inv-image').value || '',
+        image: document.getElementById('inv-image').value || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80',
         description: document.getElementById('inv-desc').value || "No description provided.",
         status: "Active"
       };
       inventory.push(newItem);
-      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
+      localStorage.setItem('gamehub_inventory', JSON.stringify(inventory));
       renderDashboardData();
       event.target.reset();
     }
 
     function toggleInventoryStatus(id) {
       inventory = inventory.map(item => item.id === id ? { ...item, status: item.status === 'Active' ? 'Maintenance' : 'Active' } : item);
-      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
+      localStorage.setItem('gamehub_inventory', JSON.stringify(inventory));
       renderInventoryTable();
     }
 
     function deleteInventory(id) {
       inventory = inventory.filter(item => item.id !== id);
-      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
+      localStorage.setItem('gamehub_inventory', JSON.stringify(inventory));
       renderDashboardData();
     }
 
