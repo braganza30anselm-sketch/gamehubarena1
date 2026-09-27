@@ -838,11 +838,11 @@
       customerUsers.push(newUser);
       localStorage.setItem('customer_users', JSON.stringify(customerUsers));
 
-      alert("🎉 Account created successfully! Please log in with your email and password.");
+      alert("🎉 Account created successfully! Please log in with your credentials to access your account.");
       
-      // Reset forms and switch to empty login view
+      // Reset forms and send user to login view
       toggleAuthView('login');
-      clearAuthForms();
+      document.getElementById('login-email').value = emailInput;
     });
   </script>
 </body>
