@@ -95,16 +95,16 @@
     </div>
   </header>
 
-  <!-- ADMIN AUTH (LOGIN / REGISTER) -->
+  <!-- MANDATORY ADMIN AUTH (LOGIN / REGISTER) -->
   <section class="auth-container" id="auth-section">
     <!-- LOGIN FORM -->
     <div id="login-form-view">
       <h2 class="auth-title">Admin Login</h2>
-      <p class="auth-subtitle">Access GameHubArena Control Panel</p>
+      <p class="auth-subtitle">Login required to access the Admin Control Panel</p>
       <form onsubmit="handleAdminLogin(event)">
         <div class="form-group">
-          <label>Email / Username</label>
-          <input type="text" id="login-username" required placeholder="admin@gamehub.com" />
+          <label>Email Address</label>
+          <input type="email" id="login-username" required placeholder="admin@gamehub.com" />
         </div>
         <div class="form-group">
           <label>Password</label>
@@ -123,16 +123,16 @@
       <p class="auth-subtitle">Create a new administrator account</p>
       <form onsubmit="handleAdminRegister(event)">
         <div class="form-group">
-          <label>Full Name</label>
+          <label>Full Name (Letters only)</label>
           <input type="text" id="reg-fullname" required placeholder="John Doe" />
         </div>
         <div class="form-group">
-          <label>Email / Username</label>
-          <input type="text" id="reg-username" required placeholder="admin@gamehub.com" />
+          <label>Email Address (Must contain @)</label>
+          <input type="email" id="reg-username" required placeholder="admin@gamehub.com" />
         </div>
         <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="reg-password" required placeholder="••••••••" />
+          <label>Password (Must contain letters & numbers)</label>
+          <input type="password" id="reg-password" required placeholder="e.g. adminPass123" />
         </div>
         <button type="submit" class="btn-submit" style="width: 100%;">Create Admin Account</button>
       </form>
@@ -142,7 +142,7 @@
     </div>
   </section>
 
-  <!-- DASHBOARD WORKSPACE -->
+  <!-- DASHBOARD WORKSPACE (HIDDEN UNTIL AUTHENTICATED) -->
   <div class="dashboard-layout" id="dashboard-section" style="display: none;">
     
     <!-- SIDEBAR NAVIGATION -->
@@ -283,36 +283,13 @@
   </div>
 
   <script>
-    let adminUsers = JSON.parse(localStorage.getItem('admin_users') || '[{"username":"admin@gamehub.com","password":"admin123","name":"Master Admin"}]');
+    // Default admin account with letter + number password
+    let adminUsers = JSON.parse(localStorage.getItem('admin_users') || '[{"username":"admin@gamehub.com","password":"admin123Pass","name":"Master Admin"}]');
     
     let inventory = JSON.parse(localStorage.getItem('admin_inventory') || JSON.stringify([
-      { 
-        id: "st1", 
-        name: "EA SPORTS FC 25", 
-        platform: "PS5", 
-        price: 250, 
-        image: "https://example.com/fc25.jpg",
-        description: "Experience next-gen football simulation on PS5.", 
-        status: "Active" 
-      },
-      { 
-        id: "st2", 
-        name: "Valorant 144Hz Rig", 
-        platform: "PC", 
-        price: 150, 
-        image: "https://example.com/valorant.jpg",
-        description: "Competitive tactical 5v5 shooter rig.", 
-        status: "Active" 
-      },
-      { 
-        id: "st3", 
-        name: "God of War Ragnarök", 
-        platform: "PS5", 
-        price: 300, 
-        image: "https://example.com/gow.jpg",
-        description: "Epic Norse myth action adventure.", 
-        status: "Active" 
-      }
+      { id: "st1", name: "EA SPORTS FC 25", platform: "PS5", price: 250, image: "https://example.com/fc25.jpg", description: "Experience next-gen football simulation on PS5.", status: "Active" },
+      { id: "st2", name: "Valorant 144Hz Rig", platform: "PC", price: 150, image: "https://example.com/valorant.jpg", description: "Competitive tactical 5v5 shooter rig.", status: "Active" },
+      { id: "st3", name: "God of War Ragnarök", platform: "PS5", price: 300, image: "https://example.com/gow.jpg", description: "Epic Norse myth action adventure.", status: "Active" }
     ]));
 
     let bookings = JSON.parse(localStorage.getItem('my_bookings') || JSON.stringify([
@@ -331,6 +308,7 @@
       checkAuthState();
     };
 
+    // Strict Access Control Check
     function checkAuthState() {
       const activeAdmin = localStorage.getItem('active_admin');
       if (activeAdmin) {
@@ -351,35 +329,58 @@
       document.getElementById('register-form-view').style.display = view === 'register' ? 'block' : 'none';
     }
 
+    // Admin Registration with Full Validation
     function handleAdminRegister(event) {
       event.preventDefault();
-      const fullname = document.getElementById('reg-fullname').value;
-      const username = document.getElementById('reg-username').value;
+      const fullname = document.getElementById('reg-fullname').value.trim();
+      const username = document.getElementById('reg-username').value.trim();
       const password = document.getElementById('reg-password').value;
 
-      if (adminUsers.some(u => u.username === username)) {
-        alert("An admin account with this username already exists.");
+      // 1. Full Name Validation: Letters and spaces only
+      const nameRegex = /^[a-zA-Z\s]{2,50}$/;
+      if (!nameRegex.test(fullname)) {
+        alert("Full Name must contain ONLY letters and spaces (no numbers or special characters).");
+        return;
+      }
+
+      // 2. Email Validation: Must contain @
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(username)) {
+        alert("Please enter a valid email address containing an '@' symbol.");
+        return;
+      }
+
+      // 3. Password Validation: Combination of letters and numbers
+      const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{6,}$/;
+      if (!passwordRegex.test(password)) {
+        alert("Password must be at least 6 characters long and include BOTH letters and numbers.");
+        return;
+      }
+
+      if (adminUsers.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+        alert("An admin account with this email already exists.");
         return;
       }
 
       adminUsers.push({ username, password, name: fullname });
       localStorage.setItem('admin_users', JSON.stringify(adminUsers));
-      localStorage.setItem('active_admin', fullname);
-      alert("Admin account registered!");
-      checkAuthState();
+      
+      alert("🎉 Admin account registered successfully! Please log in.");
+      toggleAuthView('login');
+      document.getElementById('login-username').value = username;
     }
 
     function handleAdminLogin(event) {
       event.preventDefault();
-      const username = document.getElementById('login-username').value;
+      const username = document.getElementById('login-username').value.trim();
       const password = document.getElementById('login-password').value;
 
-      const user = adminUsers.find(u => u.username === username && u.password === password);
+      const user = adminUsers.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
       if (user) {
         localStorage.setItem('active_admin', user.name || user.username);
         checkAuthState();
       } else {
-        alert("Invalid admin username or password. Default login: admin@gamehub.com / admin123");
+        alert("Invalid email or password. Default admin: admin@gamehub.com / admin123Pass");
       }
     }
 
