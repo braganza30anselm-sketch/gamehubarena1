@@ -9,6 +9,11 @@
     html { scroll-behavior: smooth; }
     body { background-color: #0b132b; color: #ffffff; min-height: 100vh; }
 
+    /* Top Portal Switcher Bar */
+    .portal-switcher { background: #070d1f; padding: 8px 8%; display: flex; justify-content: flex-end; gap: 15px; border-bottom: 1px solid #1c2541; font-size: 13px; font-weight: 700; }
+    .portal-link { color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
+    .portal-link:hover, .portal-link.active { color: #60a5fa; }
+
     /* Navbar */
     .navbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 8%; background: #1c2541; border-bottom: 1px solid #2a385b; position: sticky; top: 0; z-index: 100; }
     .nav-brand-tagline { font-size: 20px; font-weight: 800; color: #60a5fa; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
@@ -121,6 +126,12 @@
   </style>
 </head>
 <body>
+
+  <!-- PORTAL SWITCHER BAR -->
+  <div class="portal-switcher">
+    <a href="/" class="portal-link active">🌐 Customer Store</a>
+    <a href="/admin" class="portal-link">🛠️ Admin Portal</a>
+  </div>
 
   <div class="weekend-banner">🔥 WEEKEND SPECIAL: Get 20% OFF on all PS5 & PC Gaming Slots every Saturday & Sunday!</div>
 
@@ -799,7 +810,7 @@
       const emailInput = document.getElementById('reg-email').value.trim();
       const passwordInput = document.getElementById('reg-password').value;
 
-      // 1. Full Name Validation: Must contain only letters and spaces (2 to 50 chars)
+      // 1. Full Name Validation
       const nameRegex = /^[a-zA-Z\s]{2,50}$/;
       if (!nameRegex.test(nameInput)) {
         alert("Please enter a valid full name (letters and spaces only, no emails or special characters).");
@@ -840,7 +851,6 @@
 
       alert("🎉 Account created successfully! Please log in with your email and password.");
       
-      // Reset forms and switch to empty login view
       toggleAuthView('login');
       clearAuthForms();
     });
