@@ -9,6 +9,34 @@
     html { scroll-behavior: smooth; }
     body { background-color: #0b132b; color: #ffffff; min-height: 100vh; }
 
+    /* Top Admin Utility Bar */
+    .top-bar {
+      background-color: #090f20;
+      padding: 6px 8%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-bottom: 1px solid #1c2541;
+      font-size: 13px;
+    }
+    .top-admin-link {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      transition: all 0.2s;
+    }
+    .top-admin-link:hover {
+      background: rgba(96, 165, 250, 0.25);
+      color: #ffffff;
+    }
+
     /* Navbar */
     .navbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 8%; background: #1c2541; border-bottom: 1px solid #2a385b; position: sticky; top: 0; z-index: 100; }
     .nav-brand-tagline { font-size: 20px; font-weight: 800; color: #60a5fa; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
@@ -121,6 +149,11 @@
   </style>
 </head>
 <body>
+
+  <!-- TOP ADMIN BAR AT THE VERY TOP -->
+  <div class="top-bar">
+    <a href="admin_4.html" class="top-admin-link">⚙️ Admin Portal Access</a>
+  </div>
 
   <div class="weekend-banner">🔥 WEEKEND SPECIAL: Get 20% OFF on all PS5 & PC Gaming Slots every Saturday & Sunday!</div>
 
@@ -435,12 +468,9 @@
     function renderNavbar() {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       const navActions = document.getElementById('nav-actions');
-      
-      const adminLink = `<a href="admin_4.html" class="nav-btn-secondary" style="margin-right: 5px;">⚙️ Admin Portal</a>`;
 
       if (user) {
         navActions.innerHTML = `
-          ${adminLink}
           <button class="nav-btn-secondary" onclick="openProfileModal()">👤 Profile</button>
           <button class="nav-btn-secondary" onclick="openMyBookings()">📋 My Bookings</button>
           <span style="color:#4ade80; font-size:14px; font-weight:700;">👋 ${user.name}</span>
@@ -448,7 +478,6 @@
         `;
       } else {
         navActions.innerHTML = `
-          ${adminLink}
           <button class="nav-btn" onclick="openAuthModal('login')">Login / Register</button>
         `;
       }
@@ -806,17 +835,17 @@
       const emailInput = document.getElementById('reg-email').value.trim();
       const passwordInput = document.getElementById('reg-password').value;
 
-      // 1. Full Name Validation: Must contain only letters and spaces (2 to 50 chars)
+      // 1. Full Name Validation
       const nameRegex = /^[a-zA-Z\s]{2,50}$/;
       if (!nameRegex.test(nameInput)) {
-        alert("Please enter a valid full name (letters and spaces only, no emails or special characters).");
+        alert("Please enter a valid full name (letters and spaces only).");
         return;
       }
 
       // 2. Strict Email Validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(emailInput)) {
-        alert("Please enter a valid email address (e.g., customer@example.com).");
+        alert("Please enter a valid email address.");
         return;
       }
 
@@ -846,8 +875,6 @@
       localStorage.setItem('customer_users', JSON.stringify(customerUsers));
 
       alert("🎉 Account created successfully! Please log in with your email and password.");
-      
-      // Reset forms and switch to empty login view
       toggleAuthView('login');
       clearAuthForms();
     });
