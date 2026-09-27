@@ -1,350 +1,530 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GameHubArena - Admin Portal</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #0b132b; color: #ffffff; min-height: 100vh; padding: 20px 5%; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHubArena - Admin Panel</title>
+    <style>
+        :root {
+            --bg-main: #e8f5e9;           /* Light green main background */
+            --bg-card: #ffffff;           /* White card background */
+            --sidebar-bg: #c8e6c9;        /* Medium light green sidebar */
+            --sidebar-hover: #a5d6a7;     /* Hover state green */
+            --sidebar-active: #81c784;    /* Active menu item green */
+            --topbar-bg: #2e7d32;         /* Dark forest green header */
+            --text-main: #000000;         /* Pure black text */
+            --text-muted: #333333;        /* Dark gray text */
+            --border-color: #a1887f;      /* Soft border tone */
+            --btn-bg: #2e7d32;            /* Dark green button */
+            --btn-hover: #1b5e20;        
+        }
 
-    /* Header & Navigation */
-    .admin-header { display: flex; justify-content: space-between; align-items: center; background: #1c2541; padding: 18px 25px; border-radius: 12px; border: 1px solid #2a385b; margin-bottom: 25px; }
-    .admin-title { font-size: 22px; font-weight: 800; color: #60a5fa; display: flex; align-items: center; gap: 10px; }
-    .back-btn { background: #2563eb; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 13px; transition: background 0.2s; }
-    .back-btn:hover { background: #1d4ed8; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
 
-    /* Stats Grid */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 30px; }
-    .stat-card { background: #1c2541; border: 1px solid #2a385b; padding: 20px; border-radius: 10px; display: flex; flex-direction: column; gap: 6px; }
-    .stat-val { font-size: 28px; font-weight: 900; color: #4ade80; }
-    .stat-lbl { font-size: 13px; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* Sections Container */
-    .admin-section { background: #1c2541; border: 1px solid #2a385b; padding: 24px; border-radius: 12px; margin-bottom: 30px; }
-    .section-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; border-left: 4px solid #2563eb; padding-left: 10px; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
+        /* Top Navigation Header */
+        .topbar {
+            background-color: var(--topbar-bg);
+            color: #ffffff;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
 
-    /* Form Inputs */
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 12px; font-weight: 700; color: #cbd5e1; }
-    .form-group input, .form-group select, .form-group textarea { background: #0b132b; border: 1px solid #2a385b; color: white; padding: 10px; border-radius: 6px; outline: none; font-size: 13px; }
-    .form-group textarea { resize: vertical; height: 38px; }
-    
-    .action-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: background 0.2s; align-self: flex-end; }
-    .action-btn:hover { background: #059669; }
+        .topbar .brand {
+            font-weight: bold;
+            font-size: 16px;
+        }
 
-    /* Tables */
-    .table-responsive { width: 100%; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
-    th, td { padding: 12px 16px; border-bottom: 1px solid #2a385b; }
-    th { background: #0b132b; color: #93c5fd; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
-    tr:hover { background: rgba(255, 255, 255, 0.02); }
+        .topbar .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+        }
 
-    .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; }
-    .badge-ps5 { background: #2563eb; color: white; }
-    .badge-pc { background: #10b981; color: white; }
+        .topbar button {
+            background-color: #ffffff;
+            color: var(--text-main);
+            border: 1px solid #cccccc;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
 
-    .btn-delete { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .btn-delete:hover { background: #dc2626; }
+        .topbar button:hover {
+            background-color: #f0f0f0;
+        }
 
-    .empty-state { text-align: center; color: #94a3b8; padding: 25px; font-size: 13px; }
-  </style>
+        /* Container Layout */
+        .admin-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 220px;
+            background-color: var(--sidebar-bg);
+            padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #a5d6a7;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            padding: 12px 20px;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar li:hover {
+            background-color: var(--sidebar-hover);
+        }
+
+        .sidebar li.active {
+            background-color: var(--sidebar-active);
+            color: #000000;
+            border-left-color: #1b5e20;
+            font-weight: bold;
+        }
+
+        /* Main Workspace */
+        .content {
+            flex: 1;
+            padding: 25px 30px;
+            overflow-y: auto;
+            background-color: var(--bg-main);
+        }
+
+        .page-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Dashboard Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid #a5d6a7;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-main);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .metric-card .title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .metric-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #000000;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 15px;
+            max-width: 500px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #81c784;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #000000;
+            background-color: #ffffff;
+        }
+
+        .btn-submit {
+            background-color: var(--btn-bg);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--btn-hover);
+        }
+
+        /* Tables */
+        .data-table-container {
+            background: var(--bg-card);
+            border: 1px solid #a5d6a7;
+            border-radius: 6px;
+            overflow-x: auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+            color: var(--text-main);
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #c8e6c9;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        tr:hover {
+            background-color: #f1f8e9;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .badge-success { background: #c8e6c9; color: #1b5e20; }
+        .badge-warning { background: #fff9c4; color: #f57f17; }
+
+        .btn-action {
+            background: #e0e0e0;
+            color: #000000;
+            border: 1px solid #cccccc;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 4px;
+            font-weight: 600;
+        }
+
+        .btn-action:hover {
+            background: #d6d6d6;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Admin Header -->
-  <header class="admin-header">
-    <div class="admin-title">⚙️ GameHubArena - Management Portal</div>
-    <a href="index_3.html" class="back-btn">← Back to Customer Storefront</a>
-  </header>
-
-  <!-- Platform Overview Stats -->
-  <section class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-val" id="stat-total-games">0</div>
-      <div class="stat-lbl">Active Games Listed</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-val" id="stat-total-bookings">0</div>
-      <div class="stat-lbl">Total Reserved Slots</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-val" id="stat-total-revenue">₹0</div>
-      <div class="stat-lbl">Total Booking Revenue</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-val" id="stat-registered-users">0</div>
-      <div class="stat-lbl">Registered Customers</div>
-    </div>
-  </section>
-
-  <!-- Add New Game Form -->
-  <section class="admin-section">
-    <div class="section-title">➕ Add New Game / Station Slot</div>
-    <form id="add-game-form" onsubmit="handleAddGame(event)">
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Game Title</label>
-          <input type="text" id="game-title" placeholder="e.g. Tekken 8" required />
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+        <div class="brand">GameHubArena Admin</div>
+        <div class="user-controls">
+            <span>Welcome, admin</span>
+            <button onclick="alert('Logged out successfully.')">Logout</button>
+            <!-- Navigates directly to customer website index page -->
+            <button onclick="window.location.href='index.html'">Back to Site</button>
         </div>
-        <div class="form-group">
-          <label>Platform</label>
-          <select id="game-platform">
-            <option value="PS5">PlayStation 5 (PS5)</option>
-            <option value="PC">RTX Gaming PC</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Hourly Price (₹)</label>
-          <input type="number" id="game-price" placeholder="250" required min="10" />
-        </div>
-        <div class="form-group">
-          <label>Image URL</label>
-          <input type="url" id="game-image" placeholder="https://images.unsplash.com/..." required />
-        </div>
-      </div>
-      <div class="form-grid">
-        <div class="form-group" style="grid-column: span 2;">
-          <label>Description</label>
-          <textarea id="game-desc" placeholder="4K HDR 120Hz station setup description..." required></textarea>
-        </div>
-        <button type="submit" class="action-btn">Save New Game</button>
-      </div>
-    </form>
-  </section>
+    </header>
 
-  <!-- Manage Games List -->
-  <section class="admin-section">
-    <div class="section-title">
-      <span>🎮 Manage Game Inventory</span>
-      <button class="back-btn" onclick="loadAdminData()">🔄 Refresh</button>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <ul>
+                <li class="nav-item active" onclick="switchTab('dashboard', this)">Dashboard</li>
+                <li class="nav-item" onclick="switchTab('add-game', this)">Add New Game</li>
+                <li class="nav-item" onclick="switchTab('manage-games', this)">Manage Games</li>
+                <li class="nav-item" onclick="switchTab('manage-bookings', this)">Manage Bookings</li>
+                <li class="nav-item" onclick="switchTab('manage-customers', this)">Manage Customers</li>
+                <li class="nav-item" onclick="switchTab('analytics', this)">Analytics</li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content">
+
+            <!-- 1. Dashboard View -->
+            <section id="dashboard" class="tab-content active">
+                <h1 class="page-title">Dashboard</h1>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="title">Total Games</div>
+                        <div class="value">4</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="title">Total Bookings</div>
+                        <div class="value">4</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="title">Total Customers</div>
+                        <div class="value">21</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="title">Total Revenue</div>
+                        <div class="value">₹15,620.00</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Add New Game View -->
+            <section id="add-game" class="tab-content">
+                <h1 class="page-title">Add Game</h1>
+                <form onsubmit="event.preventDefault(); alert('Game added successfully!');">
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="text" placeholder="https://example.com/game.jpg" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Game Name</label>
+                        <input type="text" placeholder="Enter game name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="3" placeholder="Enter short description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" placeholder="e.g. 1 Hour">
+                    </div>
+                    <div class="form-group">
+                        <label>Base Price</label>
+                        <input type="number" placeholder="₹">
+                    </div>
+                    <div class="form-group">
+                        <label>Players</label>
+                        <input type="number" placeholder="Max players">
+                    </div>
+                    <button type="submit" class="btn-submit">Add Game</button>
+                </form>
+            </section>
+
+            <!-- 3. Manage Games View -->
+            <section id="manage-games" class="tab-content">
+                <h1 class="page-title">Manage Games</h1>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Image</th>
+                                <th>Game Name</th>
+                                <th>Description</th>
+                                <th>Duration</th>
+                                <th>Base Price</th>
+                                <th>Players</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>🖼️</td>
+                                <td>Turf Football</td>
+                                <td>5v5 high energy turf ground</td>
+                                <td>1 hr</td>
+                                <td>₹1200</td>
+                                <td>10</td>
+                                <td>
+                                    <button class="btn-action">Edit</button>
+                                    <button class="btn-action">Del</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>🖼️</td>
+                                <td>PS5 Gaming</td>
+                                <td>Console gaming with 4K setup</td>
+                                <td>1 hr</td>
+                                <td>₹250</td>
+                                <td>2</td>
+                                <td>
+                                    <button class="btn-action">Edit</button>
+                                    <button class="btn-action">Del</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 4. Manage Bookings View -->
+            <section id="manage-bookings" class="tab-content">
+                <h1 class="page-title">Manage Bookings</h1>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Booking ID</th>
+                                <th>Customer</th>
+                                <th>Game Name</th>
+                                <th>Price</th>
+                                <th>Payment Status</th>
+                                <th>Slot Status</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>#BOOK-170120251</td>
+                                <td>user1@gmail.com</td>
+                                <td>PS5 VR</td>
+                                <td>₹120</td>
+                                <td><span class="badge badge-success">Success</span></td>
+                                <td>Cancelled</td>
+                                <td>9/27/2025</td>
+                                <td>10:00 AM - 11:00 AM</td>
+                                <td>
+                                    <button class="btn-action">✓</button>
+                                    <button class="btn-action">✕</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>#BOOK-170120252</td>
+                                <td>user2@gmail.com</td>
+                                <td>Billiards</td>
+                                <td>₹250</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                                <td>Confirmed</td>
+                                <td>10/1/2025</td>
+                                <td>10:00 AM - 11:00 AM</td>
+                                <td>
+                                    <button class="btn-action">✓</button>
+                                    <button class="btn-action">✕</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 5. Manage Customers View -->
+            <section id="manage-customers" class="tab-content">
+                <h1 class="page-title">Manage Customers</h1>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone No</th>
+                                <th>Registered</th>
+                                <th>Bookings</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Mano</td>
+                                <td>mano03@gmail.com</td>
+                                <td>9104506051</td>
+                                <td>9/21/2025</td>
+                                <td>20</td>
+                                <td>
+                                    <button class="btn-action">View</button>
+                                    <button class="btn-action">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Monu Thakur</td>
+                                <td>monukumar09054@gmail.com</td>
+                                <td>9104506051</td>
+                                <td>9/27/2025</td>
+                                <td>4</td>
+                                <td>
+                                    <button class="btn-action">View</button>
+                                    <button class="btn-action">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 6. Analytics View -->
+            <section id="analytics" class="tab-content">
+                <h1 class="page-title">Dashboard (Analytics)</h1>
+                <p>System analytics overview and reporting metrics.</p>
+            </section>
+
+        </main>
     </div>
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr>
-            <th>Game Title</th>
-            <th>Platform</th>
-            <th>Hourly Rate</th>
-            <th>Description</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="admin-games-tbody">
-          <tr><td colspan="5" class="empty-state">Loading inventory...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
 
-  <!-- Customer Bookings Log -->
-  <section class="admin-section">
-    <div class="section-title">📋 Customer Slot Reservations</div>
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr>
-            <th>Booking ID</th>
-            <th>Customer Name</th>
-            <th>Game Title</th>
-            <th>Payment Method</th>
-            <th>Paid Amount</th>
-            <th>Date & Time</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="admin-bookings-tbody">
-          <tr><td colspan="7" class="empty-state">Loading booking logs...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <script>
+        function switchTab(tabId, element) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
 
-  <script>
-    // Initial Fallback Inventory if local storage is empty
-    const defaultGames = [
-      { _id: "ps1", name: "EA SPORTS FC 25", platform: "PS5", price: 250, description: "Experience 4K 120Hz football gaming with dual-sense controllers." },
-      { _id: "ps2", name: "God of War Ragnarök", platform: "PS5", price: 300, description: "Epic Norse action adventure on PlayStation 5 OLED setup." },
-      { _id: "pc1", name: "Valorant", platform: "PC", price: 150, description: "5v5 tactical shooter on ultra-high refresh rate monitors." },
-      { _id: "pc2", name: "Counter-Strike 2", platform: "PC", price: 200, description: "Competitive tactical shooter built on Source 2." },
-      { _id: "pc3", name: "Cyberpunk 2077", platform: "PC", price: 250, description: "Night City with full RTX Ray Tracing Overdrive graphics." },
-      { _id: "ps3", name: "Grand Theft Auto V", platform: "PS5", price: 250, description: "4K 60FPS with DualSense haptic feedback." }
-    ];
+            // Remove active style from sidebar links
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
 
-    window.onload = () => {
-      loadAdminData();
-    };
-
-    async function loadAdminData() {
-      await renderGamesTable();
-      await renderBookingsTable();
-      updateDashboardStats();
-    }
-
-    /* RENDER GAMES INVENTORY */
-    async function renderGamesTable() {
-      const tbody = document.getElementById('admin-games-tbody');
-      let games = [];
-
-      try {
-        const res = await fetch('/api/games?t=' + new Date().getTime());
-        if (res.ok) {
-          const apiGames = await res.json();
-          if (Array.isArray(apiGames) && apiGames.length > 0) games = apiGames;
+            // Activate selected tab and nav link
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
         }
-      } catch (err) {
-        console.log("Server API unavailable, reading from localStorage.");
-      }
-
-      if (games.length === 0) {
-        games = JSON.parse(localStorage.getItem('custom_games') || '[]');
-        if (games.length === 0) games = defaultGames;
-      }
-
-      tbody.innerHTML = '';
-      if (games.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No games available. Add one above!</td></tr>';
-        return;
-      }
-
-      games.forEach(game => {
-        const tr = document.createElement('tr');
-        const badgeClass = game.platform === 'PC' ? 'badge badge-pc' : 'badge badge-ps5';
-        tr.innerHTML = `
-          <td style="font-weight:700;">${game.name}</td>
-          <td><span class="${badgeClass}">${game.platform || 'PS5'}</span></td>
-          <td style="color:#4ade80; font-weight:800;">₹${game.price}/hr</td>
-          <td style="color:#94a3b8; max-width: 300px;">${game.description || 'N/A'}</td>
-          <td><button class="btn-delete" onclick="deleteGame('${game._id}')">Remove</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    /* RENDER CUSTOMER BOOKINGS LOG */
-    async function renderBookingsTable() {
-      const tbody = document.getElementById('admin-bookings-tbody');
-      let bookings = [];
-
-      try {
-        const res = await fetch('/api/bookings');
-        if (res.ok) {
-          const apiBookings = await res.json();
-          if (Array.isArray(apiBookings)) bookings = apiBookings;
-        }
-      } catch (err) {
-        console.log("Server API offline, loading cached bookings.");
-      }
-
-      if (bookings.length === 0) {
-        bookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
-      }
-
-      tbody.innerHTML = '';
-      if (bookings.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No customer slot reservations recorded yet.</td></tr>';
-        return;
-      }
-
-      bookings.forEach(b => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="font-size:12px; color:#94a3b8;">${b.id || b._id}</td>
-          <td style="font-weight:700; color:#60a5fa;">${b.userName || 'Gamer'}</td>
-          <td>${b.gameName || 'Slot'}</td>
-          <td>${b.paymentMethod || 'UPI Direct'}</td>
-          <td style="color:#4ade80; font-weight:800;">₹${b.amount || 0}</td>
-          <td style="font-size:12px; color:#cbd5e1;">${b.date || 'Recent'}</td>
-          <td><button class="btn-delete" onclick="deleteBooking('${b.id || b._id}')">Cancel</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    /* DASHBOARD STATS CALCULATOR */
-    function updateDashboardStats() {
-      const customGames = JSON.parse(localStorage.getItem('custom_games') || '[]');
-      const totalGames = customGames.length > 0 ? customGames.length : defaultGames.length;
-      document.getElementById('stat-total-games').innerText = totalGames;
-
-      const bookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
-      document.getElementById('stat-total-bookings').innerText = bookings.length;
-
-      const totalRevenue = bookings.reduce((sum, b) => sum + Number(b.amount || 0), 0);
-      document.getElementById('stat-total-revenue').innerText = `₹${totalRevenue}`;
-
-      const users = JSON.parse(localStorage.getItem('customer_users') || '[]');
-      document.getElementById('stat-registered-users').innerText = users.length;
-    }
-
-    /* ADD NEW GAME HANDLER */
-    async function handleAddGame(event) {
-      event.preventDefault();
-
-      const newGame = {
-        _id: "gm_" + Date.now(),
-        name: document.getElementById('game-title').value.trim(),
-        platform: document.getElementById('game-platform').value,
-        price: Number(document.getElementById('game-price').value),
-        imageUrl: document.getElementById('game-image').value.trim(),
-        description: document.getElementById('game-desc').value.trim()
-      };
-
-      try {
-        await fetch('/api/games', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newGame)
-        });
-      } catch (err) {
-        console.log("Saved to local cache (offline mode).");
-      }
-
-      let customGames = JSON.parse(localStorage.getItem('custom_games') || '[]');
-      if (customGames.length === 0) customGames = [...defaultGames];
-      customGames.push(newGame);
-      localStorage.setItem('custom_games', JSON.stringify(customGames));
-
-      alert("🎉 New Game Station added successfully!");
-      document.getElementById('add-game-form').reset();
-      loadAdminData();
-    }
-
-    /* DELETE GAME HANDLER */
-    async function deleteGame(gameId) {
-      if (!confirm("Are you sure you want to remove this game from inventory?")) return;
-
-      try {
-        await fetch(`/api/games/${gameId}`, { method: 'DELETE' });
-      } catch (err) {
-        console.log("Removed locally.");
-      }
-
-      let customGames = JSON.parse(localStorage.getItem('custom_games') || '[]');
-      if (customGames.length === 0) customGames = [...defaultGames];
-      customGames = customGames.filter(g => g._id !== gameId);
-      localStorage.setItem('custom_games', JSON.stringify(customGames));
-
-      loadAdminData();
-    }
-
-    /* DELETE/CANCEL BOOKING HANDLER */
-    async function deleteBooking(bookingId) {
-      if (!confirm("Remove this customer reservation log?")) return;
-
-      try {
-        await fetch(`/api/bookings/${bookingId}`, { method: 'DELETE' });
-      } catch (err) {
-        console.log("Removed locally.");
-      }
-
-      let bookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
-      bookings = bookings.filter(b => b.id !== bookingId && b._id !== bookingId);
-      localStorage.setItem('my_bookings', JSON.stringify(bookings));
-
-      loadAdminData();
-    }
-  </script>
+    </script>
 </body>
 </html>
