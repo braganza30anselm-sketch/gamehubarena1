@@ -13,9 +13,6 @@
     /* Header: Dark Emerald for Contrast with White Brand & Buttons */
     .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #064e3b !important; border-bottom: 2px solid #10b981; }
     .brand { font-size: 20px; font-weight: 800; color: #ffffff !important; }
-    .header-links { display: flex; align-items: center; gap: 12px; }
-    .portal-link { color: #a7f3d0; text-decoration: none; font-size: 13px; font-weight: 600; }
-    .portal-link:hover { text-decoration: underline; color: #ffffff; }
     .admin-badge { background: #059669; color: #ffffff !important; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
     .btn-logout { background: #ef4444; color: #ffffff !important; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-left: 10px; font-size: 12px; }
 
@@ -82,12 +79,9 @@
   <!-- TOP HEADER -->
   <header class="header">
     <div class="brand">🎮 GameHubArena Admin</div>
-    <div class="header-links">
-      <a href="index.html" class="portal-link">🛒 Switch to Customer Portal</a>
-      <div id="nav-user-info" style="display: none; align-items: center;">
-        <span class="admin-badge" id="logged-admin-name">👨‍💼 Admin</span>
-        <button class="btn-logout" onclick="handleLogout()">Logout</button>
-      </div>
+    <div id="nav-user-info" style="display: none; align-items: center;">
+      <span class="admin-badge" id="logged-admin-name">👨‍💼 Admin</span>
+      <button class="btn-logout" onclick="handleLogout()">Logout</button>
     </div>
   </header>
 
@@ -110,9 +104,6 @@
       </form>
       <div class="auth-switch">
         Need an admin account? <a onclick="toggleAuthView('register')">Register Admin</a>
-      </div>
-      <div class="auth-switch" style="margin-top: 8px;">
-        <a href="index.html" style="color: #4b5563;">← Return to Customer Portal</a>
       </div>
     </div>
 
@@ -284,8 +275,7 @@
   <script>
     let adminUsers = JSON.parse(localStorage.getItem('admin_users') || '[{"username":"admin@gamehub.com","password":"admin123","name":"Master Admin"}]');
     
-    // Shared key 'gamehub_inventory' connects admin inventory directly to the customer site
-    let inventory = JSON.parse(localStorage.getItem('gamehub_inventory') || JSON.stringify([
+    let inventory = JSON.parse(localStorage.getItem('admin_inventory') || JSON.stringify([
       { 
         id: "st1", 
         name: "EA SPORTS FC 25", 
@@ -332,13 +322,12 @@
     };
 
     function checkAuthState() {
-      // Dedicated session key for admin users
-      const activeAdminSession = localStorage.getItem('active_admin_session');
-      if (activeAdminSession) {
+      const activeAdmin = localStorage.getItem('active_admin');
+      if (activeAdmin) {
         document.getElementById('auth-section').style.display = 'none';
         document.getElementById('dashboard-section').style.display = 'flex';
         document.getElementById('nav-user-info').style.display = 'flex';
-        document.getElementById('logged-admin-name').innerText = `👨‍💼 ${activeAdminSession}`;
+        document.getElementById('logged-admin-name').innerText = `👨‍💼 ${activeAdmin}`;
         renderDashboardData();
       } else {
         document.getElementById('auth-section').style.display = 'block';
@@ -365,7 +354,7 @@
 
       adminUsers.push({ username, password, name: fullname });
       localStorage.setItem('admin_users', JSON.stringify(adminUsers));
-      localStorage.setItem('active_admin_session', fullname);
+      localStorage.setItem('active_admin', fullname);
       alert("Admin account registered!");
       checkAuthState();
     }
@@ -377,7 +366,7 @@
 
       const user = adminUsers.find(u => u.username === username && u.password === password);
       if (user) {
-        localStorage.setItem('active_admin_session', user.name || user.username);
+        localStorage.setItem('active_admin', user.name || user.username);
         checkAuthState();
       } else {
         alert("Invalid admin username or password. Default login: admin@gamehub.com / admin123");
@@ -385,7 +374,7 @@
     }
 
     function handleLogout() {
-      localStorage.removeItem('active_admin_session');
+      localStorage.removeItem('active_admin');
       checkAuthState();
     }
 
@@ -434,25 +423,25 @@
         name: document.getElementById('inv-name').value,
         platform: document.getElementById('inv-platform').value,
         price: Number(document.getElementById('inv-price').value),
-        image: document.getElementById('inv-image').value || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80',
+        image: document.getElementById('inv-image').value || '',
         description: document.getElementById('inv-desc').value || "No description provided.",
         status: "Active"
       };
       inventory.push(newItem);
-      localStorage.setItem('gamehub_inventory', JSON.stringify(inventory));
+      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
       renderDashboardData();
       event.target.reset();
     }
 
     function toggleInventoryStatus(id) {
       inventory = inventory.map(item => item.id === id ? { ...item, status: item.status === 'Active' ? 'Maintenance' : 'Active' } : item);
-      localStorage.setItem('gamehub_inventory', JSON.stringify(inventory));
+      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
       renderInventoryTable();
     }
 
     function deleteInventory(id) {
       inventory = inventory.filter(item => item.id !== id);
-      localStorage.setItem('gamehub_inventory', JSON.stringify(inventory));
+      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
       renderDashboardData();
     }
 
