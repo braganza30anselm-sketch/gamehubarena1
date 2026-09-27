@@ -3,38 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GameHubArena - Gaming Lounge & Admin Portal</title>
+  <title>GameHubArena - Gaming Lounge</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     html { scroll-behavior: smooth; }
-    body { background-color: #0b132b; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+    body { background-color: #0b132b; color: #ffffff; min-height: 100vh; }
 
-    /* Top Global Portal Switcher */
-    .global-portal-bar { background: #000000; padding: 8px 8%; display: flex; justify-content: flex-end; gap: 12px; border-bottom: 1px solid #1f2937; }
-    .portal-switch-btn { background: #111827; color: #9ca3af; border: 1px solid #374151; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-    .portal-switch-btn.active, .portal-switch-btn:hover { background: #2563eb; color: #ffffff; border-color: #2563eb; }
-
-    /* Portal View Containers */
-    .portal-container { display: none; flex-direction: column; flex: 1; }
-    .portal-container.active-portal { display: flex; }
-
-    /* --- CUSTOMER PORTAL STYLES --- */
+    /* Navbar */
     .navbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 8%; background: #1c2541; border-bottom: 1px solid #2a385b; position: sticky; top: 0; z-index: 100; }
     .nav-brand-tagline { font-size: 20px; font-weight: 800; color: #60a5fa; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
     .nav-actions { display: flex; align-items: center; gap: 10px; }
-    .nav-btn { background-color: #2563eb; color: white; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .nav-btn { background-color: #2563eb; color: white; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; }
     .nav-btn:hover { background-color: #1d4ed8; }
-    .nav-btn-secondary { background: #1c2541; border: 1px solid #3b82f6; color: #3b82f6; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .nav-btn-secondary { background: #1c2541; border: 1px solid #3b82f6; color: #3b82f6; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; text-decoration: none; }
     .nav-btn-secondary:hover { background: #2563eb; color: white; }
     .nav-btn-danger { background-color: #ef4444; border: none; color: white; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; }
 
+    /* Announcement Banner */
     .weekend-banner { background: linear-gradient(90deg, #f59e0b, #ef4444); text-align: center; padding: 10px; font-weight: 800; font-size: 14px; letter-spacing: 0.5px; }
 
+    /* Hero Branding & Console Showcase */
     .hero { background: linear-gradient(180deg, #1c2541 0%, #0b132b 100%); padding: 50px 8% 45px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    
     .hero-brand { font-size: 32px; font-weight: 900; color: #60a5fa; margin-bottom: 10px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; justify-content: center; }
     .hero h1 { font-size: 38px; font-weight: 900; background: linear-gradient(90deg, #ffffff, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
     .hero p { color: #94a3b8; max-width: 620px; margin: 0 auto 22px; font-size: 16px; line-height: 1.5; }
     
+    /* Console Showcase */
     .console-showcase { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 22px; flex-wrap: wrap; }
     .console-badge { display: flex; align-items: center; gap: 10px; background: #0b132b; border: 1px solid #2a385b; padding: 6px 14px; border-radius: 30px; }
     .console-badge img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
@@ -43,13 +38,15 @@
     .explore-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(90deg, #2563eb, #3b82f6); color: white; padding: 12px 30px; border-radius: 30px; font-weight: 700; font-size: 15px; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); transition: all 0.2s ease; }
     .explore-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6); }
 
-    .games-section { padding: 50px 8%; max-width: 1300px; margin: 0 auto; width: 100%; }
+    /* Games Section */
+    .games-section { padding: 50px 8%; max-width: 1300px; margin: 0 auto; }
     .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
     .section-title { font-size: 26px; font-weight: 800; border-left: 4px solid #2563eb; padding-left: 12px; }
     .refresh-btn { background: #1c2541; border: 1px solid #3b82f6; color: #3b82f6; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
     .refresh-btn:hover { background: #2563eb; color: white; }
 
     .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+
     .game-card { background-color: #1c2541; border: 1px solid #2a385b; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; }
     .game-card:hover { transform: translateY(-4px); }
     .img-wrapper { width: 100%; height: 180px; background-color: #0b132b; }
@@ -61,6 +58,7 @@
     .game-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
     .game-desc { font-size: 13px; color: #94a3b8; line-height: 1.4; margin-bottom: 12px; flex-grow: 1; }
     
+    /* Meta Badges */
     .game-meta-tags { display: flex; gap: 8px; font-size: 12px; color: #cbd5e1; margin-bottom: 14px; flex-wrap: wrap; }
     .meta-tag { background: #0b132b; padding: 4px 8px; border-radius: 4px; border: 1px solid #2a385b; display: flex; align-items: center; gap: 5px; font-weight: 600; }
     .star-tag { border-color: #f59e0b; color: #f59e0b; }
@@ -88,565 +86,284 @@
     .auth-switch a { color: #60a5fa; cursor: pointer; font-weight: 700; text-decoration: none; }
     .auth-switch a:hover { text-decoration: underline; }
 
+    /* Profile UI Specifics */
     .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #2a385b; }
     .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #10b981); display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; border: 2px solid #60a5fa; }
     .profile-info h3 { font-size: 18px; font-weight: 800; color: #ffffff; }
     .profile-info p { font-size: 12px; color: #94a3b8; }
     .profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    .stat-card-cust { background: #0b132b; border: 1px solid #2a385b; padding: 12px; border-radius: 8px; text-align: center; }
-    .stat-val-cust { font-size: 18px; font-weight: 900; color: #4ade80; }
-    .stat-lbl-cust { font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-top: 2px; }
+    .stat-card { background: #0b132b; border: 1px solid #2a385b; padding: 12px; border-radius: 8px; text-align: center; }
+    .stat-val { font-size: 18px; font-weight: 900; color: #4ade80; }
+    .stat-lbl { font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-top: 2px; }
 
+    /* Policy Rules Box */
     .policy-box { background: #0b132b; border: 1px solid #2a385b; border-radius: 8px; padding: 14px; margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
     .policy-box ul { margin-left: 18px; margin-top: 8px; margin-bottom: 8px; }
     .checkbox-container { display: flex; align-items: center; gap: 8px; margin-top: 15px; font-size: 13px; color: #cbd5e1; }
     .checkbox-container input { width: 16px; height: 16px; cursor: pointer; }
 
+    /* Summary Box */
     .summary-box { background: #0b132b; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #2a385b; }
     .summary-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
     .summary-total { font-weight: 800; color: #4ade80; font-size: 15px; border-top: 1px dashed #2a385b; padding-top: 6px; }
 
+    /* QR Code Display */
     .qr-container { text-align: center; background: #0b132b; padding: 15px; border-radius: 8px; border: 1px solid #2a385b; margin-bottom: 15px; }
     .qr-container img { width: 160px; height: 160px; border-radius: 8px; border: 2px solid #2563eb; }
     .upi-id { font-size: 13px; color: #60a5fa; font-weight: 700; margin-top: 8px; }
 
+    /* Bookings Card List */
     .booking-card { background: #0b132b; border: 1px solid #2a385b; padding: 14px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
     .booking-title { font-size: 15px; font-weight: 700; color: #ffffff; }
     .booking-meta { font-size: 12px; color: #94a3b8; margin-top: 4px; }
     .cancel-booking-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; }
     .cancel-booking-btn:hover { background: #dc2626; }
-
-    /* --- ADMIN PORTAL STYLES --- */
-    .admin-wrapper { background-color: #000000 !important; color: #ffffff; min-height: calc(100vh - 35px); display: flex; flex-direction: column; flex: 1; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #111827 !important; border-bottom: 2px solid #2563eb; }
-    .admin-brand { font-size: 20px; font-weight: 800; color: #60a5fa; }
-    .admin-badge { background: #2563eb; color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
-    .btn-logout { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-left: 10px; font-size: 12px; }
-
-    .admin-auth-container { max-width: 420px; margin: 80px auto; background: #111827 !important; border: 1px solid #1f2937; border-radius: 10px; padding: 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); }
-    .admin-auth-title { font-size: 22px; font-weight: 800; color: #60a5fa; text-align: center; margin-bottom: 8px; }
-    .admin-auth-subtitle { font-size: 13px; color: #9ca3af; text-align: center; margin-bottom: 20px; }
-
-    .dashboard-layout { display: flex; flex: 1; min-height: calc(100vh - 95px); background: #000000 !important; }
-    .sidebar { width: 240px; background: #111827 !important; border-right: 1px solid #1f2937; padding: 20px 10px; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item { background: transparent; color: #9ca3af; border: none; padding: 12px 16px; border-radius: 6px; font-weight: 600; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 14px; transition: all 0.2s; }
-    .nav-item:hover, .nav-item.active { background: #2563eb; color: #ffffff; }
-
-    .main-content { flex: 1; padding: 30px; overflow-y: auto; background: #000000 !important; }
-    .view-section { display: none; }
-    .view-section.active { display: block; }
-
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 25px; }
-    .stat-card { background: #111827 !important; border: 1px solid #1f2937; padding: 20px; border-radius: 10px; }
-    .stat-card h3 { font-size: 13px; color: #9ca3af; margin-bottom: 8px; text-transform: uppercase; }
-    .stat-card .val { font-size: 28px; font-weight: 800; color: #4ade80; }
-
-    .panel-card { background: #111827 !important; border: 1px solid #1f2937; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
-    .panel-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #93c5fd; border-bottom: 1px solid #1f2937; padding-bottom: 8px; }
-
-    .admin-form-group { margin-bottom: 14px; }
-    .admin-form-group label { display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px; }
-    .admin-form-group input, .admin-form-group select, .admin-form-group textarea { width: 100%; padding: 10px; background: #000000 !important; border: 1px solid #374151; border-radius: 6px; color: white; outline: none; }
-    .admin-form-group textarea { resize: vertical; min-height: 60px; }
-
-    .btn-submit { background: #2563eb; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
-    .btn-submit:hover { background: #1d4ed8; }
-
-    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th, .data-table td { padding: 12px 15px; border-bottom: 1px solid #1f2937; font-size: 14px; vertical-align: middle; }
-    .data-table th { background: #000000 !important; color: #9ca3af; font-size: 12px; text-transform: uppercase; }
-    .data-table tr:hover { background: #1f2937; }
-
-    .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; display: inline-block; }
-    .badge-active, .badge-confirmed { background: rgba(74, 222, 128, 0.2); color: #4ade80; border: 1px solid #4ade80; }
-    .badge-maintenance, .badge-pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
-    .badge-cancelled, .badge-banned { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
-
-    .btn-action { padding: 5px 10px; border-radius: 4px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .btn-edit { background: #3b82f6; color: white; }
-    .btn-delete { background: #ef4444; color: white; }
-    .btn-ban { background: #f59e0b; color: black; }
-
-    @media (max-width: 768px) {
-      .dashboard-layout { flex-direction: column; }
-      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- GLOBAL SWITCHER BAR -->
-  <div class="global-portal-bar">
-    <button class="portal-switch-btn active" id="btn-portal-customer" onclick="switchPortal('customer')">🎮 Customer View</button>
-    <button class="portal-switch-btn" id="btn-portal-admin" onclick="switchPortal('admin')">👨‍💼 Admin Control Panel</button>
+  <div class="weekend-banner">🔥 WEEKEND SPECIAL: Get 20% OFF on all PS5 & PC Gaming Slots every Saturday & Sunday!</div>
+
+  <nav class="navbar">
+    <div class="nav-brand-tagline">🎮 GameHubArena</div>
+    <div class="nav-actions" id="nav-actions"></div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-brand">🎮 GameHubArena</div>
+    <h1>Experience Ultimate Gaming Power & 4K Performance</h1>
+    <p>Reserve slots for top PlayStation 5 & RTX PC games at competitive hourly rates.</p>
+
+    <div class="console-showcase">
+      <div class="console-badge">
+        <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=150" alt="PlayStation 5" />
+        <span>PS5 Station</span>
+      </div>
+      <div class="console-badge">
+        <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=150" alt="RTX PC Rig" />
+        <span>RTX PC Rig</span>
+      </div>
+    </div>
+
+    <a href="#available-games-section" class="explore-btn">🎮 Explore Games</a>
+  </header>
+
+  <main class="games-section" id="available-games-section">
+    <div class="section-header">
+      <h2 class="section-title">Available Games</h2>
+      <button class="refresh-btn" onclick="loadGames()">🔄 Refresh List</button>
+    </div>
+    <div class="games-grid" id="customer-games-grid"></div>
+  </main>
+
+  <!-- USER PROFILE MODAL -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal-card">
+      <span class="close-modal" onclick="closeModal('profile-modal')">&times;</span>
+      <h2>👤 Gamer Profile</h2>
+      <br />
+      
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar-initial">G</div>
+        <div class="profile-info">
+          <h3 id="profile-display-name">Gamer</h3>
+          <p id="profile-display-email">user@example.com</p>
+        </div>
+      </div>
+
+      <div class="profile-stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="profile-stat-bookings">0</div>
+          <div class="stat-lbl">Reserved Slots</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="profile-stat-points">150 PTS</div>
+          <div class="stat-lbl">XP Rewards</div>
+        </div>
+      </div>
+
+      <form id="profile-form" onsubmit="handleProfileUpdate(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="profile-input-name" required />
+        </div>
+        <div class="form-group">
+          <label>Gamer Tag</label>
+          <input type="text" id="profile-input-tag" placeholder="e.g. ShadowRiderX" />
+        </div>
+        <div class="form-group">
+          <label>Preferred Platform</label>
+          <select id="profile-input-platform">
+            <option value="PlayStation 5">PlayStation 5 (PS5)</option>
+            <option value="RTX Gaming PC">RTX Gaming PC</option>
+            <option value="Both PS5 & PC">Both PS5 & PC</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn">Save Profile Updates</button>
+      </form>
+    </div>
   </div>
 
-  <!-- ==================== 1. CUSTOMER PORTAL ==================== -->
-  <div class="portal-container active-portal" id="portal-customer">
-    <div class="weekend-banner">🔥 WEEKEND SPECIAL: Get 20% OFF on all PS5 & PC Gaming Slots every Saturday & Sunday!</div>
-
-    <nav class="navbar">
-      <div class="nav-brand-tagline">🎮 GameHubArena</div>
-      <div class="nav-actions" id="nav-actions"></div>
-    </nav>
-
-    <header class="hero">
-      <div class="hero-brand">🎮 GameHubArena</div>
-      <h1>Experience Ultimate Gaming Power & 4K Performance</h1>
-      <p>Reserve slots for top PlayStation 5 & RTX PC games at competitive hourly rates.</p>
-
-      <div class="console-showcase">
-        <div class="console-badge">
-          <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=150" alt="PlayStation 5" />
-          <span>PS5 Station</span>
-        </div>
-        <div class="console-badge">
-          <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=150" alt="RTX PC Rig" />
-          <span>RTX PC Rig</span>
-        </div>
+  <!-- BOOKING & POLICY MODALS -->
+  <div class="modal-overlay" id="refund-policy-modal">
+    <div class="modal-card">
+      <span class="close-modal" onclick="closeModal('refund-policy-modal')">&times;</span>
+      <h2>📜 Cancellation & Refund Policy</h2>
+      <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;" id="policy-game-title"></p>
+      
+      <div class="policy-box">
+        <strong>Please review our refund rules before paying:</strong>
+        <ul>
+          <li><strong>100% Full Refund:</strong> Canceled 2+ hours before session start.</li>
+          <li><strong>80% Partial Refund:</strong> Canceled within 2 hours of session start.</li>
+          <li><strong>Store Cash Option:</strong> Reserved slots must be paid before session start time.</li>
+        </ul>
       </div>
 
-      <a href="#available-games-section" class="explore-btn">🎮 Explore Games</a>
-    </header>
-
-    <main class="games-section" id="available-games-section">
-      <div class="section-header">
-        <h2 class="section-title">Available Games</h2>
-        <button class="refresh-btn" onclick="loadGames()">🔄 Refresh List</button>
+      <div class="checkbox-container">
+        <input type="checkbox" id="accept-policy-check" onchange="togglePolicyButton()" />
+        <label for="accept-policy-check">I have read and agree to the Refund Policy.</label>
       </div>
-      <div class="games-grid" id="customer-games-grid"></div>
-    </main>
 
-    <!-- CUSTOMER PROFILE MODAL -->
-    <div class="modal-overlay" id="profile-modal">
-      <div class="modal-card">
-        <span class="close-modal" onclick="closeModal('profile-modal')">&times;</span>
-        <h2>👤 Gamer Profile</h2>
-        <br />
+      <button id="proceed-pay-btn" class="submit-btn" disabled onclick="proceedToPaymentModal()">Proceed to Payment →</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="payment-modal">
+    <div class="modal-card">
+      <span class="close-modal" onclick="closeModal('payment-modal')">&times;</span>
+      <h2>Complete Booking</h2>
+      <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;" id="selected-game-title"></p>
+      
+      <div class="summary-box">
+        <div class="summary-row"><span>Base Hourly Rate:</span> <span id="summary-base">₹0</span></div>
+        <div class="summary-row" style="color:#f59e0b;"><span>Weekend Discount (20%):</span> <span id="summary-discount">-₹0</span></div>
+        <div class="summary-row summary-total"><span>Total Payable:</span> <span id="summary-total">₹0</span></div>
+      </div>
+
+      <form id="payment-form" onsubmit="handleFormSubmission(event)">
+        <input type="hidden" id="pay-game-id" />
         
-        <div class="profile-header">
-          <div class="profile-avatar" id="profile-avatar-initial">G</div>
-          <div class="profile-info">
-            <h3 id="profile-display-name">Gamer</h3>
-            <p id="profile-display-email">user@example.com</p>
+        <div class="form-group">
+          <label>Select Payment Method</label>
+          <select id="payment-method" onchange="togglePaymentFields()">
+            <option value="UPI Direct App Request">Google Pay / PhonePe / Paytm (Send UPI Request)</option>
+            <option value="UPI QR Code">Scan Store UPI QR Code</option>
+            <option value="Debit Card">Debit / Credit Card</option>
+            <option value="Cash Payment on Gaming Store">Cash Payment on Gaming Store</option>
+          </select>
+        </div>
+
+        <div id="upi-request-fields">
+          <div class="form-group">
+            <label>Enter Your UPI ID (VPA)</label>
+            <input type="text" id="customer-upi-id" placeholder="e.g. username@okaxis or 9876543210@paytm" />
+          </div>
+          <p style="font-size:12px; color:#60a5fa; margin-bottom:12px;">
+            📲 We will send a payment collect request directly to your UPI App.
+          </p>
+        </div>
+
+        <div id="upi-qr-fields" style="display: none;">
+          <div class="qr-container">
+            <p style="font-size:12px; color:#cbd5e1; margin-bottom:8px;">Scan with Google Pay, PhonePe, or Paytm</p>
+            <img id="upi-qr-image" src="" alt="UPI Payment QR Code" />
+            <div class="upi-id">UPI ID: gamehubarena@upi</div>
           </div>
         </div>
 
-        <div class="profile-stats-grid">
-          <div class="stat-card-cust">
-            <div class="stat-val-cust" id="profile-stat-bookings">0</div>
-            <div class="stat-lbl-cust">Reserved Slots</div>
+        <div id="debit-card-fields" style="display: none;">
+          <div class="form-group">
+            <label>Cardholder Name</label>
+            <input type="text" id="card-name" placeholder="John Doe" />
           </div>
-          <div class="stat-card-cust">
-            <div class="stat-val-cust" id="profile-stat-points">150 PTS</div>
-            <div class="stat-lbl-cust">XP Rewards</div>
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" id="card-number" placeholder="4532 •••• •••• 8890" maxlength="16" />
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex:1;">
+              <label>Expiry Date</label>
+              <input type="text" id="card-exp" placeholder="MM/YY" maxlength="5" />
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>CVV</label>
+              <input type="password" id="card-cvv" placeholder="123" maxlength="3" />
+            </div>
           </div>
         </div>
 
-        <form id="profile-form" onsubmit="handleProfileUpdate(event)">
+        <div id="cash-store-fields" style="display: none; background: #0b132b; padding: 12px; border-radius: 6px; font-size: 12.5px; color: #cbd5e1; margin-bottom: 15px; border: 1px solid #2a385b;">
+          📌 <strong>Store Payment Note:</strong> Your slot will be reserved. Please pay cash at the store counter before your session starts.
+        </div>
+
+        <button type="submit" class="submit-btn" id="pay-submit-btn">Confirm & Reserve Slot</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="bookings-modal">
+    <div class="modal-card">
+      <span class="close-modal" onclick="closeModal('bookings-modal')">&times;</span>
+      <h2 style="margin-bottom: 15px;">📋 My Reserved Bookings</h2>
+      <div id="user-bookings-list">
+        <p style="color:#94a3b8; font-size: 13px;">Loading your reservations...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL WITH BOTH LOGIN & REGISTER -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-card">
+      <span class="close-modal" onclick="closeAuthModal()">&times;</span>
+      
+      <!-- LOGIN VIEW -->
+      <div id="modal-login-view">
+        <h2 style="margin-bottom:15px;">Customer Login</h2>
+        <form id="login-form">
+          <div class="form-group"><label>Email</label><input type="email" id="login-email" required placeholder="customer@example.com" /></div>
+          <div class="form-group"><label>Password</label><input type="password" id="login-password" required placeholder="••••••••" /></div>
+          <button type="submit" class="submit-btn">Login</button>
+        </form>
+        <div class="auth-switch">
+          Don't have an account? <a onclick="toggleAuthView('register')">Register here</a>
+        </div>
+      </div>
+
+      <!-- REGISTER VIEW -->
+      <div id="modal-register-view" style="display: none;">
+        <h2 style="margin-bottom:15px;">Customer Registration</h2>
+        <form id="register-form" novalidate>
           <div class="form-group">
             <label>Full Name</label>
-            <input type="text" id="profile-input-name" required />
+            <input type="text" id="reg-name" required pattern="[a-zA-Z\s]{2,50}" placeholder="John Doe" />
           </div>
           <div class="form-group">
-            <label>Gamer Tag</label>
-            <input type="text" id="profile-input-tag" placeholder="e.g. ShadowRiderX" />
+            <label>Email</label>
+            <input type="email" id="reg-email" required placeholder="customer@example.com" />
           </div>
           <div class="form-group">
-            <label>Preferred Platform</label>
-            <select id="profile-input-platform">
-              <option value="PlayStation 5">PlayStation 5 (PS5)</option>
-              <option value="RTX Gaming PC">RTX Gaming PC</option>
-              <option value="Both PS5 & PC">Both PS5 & PC</option>
-            </select>
+            <label>Password</label>
+            <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" />
           </div>
-
-          <button type="submit" class="submit-btn">Save Profile Updates</button>
+          <button type="submit" class="submit-btn">Create Account</button>
         </form>
-      </div>
-    </div>
-
-    <!-- BOOKING & POLICY MODALS -->
-    <div class="modal-overlay" id="refund-policy-modal">
-      <div class="modal-card">
-        <span class="close-modal" onclick="closeModal('refund-policy-modal')">&times;</span>
-        <h2>📜 Cancellation & Refund Policy</h2>
-        <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;" id="policy-game-title"></p>
-        
-        <div class="policy-box">
-          <strong>Please review our refund rules before paying:</strong>
-          <ul>
-            <li><strong>100% Full Refund:</strong> Canceled 2+ hours before session start.</li>
-            <li><strong>80% Partial Refund:</strong> Canceled within 2 hours of session start.</li>
-            <li><strong>Store Cash Option:</strong> Reserved slots must be paid before session start time.</li>
-          </ul>
+        <div class="auth-switch">
+          Already registered? <a onclick="toggleAuthView('login')">Login here</a>
         </div>
-
-        <div class="checkbox-container">
-          <input type="checkbox" id="accept-policy-check" onchange="togglePolicyButton()" />
-          <label for="accept-policy-check">I have read and agree to the Refund Policy.</label>
-        </div>
-
-        <button id="proceed-pay-btn" class="submit-btn" disabled onclick="proceedToPaymentModal()">Proceed to Payment →</button>
-      </div>
-    </div>
-
-    <div class="modal-overlay" id="payment-modal">
-      <div class="modal-card">
-        <span class="close-modal" onclick="closeModal('payment-modal')">&times;</span>
-        <h2>Complete Booking</h2>
-        <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;" id="selected-game-title"></p>
-        
-        <div class="summary-box">
-          <div class="summary-row"><span>Base Hourly Rate:</span> <span id="summary-base">₹0</span></div>
-          <div class="summary-row" style="color:#f59e0b;"><span>Weekend Discount (20%):</span> <span id="summary-discount">-₹0</span></div>
-          <div class="summary-row summary-total"><span>Total Payable:</span> <span id="summary-total">₹0</span></div>
-        </div>
-
-        <form id="payment-form" onsubmit="handleFormSubmission(event)">
-          <input type="hidden" id="pay-game-id" />
-          
-          <div class="form-group">
-            <label>Select Payment Method</label>
-            <select id="payment-method" onchange="togglePaymentFields()">
-              <option value="UPI Direct App Request">Google Pay / PhonePe / Paytm (Send UPI Request)</option>
-              <option value="UPI QR Code">Scan Store UPI QR Code</option>
-              <option value="Debit Card">Debit / Credit Card</option>
-              <option value="Cash Payment on Gaming Store">Cash Payment on Gaming Store</option>
-            </select>
-          </div>
-
-          <div id="upi-request-fields">
-            <div class="form-group">
-              <label>Enter Your UPI ID (VPA)</label>
-              <input type="text" id="customer-upi-id" placeholder="e.g. username@okaxis or 9876543210@paytm" />
-            </div>
-            <p style="font-size:12px; color:#60a5fa; margin-bottom:12px;">
-              📲 We will send a payment collect request directly to your UPI App.
-            </p>
-          </div>
-
-          <div id="upi-qr-fields" style="display: none;">
-            <div class="qr-container">
-              <p style="font-size:12px; color:#cbd5e1; margin-bottom:8px;">Scan with Google Pay, PhonePe, or Paytm</p>
-              <img id="upi-qr-image" src="" alt="UPI Payment QR Code" />
-              <div class="upi-id">UPI ID: gamehubarena@upi</div>
-            </div>
-          </div>
-
-          <div id="debit-card-fields" style="display: none;">
-            <div class="form-group">
-              <label>Cardholder Name</label>
-              <input type="text" id="card-name" placeholder="John Doe" />
-            </div>
-            <div class="form-group">
-              <label>Card Number</label>
-              <input type="text" id="card-number" placeholder="4532 •••• •••• 8890" maxlength="16" />
-            </div>
-            <div style="display: flex; gap: 10px;">
-              <div class="form-group" style="flex:1;">
-                <label>Expiry Date</label>
-                <input type="text" id="card-exp" placeholder="MM/YY" maxlength="5" />
-              </div>
-              <div class="form-group" style="flex:1;">
-                <label>CVV</label>
-                <input type="password" id="card-cvv" placeholder="123" maxlength="3" />
-              </div>
-            </div>
-          </div>
-
-          <div id="cash-store-fields" style="display: none; background: #0b132b; padding: 12px; border-radius: 6px; font-size: 12.5px; color: #cbd5e1; margin-bottom: 15px; border: 1px solid #2a385b;">
-            📌 <strong>Store Payment Note:</strong> Your slot will be reserved. Please pay cash at the store counter before your session starts.
-          </div>
-
-          <button type="submit" class="submit-btn" id="pay-submit-btn">Confirm & Reserve Slot</button>
-        </form>
-      </div>
-    </div>
-
-    <div class="modal-overlay" id="bookings-modal">
-      <div class="modal-card">
-        <span class="close-modal" onclick="closeModal('bookings-modal')">&times;</span>
-        <h2 style="margin-bottom: 15px;">📋 My Reserved Bookings</h2>
-        <div id="user-bookings-list">
-          <p style="color:#94a3b8; font-size: 13px;">Loading your reservations...</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- CUSTOMER AUTH MODAL -->
-    <div class="modal-overlay" id="auth-modal">
-      <div class="modal-card">
-        <span class="close-modal" onclick="closeAuthModal()">&times;</span>
-        
-        <div id="modal-login-view">
-          <h2 style="margin-bottom:15px;">Customer Login</h2>
-          <form id="login-form">
-            <div class="form-group"><label>Email</label><input type="email" id="login-email" required placeholder="customer@example.com" /></div>
-            <div class="form-group"><label>Password</label><input type="password" id="login-password" required placeholder="••••••••" /></div>
-            <button type="submit" class="submit-btn">Login</button>
-          </form>
-          <div class="auth-switch">
-            Don't have an account? <a onclick="toggleAuthView('register')">Register here</a>
-          </div>
-        </div>
-
-        <div id="modal-register-view" style="display: none;">
-          <h2 style="margin-bottom:15px;">Customer Registration</h2>
-          <form id="register-form" novalidate>
-            <div class="form-group">
-              <label>Full Name</label>
-              <input type="text" id="reg-name" required pattern="[a-zA-Z\s]{2,50}" placeholder="John Doe" />
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" id="reg-email" required placeholder="customer@example.com" />
-            </div>
-            <div class="form-group">
-              <label>Password</label>
-              <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" />
-            </div>
-            <button type="submit" class="submit-btn">Create Account</button>
-          </form>
-          <div class="auth-switch">
-            Already registered? <a onclick="toggleAuthView('login')">Login here</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== 2. ADMIN PORTAL ==================== -->
-  <div class="portal-container" id="portal-admin">
-    <div class="admin-wrapper">
-      
-      <!-- TOP HEADER -->
-      <header class="admin-header">
-        <div class="admin-brand">🎮 GameHubArena Admin</div>
-        <div id="nav-user-info" style="display: none; align-items: center;">
-          <span class="admin-badge" id="logged-admin-name">👨‍💼 Admin</span>
-          <button class="btn-logout" onclick="handleLogout()">Logout</button>
-        </div>
-      </header>
-
-      <!-- ADMIN AUTH (LOGIN / REGISTER) -->
-      <section class="admin-auth-container" id="admin-auth-section">
-        <!-- LOGIN FORM -->
-        <div id="admin-login-form-view">
-          <h2 class="admin-auth-title">Admin Login</h2>
-          <p class="admin-auth-subtitle">Access GameHubArena Control Panel</p>
-          <form onsubmit="handleAdminLogin(event)">
-            <div class="admin-form-group">
-              <label>Email / Username</label>
-              <input type="text" id="admin-login-username" required placeholder="admin@gamehub.com" />
-            </div>
-            <div class="admin-form-group">
-              <label>Password</label>
-              <input type="password" id="admin-login-password" required placeholder="••••••••" />
-            </div>
-            <button type="submit" class="btn-submit" style="width: 100%;">Login to Control Panel</button>
-          </form>
-          <div class="auth-switch">
-            Need an admin account? <a onclick="toggleAdminAuthView('register')">Register Admin</a>
-          </div>
-        </div>
-
-        <!-- REGISTER FORM -->
-        <div id="admin-register-form-view" style="display: none;">
-          <h2 class="admin-auth-title">Register Admin</h2>
-          <p class="admin-auth-subtitle">Create a new administrator account</p>
-          <form onsubmit="handleAdminRegister(event)">
-            <div class="admin-form-group">
-              <label>Full Name</label>
-              <input type="text" id="admin-reg-fullname" required placeholder="John Doe" />
-            </div>
-            <div class="admin-form-group">
-              <label>Email / Username</label>
-              <input type="text" id="admin-reg-username" required placeholder="admin@gamehub.com" />
-            </div>
-            <div class="admin-form-group">
-              <label>Password</label>
-              <input type="password" id="admin-reg-password" required placeholder="••••••••" />
-            </div>
-            <button type="submit" class="btn-submit" style="width: 100%;">Create Admin Account</button>
-          </form>
-          <div class="auth-switch">
-            Already registered? <a onclick="toggleAdminAuthView('login')">Login here</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- DASHBOARD WORKSPACE -->
-      <div class="dashboard-layout" id="admin-dashboard-section" style="display: none;">
-        
-        <!-- SIDEBAR NAVIGATION -->
-        <aside class="sidebar">
-          <button class="nav-item active" onclick="switchNav('overview', event)">📊 Dashboard Overview</button>
-          <button class="nav-item" onclick="switchNav('inventory', event)">🎮 Game & Station Inventory</button>
-          <button class="nav-item" onclick="switchNav('bookings', event)">📅 Booking Management</button>
-          <button class="nav-item" onclick="switchNav('customers', event)">👥 Customer Management</button>
-        </aside>
-
-        <!-- MAIN CONTENT AREA -->
-        <main class="main-content">
-
-          <!-- 1. DASHBOARD OVERVIEW -->
-          <section class="view-section active" id="view-overview">
-            <h2 style="margin-bottom: 20px;">System Overview</h2>
-            
-            <div class="stats-grid">
-              <div class="stat-card">
-                <h3>Total Revenue</h3>
-                <div class="val" id="stat-revenue">₹0</div>
-              </div>
-              <div class="stat-card">
-                <h3>Total Bookings</h3>
-                <div class="val" id="stat-bookings">0</div>
-              </div>
-              <div class="stat-card">
-                <h3>Active Stations</h3>
-                <div class="val" id="stat-stations">0</div>
-              </div>
-              <div class="stat-card">
-                <h3>Registered Customers</h3>
-                <div class="val" id="stat-customers">0</div>
-              </div>
-            </div>
-
-            <div class="panel-card">
-              <h3 class="panel-title">Recent Activity Log</h3>
-              <div id="recent-logs-list" style="font-size: 13px; color: #9ca3af; line-height: 1.8;">
-                <p>✅ New booking placed for <b>EA SPORTS FC 25</b> by GamerJohn</p>
-                <p>🛠️ PlayStation Station #3 marked for routine maintenance</p>
-                <p>👤 New customer registered: <b>Alex_Gamer</b></p>
-              </div>
-            </div>
-          </section>
-
-          <!-- 2. GAME & STATION INVENTORY MANAGEMENT -->
-          <section class="view-section" id="view-inventory">
-            <div class="panel-card">
-              <h2 class="panel-title">➕ Add New Game Station / Title</h2>
-              <form onsubmit="handleAddInventory(event)" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: start;">
-                <div class="admin-form-group" style="margin: 0;">
-                  <label>Station Title / Game</label>
-                  <input type="text" id="inv-name" required placeholder="e.g. Tekken 8 Setup" />
-                </div>
-                <div class="admin-form-group" style="margin: 0;">
-                  <label>Platform</label>
-                  <select id="inv-platform">
-                    <option value="PS5">PlayStation 5</option>
-                    <option value="PC">Gaming PC</option>
-                  </select>
-                </div>
-                <div class="admin-form-group" style="margin: 0;">
-                  <label>Hourly Rate (₹)</label>
-                  <input type="number" id="inv-price" required placeholder="200" />
-                </div>
-                <div class="admin-form-group" style="margin: 0; grid-column: 1 / -1;">
-                  <label>Image URL</label>
-                  <input type="url" id="inv-image" placeholder="https://example.com/game-cover.jpg" />
-                </div>
-                <div class="admin-form-group" style="margin: 0; grid-column: 1 / -1;">
-                  <label>Description</label>
-                  <textarea id="inv-desc" placeholder="Brief description of the game or station setup..."></textarea>
-                </div>
-                <button type="submit" class="btn-submit" style="grid-column: 1 / -1; justify-self: start;">Add Station</button>
-              </form>
-            </div>
-
-            <div class="panel-card">
-              <h2 class="panel-title">Current Game Inventory</h2>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Game / Station</th>
-                    <th>Description</th>
-                    <th>Platform</th>
-                    <th>Price / Hr</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="inventory-table-body"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- 3. BOOKING MANAGEMENT -->
-          <section class="view-section" id="view-bookings">
-            <div class="panel-card">
-              <h2 class="panel-title">All Customer Reservations</h2>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Booking ID</th>
-                    <th>Customer</th>
-                    <th>Station / Game</th>
-                    <th>Date & Time</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="bookings-table-body"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- 4. CUSTOMER MANAGEMENT -->
-          <section class="view-section" id="view-customers">
-            <div class="panel-card">
-              <h2 class="panel-title">Registered Customer Database</h2>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Customer Name</th>
-                    <th>Email</th>
-                    <th>Total Bookings</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="customers-table-body"></tbody>
-              </table>
-            </div>
-          </section>
-
-        </main>
       </div>
 
     </div>
   </div>
 
-  <!-- MAIN SHARED SCRIPT -->
   <script>
-    /* PORTAL SWITCHING LOGIC */
-    function switchPortal(portal) {
-      document.getElementById('portal-customer').classList.remove('active-portal');
-      document.getElementById('portal-admin').classList.remove('active-portal');
-
-      document.getElementById('btn-portal-customer').classList.remove('active');
-      document.getElementById('btn-portal-admin').classList.remove('active');
-
-      if (portal === 'customer') {
-        document.getElementById('portal-customer').classList.add('active-portal');
-        document.getElementById('btn-portal-customer').classList.add('active');
-        loadGames();
-      } else {
-        document.getElementById('portal-admin').classList.add('active-portal');
-        document.getElementById('btn-portal-admin').classList.add('active');
-        checkAdminAuthState();
-      }
-    }
-
-    /* -------------------------------------------------------------
-       CUSTOMER PORTAL CODE
-    ------------------------------------------------------------- */
     let currentSelectedGame = null;
+
+    /* Registered Customers List */
     let customerUsers = JSON.parse(localStorage.getItem('customer_users') || '[]');
 
+    /* Base Default Fallback Games Array */
     const defaultGames = [
       { 
         _id: "ps1", 
@@ -718,22 +435,30 @@
     function renderNavbar() {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       const navActions = document.getElementById('nav-actions');
+      
+      const adminLink = `<a href="admin_4.html" class="nav-btn-secondary" style="margin-right: 5px;">⚙️ Admin Portal</a>`;
+
       if (user) {
         navActions.innerHTML = `
+          ${adminLink}
           <button class="nav-btn-secondary" onclick="openProfileModal()">👤 Profile</button>
           <button class="nav-btn-secondary" onclick="openMyBookings()">📋 My Bookings</button>
           <span style="color:#4ade80; font-size:14px; font-weight:700;">👋 ${user.name}</span>
-          <button class="nav-btn nav-btn-danger" onclick="logoutCustomer()">Logout</button>
+          <button class="nav-btn nav-btn-danger" onclick="logout()">Logout</button>
         `;
       } else {
-        navActions.innerHTML = `<button class="nav-btn" onclick="openAuthModal('login')">Login / Register</button>`;
+        navActions.innerHTML = `
+          ${adminLink}
+          <button class="nav-btn" onclick="openAuthModal('login')">Login / Register</button>
+        `;
       }
     }
 
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function logoutCustomer() { localStorage.removeItem('currentUser'); renderNavbar(); }
+    function logout() { localStorage.removeItem('currentUser'); renderNavbar(); }
 
+    /* AUTH MODAL MANAGEMENT */
     function clearAuthForms() {
       document.getElementById('login-form').reset();
       document.getElementById('register-form').reset();
@@ -756,6 +481,7 @@
       document.getElementById('modal-register-view').style.display = view === 'register' ? 'block' : 'none';
     }
 
+    /* PROFILE MANAGEMENT LOGIC */
     function openProfileModal() {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) return;
@@ -791,21 +517,20 @@
       renderNavbar();
     }
 
+    /* GAME CARDS RENDER LOGIC */
     async function loadGames() {
       const grid = document.getElementById('customer-games-grid');
       grid.innerHTML = '<p style="color:#94a3b8;">Loading games...</p>';
 
       let games = [];
-      const adminInv = JSON.parse(localStorage.getItem('admin_inventory') || '[]');
-      if (adminInv.length > 0) {
-        games = adminInv.filter(item => item.status === 'Active').map(item => ({
-          _id: item.id,
-          name: item.name,
-          platform: item.platform,
-          price: item.price,
-          imageUrl: item.image,
-          description: item.description
-        }));
+      try {
+        const res = await fetch('/api/games?t=' + new Date().getTime());
+        if (res.ok) {
+          const apiGames = await res.json();
+          if (Array.isArray(apiGames) && apiGames.length > 0) games = apiGames;
+        }
+      } catch (err) {
+        console.log("Database offline. Using fallback list.");
       }
 
       if (games.length === 0) games = defaultGames;
@@ -818,8 +543,33 @@
         const badgeClass = game.platform === 'PC' ? 'badge badge-pc' : 'badge';
         const discountPrice = isWeekend ? Math.round(game.price * 0.8) : game.price;
 
-        let finalPlayerTag = game.players || '1-2 Players';
-        let finalRating = game.rating || 4.8;
+        let finalPlayerTag = game.players;
+        let finalRating = game.rating;
+
+        const nameLower = game.name.toLowerCase();
+
+        if (nameLower.includes('fc 25') || nameLower.includes('ea sports') || nameLower.includes('fifa')) {
+          finalPlayerTag = '1 - 2 Players';
+          finalRating = 4.8;
+        } else if (nameLower.includes('gta') || nameLower.includes('theft')) {
+          finalPlayerTag = '1 Player (Single)';
+          finalRating = 4.5;
+        } else if (nameLower.includes('cyberpunk')) {
+          finalPlayerTag = '1 Player (Single)';
+          finalRating = 4.9;
+        } else if (nameLower.includes('counter-strike') || nameLower.includes('cs2')) {
+          finalPlayerTag = '5 Players (5v5)';
+          finalRating = 4.7;
+        } else if (nameLower.includes('valorant')) {
+          finalPlayerTag = '5 Players (5v5)';
+          finalRating = 4.6;
+        } else if (nameLower.includes('god of war')) {
+          finalPlayerTag = '1 Player (Single)';
+          finalRating = 4.9;
+        } else {
+          finalRating = game.rating || 4.8;
+          finalPlayerTag = game.players || '1-2 Players';
+        }
 
         const card = document.createElement('div');
         card.className = 'game-card';
@@ -941,18 +691,25 @@
       }
 
       const newBooking = {
-        id: "BK" + Math.floor(100 + Math.random() * 900),
+        id: "bk_" + Date.now(),
         userId: user.id,
         userName: user.name,
-        customer: user.name,
         gameId: currentSelectedGame ? currentSelectedGame.id : 'ps1',
         gameName: currentSelectedGame ? currentSelectedGame.name : 'EA SPORTS FC 25',
-        game: currentSelectedGame ? currentSelectedGame.name : 'EA SPORTS FC 25',
         amount: currentSelectedGame ? currentSelectedGame.paidAmount : 200,
         paymentMethod: paymentMethod === 'UPI Direct App Request' ? `UPI (${customerUpi})` : paymentMethod,
-        date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-        status: "Confirmed"
+        date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
       };
+
+      try {
+        await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newBooking)
+        });
+      } catch (err) {
+        console.log("Saved locally due to offline server.");
+      }
 
       saveLocalBooking(newBooking);
       alert(`🎉 Slot reserved successfully! See you at GameHubArena.`);
@@ -971,8 +728,20 @@
 
       openModal('bookings-modal');
       const container = document.getElementById('user-bookings-list');
+      container.innerHTML = '<p style="color:#94a3b8; font-size:13px;">Loading your reservations...</p>';
 
-      let userBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]').filter(b => b.userId === user.id);
+      let userBookings = [];
+      try {
+        const res = await fetch(`/api/bookings/user/${user.id}`);
+        if (res.ok) userBookings = await res.json();
+      } catch (err) {
+        console.log("Database offline, using local cache.");
+      }
+
+      if (!userBookings || userBookings.length === 0) {
+        const local = JSON.parse(localStorage.getItem('my_bookings') || '[]');
+        userBookings = local.filter(b => b.userId === user.id);
+      }
 
       if (userBookings.length === 0) {
         container.innerHTML = '<p style="color:#cbd5e1; font-size:13px; text-align:center;">No active bookings found.</p>';
@@ -985,7 +754,7 @@
         card.className = 'booking-card';
         card.innerHTML = `
           <div>
-            <div class="booking-title">🎮 ${b.gameName || b.game || 'Gaming Slot'}</div>
+            <div class="booking-title">🎮 ${b.gameName || 'Gaming Slot'}</div>
             <div class="booking-meta">₹${b.amount || 200} via ${b.paymentMethod || 'UPI'} | ${b.date || 'Recent'}</div>
           </div>
           <button class="cancel-booking-btn" onclick="cancelBooking('${b.id || b._id}')">Cancel Slot</button>
@@ -997,14 +766,21 @@
     async function cancelBooking(bookingId) {
       if (!confirm("Cancel this booking and request refund according to policy?")) return;
 
+      try {
+        await fetch(`/api/bookings/${bookingId}`, { method: 'DELETE' });
+      } catch (err) {
+        console.log("Cancelled locally.");
+      }
+
       let localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
-      localBookings = localBookings.map(b => (b.id === bookingId || b._id === bookingId) ? { ...b, status: 'Cancelled' } : b);
+      localBookings = localBookings.filter(b => b.id !== bookingId && b._id !== bookingId);
       localStorage.setItem('my_bookings', JSON.stringify(localBookings));
 
       alert("Booking cancelled! Refund request initiated.");
       openMyBookings();
     }
 
+    /* CUSTOMER LOGIN LOGIC */
     document.getElementById('login-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
@@ -1022,6 +798,7 @@
       renderNavbar();
     });
 
+    /* CUSTOMER REGISTER LOGIC WITH SECURE STEP-BY-STEP LOGIN REQUIREMENT */
     document.getElementById('register-form').addEventListener('submit', (e) => {
       e.preventDefault();
       
@@ -1029,23 +806,27 @@
       const emailInput = document.getElementById('reg-email').value.trim();
       const passwordInput = document.getElementById('reg-password').value;
 
+      // 1. Full Name Validation: Must contain only letters and spaces (2 to 50 chars)
       const nameRegex = /^[a-zA-Z\s]{2,50}$/;
       if (!nameRegex.test(nameInput)) {
-        alert("Please enter a valid full name (letters and spaces only).");
+        alert("Please enter a valid full name (letters and spaces only, no emails or special characters).");
         return;
       }
 
+      // 2. Strict Email Validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(emailInput)) {
-        alert("Please enter a valid email address.");
+        alert("Please enter a valid email address (e.g., customer@example.com).");
         return;
       }
 
+      // 3. Password Validation
       if (passwordInput.length < 6) {
         alert("Password must be at least 6 characters long.");
         return;
       }
 
+      // 4. Duplicate Check
       if (customerUsers.some(u => u.email.toLowerCase() === emailInput.toLowerCase())) {
         alert("An account with this email already exists. Please log in.");
         toggleAuthView('login');
@@ -1064,230 +845,12 @@
       customerUsers.push(newUser);
       localStorage.setItem('customer_users', JSON.stringify(customerUsers));
 
-      // Also register to Admin customer database
-      let adminCustomers = JSON.parse(localStorage.getItem('admin_customers') || '[]');
-      adminCustomers.push({ id: newUser.id, name: newUser.name, email: newUser.email, bookingsCount: 0, status: 'Active' });
-      localStorage.setItem('admin_customers', JSON.stringify(adminCustomers));
-
       alert("🎉 Account created successfully! Please log in with your email and password.");
       
+      // Reset forms and switch to empty login view
       toggleAuthView('login');
       clearAuthForms();
     });
-
-
-    /* -------------------------------------------------------------
-       ADMIN PORTAL CODE
-    ------------------------------------------------------------- */
-    let adminUsers = JSON.parse(localStorage.getItem('admin_users') || '[{"username":"admin@gamehub.com","password":"admin123","name":"Master Admin"}]');
-    
-    let inventory = JSON.parse(localStorage.getItem('admin_inventory') || JSON.stringify([
-      { 
-        id: "st1", 
-        name: "EA SPORTS FC 25", 
-        platform: "PS5", 
-        price: 250, 
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
-        description: "Experience next-gen football simulation on PS5.", 
-        status: "Active" 
-      },
-      { 
-        id: "st2", 
-        name: "Valorant 144Hz Rig", 
-        platform: "PC", 
-        price: 150, 
-        image: "https://images.unsplash.com/photo-1542751110-97427bbecf20?w=500",
-        description: "Competitive tactical 5v5 shooter rig.", 
-        status: "Active" 
-      },
-      { 
-        id: "st3", 
-        name: "God of War Ragnarök", 
-        platform: "PS5", 
-        price: 300, 
-        image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500",
-        description: "Epic Norse myth action adventure.", 
-        status: "Active" 
-      }
-    ]));
-
-    let customers = JSON.parse(localStorage.getItem('admin_customers') || JSON.stringify([
-      { id: "c1", name: "John Doe", email: "john@gmail.com", bookingsCount: 4, status: "Active" },
-      { id: "c2", name: "Rahul Sharma", email: "rahul@gmail.com", bookingsCount: 2, status: "Active" },
-      { id: "c3", name: "Alex Vance", email: "alex@gmail.com", bookingsCount: 1, status: "Banned" }
-    ]));
-
-    function checkAdminAuthState() {
-      const activeAdmin = localStorage.getItem('active_admin');
-      if (activeAdmin) {
-        document.getElementById('admin-auth-section').style.display = 'none';
-        document.getElementById('admin-dashboard-section').style.display = 'flex';
-        document.getElementById('nav-user-info').style.display = 'flex';
-        document.getElementById('logged-admin-name').innerText = `👨‍💼 ${activeAdmin}`;
-        renderDashboardData();
-      } else {
-        document.getElementById('admin-auth-section').style.display = 'block';
-        document.getElementById('admin-dashboard-section').style.display = 'none';
-        document.getElementById('nav-user-info').style.display = 'none';
-      }
-    }
-
-    function toggleAdminAuthView(view) {
-      document.getElementById('admin-login-form-view').style.display = view === 'login' ? 'block' : 'none';
-      document.getElementById('admin-register-form-view').style.display = view === 'register' ? 'block' : 'none';
-    }
-
-    function handleAdminRegister(event) {
-      event.preventDefault();
-      const fullname = document.getElementById('admin-reg-fullname').value;
-      const username = document.getElementById('admin-reg-username').value;
-      const password = document.getElementById('admin-reg-password').value;
-
-      if (adminUsers.some(u => u.username === username)) {
-        alert("An admin account with this username already exists.");
-        return;
-      }
-
-      adminUsers.push({ username, password, name: fullname });
-      localStorage.setItem('admin_users', JSON.stringify(adminUsers));
-      localStorage.setItem('active_admin', fullname);
-      alert("Admin account registered!");
-      checkAdminAuthState();
-    }
-
-    function handleAdminLogin(event) {
-      event.preventDefault();
-      const username = document.getElementById('admin-login-username').value;
-      const password = document.getElementById('admin-login-password').value;
-
-      const user = adminUsers.find(u => u.username === username && u.password === password);
-      if (user) {
-        localStorage.setItem('active_admin', user.name || user.username);
-        checkAdminAuthState();
-      } else {
-        alert("Invalid admin username or password. Default login: admin@gamehub.com / admin123");
-      }
-    }
-
-    function handleLogout() {
-      localStorage.removeItem('active_admin');
-      checkAdminAuthState();
-    }
-
-    function switchNav(view, event) {
-      document.querySelectorAll('.sidebar .nav-item').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.main-content .view-section').forEach(sec => sec.classList.remove('active'));
-
-      document.getElementById(`view-${view}`).classList.add('active');
-      if (event) event.target.classList.add('active');
-      renderDashboardData();
-    }
-
-    function renderDashboardData() {
-      const bookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
-      const totalRev = bookings.filter(b => b.status === 'Confirmed').reduce((sum, b) => sum + Number(b.amount || 0), 0);
-      
-      document.getElementById('stat-revenue').innerText = `₹${totalRev}`;
-      document.getElementById('stat-bookings').innerText = bookings.length;
-      document.getElementById('stat-stations').innerText = inventory.filter(i => i.status === 'Active').length;
-      document.getElementById('stat-customers').innerText = customers.length;
-
-      renderInventoryTable();
-      renderBookingsTable();
-      renderCustomersTable();
-    }
-
-    function renderInventoryTable() {
-      const body = document.getElementById('inventory-table-body');
-      body.innerHTML = inventory.map(item => `
-        <tr>
-          <td><strong>${item.name}</strong></td>
-          <td style="color: #9ca3af; font-size: 13px; max-width: 200px;">${item.description || 'No description provided.'}</td>
-          <td>${item.platform}</td>
-          <td>₹${item.price}/hr</td>
-          <td><span class="status-badge ${item.status === 'Active' ? 'badge-active' : 'badge-maintenance'}">${item.status}</span></td>
-          <td>
-            <button class="btn-action btn-edit" onclick="toggleInventoryStatus('${item.id}')">Toggle Status</button>
-            <button class="btn-action btn-delete" onclick="deleteInventory('${item.id}')">Delete</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function handleAddInventory(event) {
-      event.preventDefault();
-      const newItem = {
-        id: "st_" + Date.now(),
-        name: document.getElementById('inv-name').value,
-        platform: document.getElementById('inv-platform').value,
-        price: Number(document.getElementById('inv-price').value),
-        image: document.getElementById('inv-image').value || '',
-        description: document.getElementById('inv-desc').value || "No description provided.",
-        status: "Active"
-      };
-      inventory.push(newItem);
-      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
-      renderDashboardData();
-      event.target.reset();
-    }
-
-    function toggleInventoryStatus(id) {
-      inventory = inventory.map(item => item.id === id ? { ...item, status: item.status === 'Active' ? 'Maintenance' : 'Active' } : item);
-      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
-      renderInventoryTable();
-    }
-
-    function deleteInventory(id) {
-      inventory = inventory.filter(item => item.id !== id);
-      localStorage.setItem('admin_inventory', JSON.stringify(inventory));
-      renderDashboardData();
-    }
-
-    function renderBookingsTable() {
-      const bookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
-      const body = document.getElementById('bookings-table-body');
-      body.innerHTML = bookings.map(b => `
-        <tr>
-          <td><strong>#${b.id || 'BK' + Math.floor(Math.random()*1000)}</strong></td>
-          <td>${b.customer || b.userName || 'Gamer'}</td>
-          <td>${b.game || b.gameName}</td>
-          <td>${b.date || 'Today'}</td>
-          <td>₹${b.amount}</td>
-          <td><span class="status-badge ${b.status === 'Cancelled' ? 'badge-cancelled' : 'badge-confirmed'}">${b.status || 'Confirmed'}</span></td>
-          <td>
-            ${b.status !== 'Cancelled' ? `<button class="btn-action btn-delete" onclick="adminCancelBooking('${b.id}')">Cancel</button>` : 'N/A'}
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function adminCancelBooking(id) {
-      let bookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
-      bookings = bookings.map(b => b.id === id ? { ...b, status: 'Cancelled' } : b);
-      localStorage.setItem('my_bookings', JSON.stringify(bookings));
-      renderDashboardData();
-    }
-
-    function renderCustomersTable() {
-      const body = document.getElementById('customers-table-body');
-      body.innerHTML = customers.map(c => `
-        <tr>
-          <td><strong>${c.name}</strong></td>
-          <td>${c.email}</td>
-          <td>${c.bookingsCount} Slots</td>
-          <td><span class="status-badge ${c.status === 'Active' ? 'badge-active' : 'badge-banned'}">${c.status}</span></td>
-          <td>
-            <button class="btn-action btn-ban" onclick="toggleCustomerBan('${c.id}')">${c.status === 'Active' ? 'Ban User' : 'Unban'}</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function toggleCustomerBan(id) {
-      customers = customers.map(c => c.id === id ? { ...c, status: c.status === 'Active' ? 'Banned' : 'Active' } : c);
-      localStorage.setItem('admin_customers', JSON.stringify(customers));
-      renderCustomersTable();
-    }
   </script>
 </body>
 </html>
