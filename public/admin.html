@@ -12,7 +12,9 @@
 
     /* Header: Dark Emerald for Contrast with White Brand & Buttons */
     .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #064e3b !important; border-bottom: 2px solid #10b981; }
-    .brand { font-size: 20px; font-weight: 800; color: #ffffff !important; }
+    .brand { font-size: 20px; font-weight: 800; color: #ffffff !important; display: flex; align-items: center; gap: 15px; }
+    .store-link { color: #6efacc !important; text-decoration: none; font-size: 13px; font-weight: 700; background: rgba(255, 255, 255, 0.1); padding: 5px 12px; border-radius: 6px; }
+    .store-link:hover { background: rgba(255, 255, 255, 0.2); }
     .admin-badge { background: #059669; color: #ffffff !important; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
     .btn-logout { background: #ef4444; color: #ffffff !important; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-left: 10px; font-size: 12px; }
 
@@ -78,7 +80,10 @@
 
   <!-- TOP HEADER -->
   <header class="header">
-    <div class="brand">🎮 GameHubArena Admin</div>
+    <div class="brand">
+      <span>🎮 GameHubArena Admin</span>
+      <a href="index_3.html" class="store-link">🛍️ Visit Storefront</a>
+    </div>
     <div id="nav-user-info" style="display: none; align-items: center;">
       <span class="admin-badge" id="logged-admin-name">👨‍💼 Admin</span>
       <button class="btn-logout" onclick="handleLogout()">Logout</button>
