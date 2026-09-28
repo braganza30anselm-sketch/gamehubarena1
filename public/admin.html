@@ -13,8 +13,8 @@
     }
 
     body {
-      background-color: #e8f5e9; /* Light Green */
-      color: #000000;            /* Black Text */
+      background-color: #e8f5e9;
+      color: #000000;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -91,14 +91,14 @@
       background-color: #ef9a9a;
     }
 
-    /* Main Admin Layout with Left Sidebar */
+    /* Main Admin Layout */
     .admin-layout {
       display: flex;
       flex: 1;
       min-height: calc(100vh - 58px);
     }
 
-    /* Left Side Navigation Sidebar */
+    /* Left Sidebar Navigation */
     .sidebar {
       width: 260px;
       background-color: #c8e6c9;
@@ -136,14 +136,14 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    /* Workspace Content Area */
+    /* Main Workspace */
     .main-workspace {
       flex: 1;
       padding: 30px;
       overflow-y: auto;
     }
 
-    /* Analytics Dashboard Cards Grid */
+    /* Metrics Grid */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -218,6 +218,7 @@
       border-bottom: 1px solid #c8e6c9;
       font-size: 14px;
       color: #000000;
+      vertical-align: middle;
     }
 
     th {
@@ -243,6 +244,7 @@
       color: #000000;
     }
 
+    /* Form Styles for Add Game */
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -253,6 +255,10 @@
       margin-bottom: 15px;
     }
 
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
     .form-group label {
       display: block;
       font-size: 12px;
@@ -261,7 +267,7 @@
       margin-bottom: 6px;
     }
 
-    .form-group input, .form-group select {
+    .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 10px;
       background: #f1f8e9;
@@ -272,7 +278,12 @@
       font-size: 14px;
     }
 
-    .form-group input:focus, .form-group select:focus {
+    .form-group textarea {
+      resize: vertical;
+      min-height: 85px;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
       border-color: #66bb6a;
       background: #ffffff;
     }
@@ -292,7 +303,15 @@
       background: #66bb6a;
     }
 
-    /* Modal Overlay */
+    .game-thumb {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #a5d6a7;
+    }
+
+    /* Auth Modal */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -354,18 +373,15 @@
   <div class="top-bar">
     <div class="brand-section">
       <div class="brand">🎮 GameHubArena - Admin Panel</div>
-      <!-- Return to Customer Website Link -->
       <a href="index.html" class="return-store-btn">← Return to Customer Website</a>
     </div>
-    <div class="user-nav-controls" id="nav-controls">
-      <!-- Admin Account / Logout Controls -->
-    </div>
+    <div class="user-nav-controls" id="nav-controls"></div>
   </div>
 
-  <!-- MAIN ADMIN LAYOUT (LEFT HAND SIDEBAR + WORKSPACE) -->
+  <!-- MAIN ADMIN LAYOUT -->
   <div class="admin-layout" id="admin-main-content">
     
-    <!-- LEFT SIDEBAR NAVIGATION MENU -->
+    <!-- LEFT SIDEBAR -->
     <div class="sidebar">
       <button class="sidebar-btn active" onclick="switchTab(event, 'dashboard-analytics')">
         📊 Analytics Dashboard
@@ -384,10 +400,10 @@
       </button>
     </div>
 
-    <!-- MAIN RIGHT-HAND WORKSPACE AREA -->
+    <!-- MAIN WORKSPACE -->
     <div class="main-workspace">
       
-      <!-- Analytics Metrics Overview Cards -->
+      <!-- Metrics Overview -->
       <div class="metrics-grid">
         <div class="metric-card">
           <div class="metric-title">Total Bookings</div>
@@ -411,14 +427,14 @@
       <div class="tab-panel active" id="panel-dashboard-analytics">
         <div class="card-panel">
           <h2 class="panel-title" style="margin-bottom: 15px;">Analytics Dashboard</h2>
-          <p style="margin-bottom: 15px; font-size: 14px;">Real-time stats and metrics tracking customer website interactions, reservations, and inventory health.</p>
+          <p style="margin-bottom: 15px; font-size: 14px;">Real-time stats and metrics tracking customer interactions, reservations, and inventory health.</p>
           <div style="background: #f1f8e9; padding: 15px; border-radius: 8px; border: 1px solid #c8e6c9;">
             <strong>System Status:</strong> Operational. Connected to Customer Portal via local storage database.
           </div>
         </div>
       </div>
 
-      <!-- TAB 2: CUSTOMER MANAGEMENT (Displays Users Logged into Customer Website) -->
+      <!-- TAB 2: CUSTOMER MANAGEMENT -->
       <div class="tab-panel" id="panel-customer-management">
         <div class="card-panel">
           <div class="panel-header">
@@ -472,7 +488,8 @@
           <table>
             <thead>
               <tr>
-                <th>Title</th>
+                <th>Image</th>
+                <th>Title & Description</th>
                 <th>Platform</th>
                 <th>Hourly Rate</th>
                 <th>Capacity</th>
@@ -484,16 +501,20 @@
         </div>
       </div>
 
-      <!-- TAB 5: ADD GAME FORM PANEL -->
+      <!-- TAB 5: ADD GAME FORM PANEL (WITH IMAGE URL & DESCRIPTION FIELDS) -->
       <div class="tab-panel" id="panel-add-game-form-panel">
         <div class="card-panel">
           <h2 class="panel-title" style="margin-bottom: 20px;">Add New Game to Inventory</h2>
           <form id="add-game-form" onsubmit="handleAddGame(event)">
             <div class="form-grid">
+              
+              <!-- Game Title -->
               <div class="form-group">
                 <label>Game Title</label>
                 <input type="text" id="game-name" required placeholder="e.g. Tekken 8" />
               </div>
+
+              <!-- Platform Selection -->
               <div class="form-group">
                 <label>Platform</label>
                 <select id="game-platform">
@@ -501,16 +522,33 @@
                   <option value="PC">RTX Gaming PC</option>
                 </select>
               </div>
+
+              <!-- Hourly Rate -->
               <div class="form-group">
                 <label>Hourly Rate (₹)</label>
                 <input type="number" id="game-price" required placeholder="250" />
               </div>
+
+              <!-- Player Capacity -->
               <div class="form-group">
                 <label>Player Capacity</label>
                 <input type="text" id="game-players" placeholder="1 - 2 Players" />
               </div>
+
+              <!-- Image URL Field -->
+              <div class="form-group full-width">
+                <label>Image URL</label>
+                <input type="url" id="game-image-url" placeholder="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400" />
+              </div>
+
+              <!-- Description Field -->
+              <div class="form-group full-width">
+                <label>Game Description</label>
+                <textarea id="game-description" placeholder="Enter game plot, high-level features, and multiplayer modes..."></textarea>
+              </div>
+
             </div>
-            <button type="submit" class="submit-btn">Save to Inventory</button>
+            <button type="submit" class="submit-btn" style="margin-top: 10px;">Save to Inventory</button>
           </form>
         </div>
       </div>
@@ -518,11 +556,9 @@
     </div>
   </div>
 
-  <!-- AUTHENTICATION MODAL (LOGIN & REGISTER) -->
+  <!-- AUTHENTICATION MODAL -->
   <div class="modal-overlay" id="auth-modal" style="display: none;">
     <div class="modal-card">
-      
-      <!-- ADMIN LOGIN -->
       <div id="modal-login-view">
         <h2 style="margin-bottom: 15px; border-left: 4px solid #66bb6a; padding-left: 8px;">Admin Login</h2>
         <form id="admin-login-form" onsubmit="handleLogin(event)">
@@ -541,49 +577,64 @@
         </div>
       </div>
 
-      <!-- ADMIN REGISTRATION (Labels use [Brackets] instead of parenthetical text) -->
       <div id="modal-register-view" style="display: none;">
         <h2 style="margin-bottom: 15px; border-left: 4px solid #66bb6a; padding-left: 8px;">Admin Registration</h2>
         <form id="admin-register-form" onsubmit="handleRegister(event)" novalidate>
-          
-          <!-- Full Name Field with [Letters Only] -->
           <div class="form-group">
             <label>Full Name [Letters Only]</label>
             <input type="text" id="reg-name" required placeholder="John Doe" oninput="validateNameInput()" />
             <div class="error-msg" id="name-error">Only letters and spaces are allowed.</div>
           </div>
-
-          <!-- Email Address Field with [Must include '@'] -->
           <div class="form-group">
             <label>Email Address [Must include '@']</label>
             <input type="email" id="reg-email" required placeholder="admin@gamehub.com" oninput="validateEmailInput()" />
             <div class="error-msg" id="email-error">Please enter a valid email address with '@'.</div>
           </div>
-
-          <!-- Password Field with [Min 6 Characters] -->
           <div class="form-group">
             <label>Password [Min 6 Characters]</label>
             <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" oninput="validatePasswordInput()" />
             <div class="error-msg" id="password-error">Password must be at least 6 characters long.</div>
           </div>
-
           <button type="submit" class="submit-btn" style="width: 100%;">Register Admin Account</button>
         </form>
         <div class="auth-switch">
           Already registered? <a onclick="toggleAuthView('login')">Login here</a>
         </div>
       </div>
-
     </div>
   </div>
 
   <script>
-    // Initial Fallback Inventory & Customer Data Sets
+    const fallbackImage = 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400';
+
     const defaultGames = [
-      { _id: "ps1", name: "EA SPORTS FC 25", platform: "PS5", price: 250, players: "1 - 2 Players" },
-      { _id: "ps2", name: "God of War Ragnarök", platform: "PS5", price: 300, players: "1 Player" },
-      { _id: "pc1", name: "Valorant", platform: "PC", price: 150, players: "5 Players (5v5)" },
-      { _id: "pc2", name: "Counter-Strike 2", platform: "PC", price: 200, players: "5 Players (5v5)" }
+      { 
+        _id: "ps1", 
+        name: "EA SPORTS FC 25", 
+        platform: "PS5", 
+        price: 250, 
+        players: "1 - 2 Players", 
+        imageUrl: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=400", 
+        description: "Experience hyper-realistic football gameplay with updated team rosters and tactical features." 
+      },
+      { 
+        _id: "ps2", 
+        name: "God of War Ragnarök", 
+        platform: "PS5", 
+        price: 300, 
+        players: "1 Player", 
+        imageUrl: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=400", 
+        description: "Embark on an epic mythic journey alongside Kratos and Atreus across the Nine Realms." 
+      },
+      { 
+        _id: "pc1", 
+        name: "Valorant", 
+        platform: "PC", 
+        price: 150, 
+        players: "5 Players (5v5)", 
+        imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400", 
+        description: "Competitive 5v5 character-based tactical shooter running on high FPS rigs." 
+      }
     ];
 
     const defaultCustomerUsers = [
@@ -595,7 +646,6 @@
       checkAdminSession();
     };
 
-    /* SESSION & AUTHENTICATION MANAGEMENT */
     function checkAdminSession() {
       const currentAdmin = JSON.parse(localStorage.getItem('currentAdminUser'));
       const navControls = document.getElementById('nav-controls');
@@ -629,90 +679,58 @@
       document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
     }
 
-    /* REAL-TIME VALIDATION METHODS */
     function validateNameInput() {
       const nameVal = document.getElementById('reg-name').value;
-      const nameRegex = /^[a-zA-Z\s]+$/;
       const errorEl = document.getElementById('name-error');
-      
-      if (nameVal.length > 0 && !nameRegex.test(nameVal)) {
+      if (nameVal.length > 0 && !/^[a-zA-Z\s]+$/.test(nameVal)) {
         errorEl.style.display = 'block';
         return false;
-      } else {
-        errorEl.style.display = 'none';
-        return true;
       }
+      errorEl.style.display = 'none';
+      return true;
     }
 
     function validateEmailInput() {
       const emailVal = document.getElementById('reg-email').value;
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const errorEl = document.getElementById('email-error');
-
-      if (emailVal.length > 0 && (!emailRegex.test(emailVal) || !emailVal.includes('@'))) {
+      if (emailVal.length > 0 && (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal) || !emailVal.includes('@'))) {
         errorEl.style.display = 'block';
         return false;
-      } else {
-        errorEl.style.display = 'none';
-        return true;
       }
+      errorEl.style.display = 'none';
+      return true;
     }
 
     function validatePasswordInput() {
       const passVal = document.getElementById('reg-password').value;
       const errorEl = document.getElementById('password-error');
-
       if (passVal.length > 0 && passVal.length < 6) {
         errorEl.style.display = 'block';
         return false;
-      } else {
-        errorEl.style.display = 'none';
-        return true;
       }
+      errorEl.style.display = 'none';
+      return true;
     }
 
-    /* ADMIN REGISTRATION */
     function handleRegister(e) {
       e.preventDefault();
-
       const nameVal = document.getElementById('reg-name').value.trim();
       const emailVal = document.getElementById('reg-email').value.trim();
       const passwordVal = document.getElementById('reg-password').value;
 
-      const isNameValid = /^[a-zA-Z\s]{2,50}$/.test(nameVal);
-      const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal) && emailVal.includes('@');
-      const isPasswordValid = passwordVal.length >= 6;
-
-      if (!isNameValid) {
-        document.getElementById('name-error').style.display = 'block';
-        return;
-      }
-      if (!isEmailValid) {
-        document.getElementById('email-error').style.display = 'block';
-        return;
-      }
-      if (!isPasswordValid) {
-        document.getElementById('password-error').style.display = 'block';
+      if (!/^[a-zA-Z\s]{2,50}$/.test(nameVal) || !emailVal.includes('@') || passwordVal.length < 6) {
+        alert("Please fix the validation errors before submitting.");
         return;
       }
 
       let adminUsers = JSON.parse(localStorage.getItem('admin_users') || '[]');
-
       if (adminUsers.some(u => u.email.toLowerCase() === emailVal.toLowerCase())) {
-        alert("An admin account with this email already exists. Please login.");
+        alert("An admin account with this email already exists.");
         toggleAuthView('login');
         return;
       }
 
-      const newAdmin = {
-        id: "adm_" + Date.now(),
-        name: nameVal,
-        email: emailVal,
-        password: passwordVal,
-        role: "Administrator"
-      };
-
-      adminUsers.push(newAdmin);
+      adminUsers.push({ id: "adm_" + Date.now(), name: nameVal, email: emailVal, password: passwordVal, role: "Administrator" });
       localStorage.setItem('admin_users', JSON.stringify(adminUsers));
 
       alert("🎉 Admin registration successful! Please log in.");
@@ -720,7 +738,6 @@
       document.getElementById('admin-register-form').reset();
     }
 
-    /* ADMIN LOGIN */
     function handleLogin(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
@@ -730,7 +747,7 @@
       const user = adminUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
       if (!user) {
-        alert("Invalid credentials! Please check your email and password.");
+        alert("Invalid credentials! Check email and password.");
         return;
       }
 
@@ -743,7 +760,6 @@
       checkAdminSession();
     }
 
-    /* LEFT SIDEBAR NAVIGATION LOGIC */
     function switchTab(e, tabId) {
       document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
@@ -756,7 +772,6 @@
       if (tabId === 'inventory-management') loadInventory();
     }
 
-    /* DATA MANAGEMENT & REFRESH */
     function refreshAllData() {
       loadMetrics();
       loadBookings();
@@ -802,11 +817,9 @@
       loadMetrics();
     }
 
-    /* CUSTOMER MANAGEMENT: LOADS USERS LOGGED IN / REGISTERED ON CUSTOMER WEBSITE */
     function loadCustomers() {
       const tbody = document.getElementById('customers-tbody');
       tbody.innerHTML = '';
-      
       const customerUsers = JSON.parse(localStorage.getItem('customer_users')) || defaultCustomerUsers;
 
       if (customerUsers.length === 0) {
@@ -835,7 +848,13 @@
       games.forEach((g, idx) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><strong>${g.name}</strong></td>
+          <td>
+            <img src="${g.imageUrl || fallbackImage}" class="game-thumb" alt="${g.name}" onerror="this.src='${fallbackImage}'" />
+          </td>
+          <td>
+            <strong>${g.name}</strong>
+            <p style="font-size:12px; color:#555; margin-top:4px;">${g.description || 'No description provided.'}</p>
+          </td>
           <td>${g.platform}</td>
           <td>₹${g.price}/hr</td>
           <td>${g.players || '1-2 Players'}</td>
@@ -850,21 +869,26 @@
 
     function handleAddGame(e) {
       e.preventDefault();
+
       const newGame = {
         _id: "gm_" + Date.now(),
         name: document.getElementById('game-name').value,
         platform: document.getElementById('game-platform').value,
         price: Number(document.getElementById('game-price').value),
-        players: document.getElementById('game-players').value || '1 - 2 Players'
+        players: document.getElementById('game-players').value || '1 - 2 Players',
+        imageUrl: document.getElementById('game-image-url').value.trim() || fallbackImage,
+        description: document.getElementById('game-description').value.trim() || 'No description provided.'
       };
 
       let games = JSON.parse(localStorage.getItem('custom_games')) || defaultGames;
       games.push(newGame);
       localStorage.setItem('custom_games', JSON.stringify(games));
 
-      alert("🎉 Game successfully added to inventory!");
+      alert("🎉 Game successfully added to inventory with image & description!");
       document.getElementById('add-game-form').reset();
       loadInventory();
+      
+      switchTab({ currentTarget: document.querySelectorAll('.sidebar-btn')[3] }, 'inventory-management');
     }
 
     function removeGame(idx) {
