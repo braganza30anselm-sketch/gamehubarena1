@@ -244,6 +244,10 @@
       color: #000000;
     }
 
+    .btn-delete:hover {
+      background: #e57373;
+    }
+
     /* Form Styles for Add Game */
     .form-grid {
       display: grid;
@@ -429,7 +433,7 @@
           <h2 class="panel-title" style="margin-bottom: 15px;">Analytics Dashboard</h2>
           <p style="margin-bottom: 15px; font-size: 14px;">Real-time stats and metrics tracking customer interactions, reservations, and inventory health.</p>
           <div style="background: #f1f8e9; padding: 15px; border-radius: 8px; border: 1px solid #c8e6c9;">
-            <strong>System Status:</strong> Operational. Connected to Customer Portal via local storage database.
+            <strong>System Status:</strong> Operational. Synchronized with Customer Portal database.
           </div>
         </div>
       </div>
@@ -501,7 +505,7 @@
         </div>
       </div>
 
-      <!-- TAB 5: ADD GAME FORM PANEL (WITH IMAGE URL & DESCRIPTION FIELDS) -->
+      <!-- TAB 5: ADD GAME FORM PANEL -->
       <div class="tab-panel" id="panel-add-game-form-panel">
         <div class="card-panel">
           <h2 class="panel-title" style="margin-bottom: 20px;">Add New Game to Inventory</h2>
@@ -526,7 +530,7 @@
               <!-- Hourly Rate -->
               <div class="form-group">
                 <label>Hourly Rate (₹)</label>
-                <input type="number" id="game-price" required placeholder="250" />
+                <input type="number" id="game-price" required min="1" placeholder="250" />
               </div>
 
               <!-- Player Capacity -->
@@ -872,10 +876,10 @@
 
       const newGame = {
         _id: "gm_" + Date.now(),
-        name: document.getElementById('game-name').value,
+        name: document.getElementById('game-name').value.trim(),
         platform: document.getElementById('game-platform').value,
         price: Number(document.getElementById('game-price').value),
-        players: document.getElementById('game-players').value || '1 - 2 Players',
+        players: document.getElementById('game-players').value.trim() || '1 - 2 Players',
         imageUrl: document.getElementById('game-image-url').value.trim() || fallbackImage,
         description: document.getElementById('game-description').value.trim() || 'No description provided.'
       };
@@ -884,11 +888,12 @@
       games.push(newGame);
       localStorage.setItem('custom_games', JSON.stringify(games));
 
-      alert("🎉 Game successfully added to inventory with image & description!");
+      alert("🎉 Game successfully added to inventory!");
       document.getElementById('add-game-form').reset();
       loadInventory();
       
-      switchTab({ currentTarget: document.querySelectorAll('.sidebar-btn')[3] }, 'inventory-management');
+      const inventoryBtn = document.querySelectorAll('.sidebar-btn')[3];
+      switchTab({ currentTarget: inventoryBtn }, 'inventory-management');
     }
 
     function removeGame(idx) {
