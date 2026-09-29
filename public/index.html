@@ -253,6 +253,7 @@
         <div class="profile-info">
           <h3 id="profile-display-name">Gamer</h3>
           <p id="profile-display-email">user@example.com</p>
+          <p id="profile-display-mobile" style="color:var(--accent-blue); font-weight:600; margin-top:2px;">📱 +91 ----------</p>
         </div>
       </div>
 
@@ -271,6 +272,10 @@
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" id="profile-input-name" required />
+        </div>
+        <div class="form-group">
+          <label>Mobile Number (For Booking & 1-Day Alert SMS)</label>
+          <input type="tel" id="profile-input-mobile" required placeholder="10-digit Mobile Number" maxlength="10" />
         </div>
         <div class="form-group">
           <label>Gamer Tag</label>
@@ -330,6 +335,14 @@
 
       <form id="payment-form" onsubmit="handleFormSubmission(event)">
         <input type="hidden" id="pay-game-id" />
+
+        <div class="form-group">
+          <label>Customer Mobile Number (SMS Alerts Sent Here)</label>
+          <input type="tel" id="booking-mobile-number" required placeholder="e.g. 9876543210" maxlength="10" />
+          <p style="font-size:11px; color:var(--accent-green); margin-top:4px;">
+            📲 Instant booking confirmation SMS & 1-day reminder alert will be sent to this number.
+          </p>
+        </div>
         
         <div class="form-group">
           <label>Select Payment Method</label>
@@ -426,6 +439,11 @@
             <label>Full Name [Letters Only]</label>
             <input type="text" id="reg-name" required placeholder="John Doe" oninput="validateCustName()" />
             <div class="error-msg" id="cust-name-error">Please enter a valid full name (letters and spaces only).</div>
+          </div>
+          <div class="form-group">
+            <label>Mobile Number [10 Digits for Booking & 1-Day Reminder SMS]</label>
+            <input type="tel" id="reg-mobile" required placeholder="9876543210" maxlength="10" oninput="validateCustMobile()" />
+            <div class="error-msg" id="cust-mobile-error">Please enter a valid 10-digit mobile number.</div>
           </div>
           <div class="form-group">
             <label>Email [Must include '@']</label>
@@ -581,6 +599,17 @@
       return true;
     }
 
+    function validateCustMobile() {
+      const val = document.getElementById('reg-mobile').value;
+      const err = document.getElementById('cust-mobile-error');
+      if (val.length > 0 && !/^[0-9]{10}$/.test(val)) {
+        err.style.display = 'block';
+        return false;
+      }
+      err.style.display = 'none';
+      return true;
+    }
+
     function validateCustEmail() {
       const val = document.getElementById('reg-email').value;
       const err = document.getElementById('cust-email-error');
@@ -613,12 +642,14 @@
 
       document.getElementById('profile-display-name').innerText = user.name || 'Gamer';
       document.getElementById('profile-display-email').innerText = user.email || `${user.name.toLowerCase()}@gamer.com`;
+      document.getElementById('profile-display-mobile').innerText = `📱 +91 ${user.mobile || 'Not set'}`;
       document.getElementById('profile-avatar-initial').innerText = (user.name || 'G').charAt(0).toUpperCase();
 
       document.getElementById('profile-stat-bookings').innerText = userBookings.length;
       document.getElementById('profile-stat-points').innerText = `${userBookings.length * 100 + 150} PTS`;
 
       document.getElementById('profile-input-name').value = user.name || '';
+      document.getElementById('profile-input-mobile').value = user.mobile || '';
       document.getElementById('profile-input-tag').value = user.gamerTag || `${user.name}X`;
       document.getElementById('profile-input-platform').value = user.preferredPlatform || 'PlayStation 5';
 
@@ -629,7 +660,14 @@
       event.preventDefault();
       const user = JSON.parse(localStorage.getItem('currentUser')) || {};
       
+      const mobileVal = document.getElementById('profile-input-mobile').value.trim();
+      if (!/^[0-9]{10}$/.test(mobileVal)) {
+        alert("Please enter a valid 10-digit mobile number for SMS notifications.");
+        return;
+      }
+
       user.name = document.getElementById('profile-input-name').value.trim();
+      user.mobile = mobileVal;
       user.gamerTag = document.getElementById('profile-input-tag').value.trim();
       user.preferredPlatform = document.getElementById('profile-input-platform').value;
 
@@ -765,8 +803,11 @@
     function proceedToPaymentModal() {
       closeModal('refund-policy-modal');
 
+      const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+
       document.getElementById('selected-game-title').innerText = `Game: ${currentSelectedGame.name}`;
       document.getElementById('pay-game-id').value = currentSelectedGame.id;
+      document.getElementById('booking-mobile-number').value = user.mobile || '';
 
       const dayOfWeek = new Date().getDay();
       const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
@@ -799,12 +840,24 @@
       }
     }
 
+    /* SIMULATE SENDING SMS NOTIFICATIONS */
+    function sendSMSNotification(mobile, gameName, date) {
+      console.log(`[SMS Gateway] Confirmation SMS sent to ${mobile}: "Your slot for ${gameName} on ${date} is booked! Enjoy gaming at GameHubArena."`);
+      console.log(`[SMS Scheduler] 1-day reminder alert scheduled to send to ${mobile} 24 hours prior to session.`);
+    }
+
     async function handleFormSubmission(event) {
       event.preventDefault();
 
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) {
         alert("Session expired. Please log in again.");
+        return;
+      }
+
+      const bookingMobile = document.getElementById('booking-mobile-number').value.trim();
+      if (!/^[0-9]{10}$/.test(bookingMobile)) {
+        alert("Please enter a valid 10-digit mobile number for receiving booking SMS and 1-day reminders.");
         return;
       }
 
@@ -819,15 +872,20 @@
         alert(`📲 Payment collect request for ₹${currentSelectedGame.paidAmount} sent to ${customerUpi}!\n\nPlease check your UPI App to approve.`);
       }
 
+      const bookingDateStr = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
       const newBooking = {
         id: "bk_" + Date.now(),
         userId: user.id,
         userName: user.name,
+        customerMobile: bookingMobile,
         gameId: currentSelectedGame ? currentSelectedGame.id : 'ps1',
         gameName: currentSelectedGame ? currentSelectedGame.name : 'EA SPORTS FC 25',
         amount: currentSelectedGame ? currentSelectedGame.paidAmount : 200,
         paymentMethod: paymentMethod === 'UPI Direct App Request' ? `UPI (${customerUpi})` : paymentMethod,
-        date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+        date: bookingDateStr,
+        smsNotificationSent: true,
+        reminderAlertScheduled: true
       };
 
       try {
@@ -841,7 +899,9 @@
       }
 
       saveLocalBooking(newBooking);
-      alert(`🎉 Slot reserved successfully! See you at GameHubArena.`);
+      sendSMSNotification(bookingMobile, newBooking.gameName, bookingDateStr);
+
+      alert(`🎉 Slot reserved successfully!\n\n📲 Confirmation SMS sent to ${bookingMobile}.\n⏰ A 1-day reminder alert has also been scheduled!`);
       closeModal('payment-modal');
     }
 
@@ -885,6 +945,7 @@
           <div>
             <div class="booking-title">🎮 ${b.gameName || 'Gaming Slot'}</div>
             <div class="booking-meta">₹${b.amount || 200} via ${b.paymentMethod || 'UPI'} | ${b.date || 'Recent'}</div>
+            <div class="booking-meta" style="color:var(--accent-green);">📲 SMS Alert: +91 ${b.customerMobile || user.mobile || 'Registered Mobile'} (1-Day Reminder Set)</div>
           </div>
           <button class="cancel-booking-btn" onclick="cancelBooking('${b.id || b._id}')">Cancel Slot</button>
         `;
@@ -933,10 +994,11 @@
       e.preventDefault();
       
       const nameInput = document.getElementById('reg-name').value.trim();
+      const mobileInput = document.getElementById('reg-mobile').value.trim();
       const emailInput = document.getElementById('reg-email').value.trim();
       const passwordInput = document.getElementById('reg-password').value;
 
-      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) || !emailInput.includes('@') || passwordInput.length < 6) {
+      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) \vert{}\vert{} !/^[0-9]{10}$/.test(mobileInput) || !emailInput.includes('@') || passwordInput.length < 6) {
         alert("Please fix the validation errors before submitting.");
         return;
       }
@@ -951,17 +1013,18 @@
       const newUser = {
         id: "usr_" + Date.now(),
         name: nameInput,
+        mobile: mobileInput,
         email: emailInput,
         password: passwordInput,
         gamerTag: `${nameInput.replace(/\s+/g, '')}X`,
         preferredPlatform: 'PlayStation 5',
-        regDate: '2026-09-28'
+        regDate: new Date().toISOString().split('T')[0]
       };
 
       customerUsers.push(newUser);
       localStorage.setItem('customer_users', JSON.stringify(customerUsers));
 
-      alert("🎉 Account created successfully! Please log in with your email and password.");
+      alert("🎉 Account created successfully with mobile number " + mobileInput + "! Please log in with your email and password.");
       toggleAuthView('login');
       clearAuthForms();
     });
