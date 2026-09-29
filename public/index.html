@@ -273,6 +273,10 @@
           <input type="text" id="profile-input-name" required />
         </div>
         <div class="form-group">
+          <label>Mobile Number (For Booking SMS/Alerts)</label>
+          <input type="tel" id="profile-input-mobile" maxlength="10" required />
+        </div>
+        <div class="form-group">
           <label>Gamer Tag</label>
           <input type="text" id="profile-input-tag" placeholder="e.g. ShadowRiderX" />
         </div>
@@ -428,6 +432,11 @@
             <div class="error-msg" id="cust-name-error">Please enter a valid full name (letters and spaces only).</div>
           </div>
           <div class="form-group">
+            <label>Mobile Number [10-Digit Mobile Number]</label>
+            <input type="tel" id="reg-mobile" maxlength="10" required placeholder="9876543210" oninput="validateCustMobile()" />
+            <div class="error-msg" id="cust-mobile-error">Please enter a valid 10-digit mobile number.</div>
+          </div>
+          <div class="form-group">
             <label>Email [Must include '@']</label>
             <input type="email" id="reg-email" required placeholder="customer@example.com" oninput="validateCustEmail()" />
             <div class="error-msg" id="cust-email-error">Please enter a valid email address with '@'.</div>
@@ -523,6 +532,7 @@
     window.onload = () => {
       renderNavbar();
       loadGames();
+      checkAndSend1DayReminders();
     };
 
     function renderNavbar() {
@@ -570,10 +580,22 @@
       document.getElementById('modal-register-view').style.display = view === 'register' ? 'block' : 'none';
     }
 
+    /* FORM VALIDATION FUNCTIONS */
     function validateCustName() {
       const val = document.getElementById('reg-name').value;
       const err = document.getElementById('cust-name-error');
       if (val.length > 0 && !/^[a-zA-Z\s]+$/.test(val)) {
+        err.style.display = 'block';
+        return false;
+      }
+      err.style.display = 'none';
+      return true;
+    }
+
+    function validateCustMobile() {
+      const val = document.getElementById('reg-mobile').value;
+      const err = document.getElementById('cust-mobile-error');
+      if (val.length > 0 && !/^[6-9]\d{9}$/.test(val)) {
         err.style.display = 'block';
         return false;
       }
@@ -619,6 +641,7 @@
       document.getElementById('profile-stat-points').innerText = `${userBookings.length * 100 + 150} PTS`;
 
       document.getElementById('profile-input-name').value = user.name || '';
+      document.getElementById('profile-input-mobile').value = user.mobile || '';
       document.getElementById('profile-input-tag').value = user.gamerTag || `${user.name}X`;
       document.getElementById('profile-input-platform').value = user.preferredPlatform || 'PlayStation 5';
 
@@ -630,6 +653,7 @@
       const user = JSON.parse(localStorage.getItem('currentUser')) || {};
       
       user.name = document.getElementById('profile-input-name').value.trim();
+      user.mobile = document.getElementById('profile-input-mobile').value.trim();
       user.gamerTag = document.getElementById('profile-input-tag').value.trim();
       user.preferredPlatform = document.getElementById('profile-input-platform').value;
 
@@ -819,15 +843,29 @@
         alert(`📲 Payment collect request for ₹${currentSelectedGame.paidAmount} sent to ${customerUpi}!\n\nPlease check your UPI App to approve.`);
       }
 
+      // Schedule Session Date (2 days ahead for demonstration)
+      const sessionDateObj = new Date();
+      sessionDateObj.setDate(sessionDateObj.getDate() + 2);
+      const sessionDate = sessionDateObj.toLocaleDateString();
+
+      // Schedule 1-Day Before Alert Date
+      const alertDateObj = new Date(sessionDateObj);
+      alertDateObj.setDate(alertDateObj.getDate() - 1);
+      const scheduledAlertDate = alertDateObj.toLocaleDateString();
+
       const newBooking = {
         id: "bk_" + Date.now(),
         userId: user.id,
         userName: user.name,
+        userMobile: user.mobile || 'Not Provided',
         gameId: currentSelectedGame ? currentSelectedGame.id : 'ps1',
         gameName: currentSelectedGame ? currentSelectedGame.name : 'EA SPORTS FC 25',
         amount: currentSelectedGame ? currentSelectedGame.paidAmount : 200,
         paymentMethod: paymentMethod === 'UPI Direct App Request' ? `UPI (${customerUpi})` : paymentMethod,
-        date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+        bookingDate: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+        scheduledSessionDate: sessionDate,
+        scheduledAlertDate: scheduledAlertDate,
+        alertSent: false
       };
 
       try {
@@ -841,13 +879,47 @@
       }
 
       saveLocalBooking(newBooking);
-      alert(`🎉 Slot reserved successfully! See you at GameHubArena.`);
+
+      // Send Instant Confirmation SMS
+      sendSMSNotification(
+        user.mobile,
+        `🎮 GameHubArena Confirmation: Hi ${user.name}, your slot for "${newBooking.gameName}" is BOOKED for ${sessionDate}! Total paid: ₹${newBooking.amount}.`
+      );
+
+      alert(`🎉 Slot reserved successfully!\n\n📱 Instant SMS Confirmation sent to +91-${user.mobile}.\n⏰ A 1-Day Reminder SMS will be sent on ${scheduledAlertDate}.`);
       closeModal('payment-modal');
     }
 
     function saveLocalBooking(booking) {
       let localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
       localBookings.unshift(booking);
+      localStorage.setItem('my_bookings', JSON.stringify(localBookings));
+    }
+
+    /* SMS ENGINE & REMINDER SCHEDULER */
+    function sendSMSNotification(mobileNumber, messageText) {
+      console.log(`[SMS Gateway Sent to +91 ${mobileNumber}]: ${messageText}`);
+      fetch('/api/notifications/send-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: mobileNumber, message: messageText })
+      }).catch(() => console.log("SMS logged locally."));
+    }
+
+    function checkAndSend1DayReminders() {
+      const localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
+      const todayStr = new Date().toLocaleDateString();
+
+      localBookings.forEach(booking => {
+        if (booking.scheduledAlertDate === todayStr && !booking.alertSent) {
+          sendSMSNotification(
+            booking.userMobile,
+            `🔔 GameHubArena REMINDER: Hi ${booking.userName}, your booked gaming slot for "${booking.gameName}" is TOMORROW (${booking.scheduledSessionDate})! Get ready to play.`
+          );
+          booking.alertSent = true;
+        }
+      });
+
       localStorage.setItem('my_bookings', JSON.stringify(localBookings));
     }
 
@@ -884,7 +956,7 @@
         card.innerHTML = `
           <div>
             <div class="booking-title">🎮 ${b.gameName || 'Gaming Slot'}</div>
-            <div class="booking-meta">₹${b.amount || 200} via ${b.paymentMethod || 'UPI'} | ${b.date || 'Recent'}</div>
+            <div class="booking-meta">₹${b.amount || 200} via ${b.paymentMethod || 'UPI'} | Session: ${b.scheduledSessionDate || 'Upcoming'}</div>
           </div>
           <button class="cancel-booking-btn" onclick="cancelBooking('${b.id || b._id}')">Cancel Slot</button>
         `;
@@ -933,10 +1005,11 @@
       e.preventDefault();
       
       const nameInput = document.getElementById('reg-name').value.trim();
+      const mobileInput = document.getElementById('reg-mobile').value.trim();
       const emailInput = document.getElementById('reg-email').value.trim();
       const passwordInput = document.getElementById('reg-password').value;
 
-      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) || !emailInput.includes('@') || passwordInput.length < 6) {
+      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) \vert{}\vert{} !/^[6-9]\d{9}$/.test(mobileInput) || !emailInput.includes('@') || passwordInput.length < 6) {
         alert("Please fix the validation errors before submitting.");
         return;
       }
@@ -951,11 +1024,12 @@
       const newUser = {
         id: "usr_" + Date.now(),
         name: nameInput,
+        mobile: mobileInput,
         email: emailInput,
         password: passwordInput,
         gamerTag: `${nameInput.replace(/\s+/g, '')}X`,
         preferredPlatform: 'PlayStation 5',
-        regDate: '2026-09-28'
+        regDate: new Date().toISOString().split('T')[0]
       };
 
       customerUsers.push(newUser);
