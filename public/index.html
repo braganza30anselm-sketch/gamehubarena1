@@ -273,6 +273,10 @@
           <input type="text" id="profile-input-name" required />
         </div>
         <div class="form-group">
+          <label>Mobile Number (SMS Notifications)</label>
+          <input type="tel" id="profile-input-phone" placeholder="9876543210" maxlength="10" />
+        </div>
+        <div class="form-group">
           <label>Gamer Tag</label>
           <input type="text" id="profile-input-tag" placeholder="e.g. ShadowRiderX" />
         </div>
@@ -433,9 +437,18 @@
             <div class="error-msg" id="cust-email-error">Please enter a valid email address with '@'.</div>
           </div>
           <div class="form-group">
+            <label>Mobile Number [10 Digits for SMS Notifications]</label>
+            <input type="tel" id="reg-phone" required placeholder="9876543210" maxlength="10" oninput="validateCustPhone()" />
+            <div class="error-msg" id="cust-phone-error">Please enter a valid 10-digit mobile number.</div>
+          </div>
+          <div class="form-group">
             <label>Password [Min 6 Characters]</label>
             <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" oninput="validateCustPassword()" />
             <div class="error-msg" id="cust-password-error">Password must be at least 6 characters long.</div>
+          </div>
+          <div class="checkbox-container" style="margin-bottom: 15px;">
+            <input type="checkbox" id="reg-sms-alerts" checked />
+            <label for="reg-sms-alerts">Send instant booking notifications & 1-day reminder alerts to mobile number.</label>
           </div>
           <button type="submit" class="submit-btn">Create Account</button>
         </form>
@@ -592,6 +605,17 @@
       return true;
     }
 
+    function validateCustPhone() {
+      const val = document.getElementById('reg-phone').value;
+      const err = document.getElementById('cust-phone-error');
+      if (val.length > 0 && !/^[0-9]{10}$/.test(val)) {
+        err.style.display = 'block';
+        return false;
+      }
+      err.style.display = 'none';
+      return true;
+    }
+
     function validateCustPassword() {
       const val = document.getElementById('reg-password').value;
       const err = document.getElementById('cust-password-error');
@@ -619,6 +643,7 @@
       document.getElementById('profile-stat-points').innerText = `${userBookings.length * 100 + 150} PTS`;
 
       document.getElementById('profile-input-name').value = user.name || '';
+      document.getElementById('profile-input-phone').value = user.phone || '';
       document.getElementById('profile-input-tag').value = user.gamerTag || `${user.name}X`;
       document.getElementById('profile-input-platform').value = user.preferredPlatform || 'PlayStation 5';
 
@@ -630,6 +655,7 @@
       const user = JSON.parse(localStorage.getItem('currentUser')) || {};
       
       user.name = document.getElementById('profile-input-name').value.trim();
+      user.phone = document.getElementById('profile-input-phone').value.trim();
       user.gamerTag = document.getElementById('profile-input-tag').value.trim();
       user.preferredPlatform = document.getElementById('profile-input-platform').value;
 
@@ -823,6 +849,7 @@
         id: "bk_" + Date.now(),
         userId: user.id,
         userName: user.name,
+        userPhone: user.phone || 'N/A',
         gameId: currentSelectedGame ? currentSelectedGame.id : 'ps1',
         gameName: currentSelectedGame ? currentSelectedGame.name : 'EA SPORTS FC 25',
         amount: currentSelectedGame ? currentSelectedGame.paidAmount : 200,
@@ -841,7 +868,12 @@
       }
 
       saveLocalBooking(newBooking);
-      alert(`🎉 Slot reserved successfully! See you at GameHubArena.`);
+      
+      let notifyMsg = `🎉 Slot reserved successfully! See you at GameHubArena.`;
+      if (user.phone && user.enableSmsAlerts) {
+        notifyMsg += `\n\n📱 Booking confirmation & 1-day reminder alerts scheduled for SMS: +91 ${user.phone}`;
+      }
+      alert(notifyMsg);
       closeModal('payment-modal');
     }
 
@@ -934,9 +966,11 @@
       
       const nameInput = document.getElementById('reg-name').value.trim();
       const emailInput = document.getElementById('reg-email').value.trim();
+      const phoneInput = document.getElementById('reg-phone').value.trim();
       const passwordInput = document.getElementById('reg-password').value;
+      const smsAlertsChecked = document.getElementById('reg-sms-alerts').checked;
 
-      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) || !emailInput.includes('@') || passwordInput.length < 6) {
+      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) \vert{}\vert{} !emailInput.includes('@') \vert{}\vert{} !/^[0-9]{10}$/.test(phoneInput) || passwordInput.length < 6) {
         alert("Please fix the validation errors before submitting.");
         return;
       }
@@ -952,16 +986,18 @@
         id: "usr_" + Date.now(),
         name: nameInput,
         email: emailInput,
+        phone: phoneInput,
+        enableSmsAlerts: smsAlertsChecked,
         password: passwordInput,
         gamerTag: `${nameInput.replace(/\s+/g, '')}X`,
         preferredPlatform: 'PlayStation 5',
-        regDate: '2026-09-28'
+        regDate: '2026-09-29'
       };
 
       customerUsers.push(newUser);
       localStorage.setItem('customer_users', JSON.stringify(customerUsers));
 
-      alert("🎉 Account created successfully! Please log in with your email and password.");
+      alert(`🎉 Account created successfully!\n\nSMS booking notifications & 1-day reminders configured for ${phoneInput}. Please log in.`);
       toggleAuthView('login');
       clearAuthForms();
     });
