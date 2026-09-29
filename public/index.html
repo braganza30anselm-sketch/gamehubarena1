@@ -23,7 +23,7 @@
     html { scroll-behavior: smooth; }
     body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* Top Admin Utility Bar */
+    /* Top Admin Portal Bar */
     .top-bar {
       background-color: #090f20;
       padding: 6px 8%;
@@ -51,7 +51,7 @@
       color: #ffffff;
     }
 
-    /* Announcement Banner */
+    /* Weekend Offer Banner */
     .weekend-banner { 
       background: linear-gradient(90deg, #f59e0b, #ef4444); 
       text-align: center; 
@@ -61,7 +61,7 @@
       letter-spacing: 0.5px; 
     }
 
-    /* Navbar */
+    /* Navigation Bar */
     .navbar { 
       display: flex; 
       justify-content: space-between; 
@@ -94,7 +94,7 @@
     .hero h1 { font-size: 38px; font-weight: 900; background: linear-gradient(90deg, #ffffff, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
     .hero p { color: var(--text-muted); max-width: 620px; margin: 0 auto 22px; font-size: 16px; line-height: 1.5; }
 
-    /* Console Showcase */
+    /* Console Badges Showcase */
     .console-showcase { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 22px; flex-wrap: wrap; }
     .console-badge { display: flex; align-items: center; gap: 10px; background: var(--bg-dark); border: 1px solid var(--bg-card-border); padding: 6px 14px; border-radius: 30px; }
     .console-badge img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
@@ -103,7 +103,7 @@
     .explore-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(90deg, #2563eb, #3b82f6); color: white; padding: 12px 30px; border-radius: 30px; font-weight: 700; font-size: 15px; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); transition: all 0.2s ease; }
     .explore-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6); }
 
-    /* Games Section */
+    /* Main Games Display Section */
     .games-section { padding: 50px 8%; max-width: 1300px; margin: 0 auto; flex-grow: 1; width: 100%; }
     .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
     .section-title { font-size: 26px; font-weight: 800; border-left: 4px solid var(--primary); padding-left: 12px; }
@@ -136,7 +136,7 @@
     .book-btn { background-color: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
     .book-btn:hover { background-color: var(--primary-hover); }
 
-    /* Modals System */
+    /* Modals Base Styling */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal-card { background: var(--bg-card); padding: 25px; border-radius: 12px; width: 100%; max-width: 460px; border: 1px solid var(--bg-card-border); position: relative; max-height: 90vh; overflow-y: auto; }
     .close-modal { position: absolute; top: 15px; right: 20px; color: var(--text-muted); font-size: 22px; cursor: pointer; }
@@ -150,7 +150,7 @@
     .auth-switch a { color: var(--accent-blue); cursor: pointer; font-weight: 700; text-decoration: none; }
     .auth-switch a:hover { text-decoration: underline; }
 
-    /* Profile UI Specifics */
+    /* Profile UI Layout */
     .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--bg-card-border); }
     .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #10b981); display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; border: 2px solid var(--accent-blue); }
     .profile-info h3 { font-size: 18px; font-weight: 800; color: #ffffff; }
@@ -160,29 +160,30 @@
     .stat-val { font-size: 18px; font-weight: 900; color: var(--accent-green); }
     .stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
 
-    /* Policy Rules Box */
+    /* Policy Info Box */
     .policy-box { background: var(--bg-dark); border: 1px solid var(--bg-card-border); border-radius: 8px; padding: 14px; margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
     .policy-box ul { margin-left: 18px; margin-top: 8px; margin-bottom: 8px; }
     .checkbox-container { display: flex; align-items: center; gap: 8px; margin-top: 15px; font-size: 13px; color: #cbd5e1; }
     .checkbox-container input { width: 16px; height: 16px; cursor: pointer; }
 
-    /* Summary Box */
+    /* Booking Summary UI */
     .summary-box { background: var(--bg-dark); padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--bg-card-border); }
     .summary-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
     .summary-total { font-weight: 800; color: var(--accent-green); font-size: 15px; border-top: 1px dashed var(--bg-card-border); padding-top: 6px; }
 
-    /* QR Code Display */
+    /* Dynamic UPI QR Box */
     .qr-container { text-align: center; background: var(--bg-dark); padding: 15px; border-radius: 8px; border: 1px solid var(--bg-card-border); margin-bottom: 15px; }
     .qr-container img { width: 160px; height: 160px; border-radius: 8px; border: 2px solid var(--primary); }
     .upi-id { font-size: 13px; color: var(--accent-blue); font-weight: 700; margin-top: 8px; }
 
-    /* Bookings Card List */
+    /* Bookings History Listing */
     .booking-card { background: var(--bg-dark); border: 1px solid var(--bg-card-border); padding: 14px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
     .booking-title { font-size: 15px; font-weight: 700; color: #ffffff; }
     .booking-meta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
     .cancel-booking-btn { background: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; }
     .cancel-booking-btn:hover { background: #dc2626; }
 
+    /* Real-Time Form Error Messages */
     .error-msg {
       color: #f87171;
       font-size: 12px;
@@ -206,7 +207,7 @@
   <!-- ANNOUNCEMENT BANNER -->
   <div class="weekend-banner">🔥 WEEKEND SPECIAL: Get 20% OFF on all PS5 & PC Gaming Slots every Saturday & Sunday!</div>
 
-  <!-- NAVIGATION BAR -->
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-brand">🎮 GameHubArena</div>
     <div class="nav-actions" id="nav-actions"></div>
@@ -232,7 +233,7 @@
     <a href="#available-games-section" class="explore-btn">🎮 Explore Games</a>
   </header>
 
-  <!-- GAMES MAIN LIST -->
+  <!-- GAMES MAIN CATALOGUE -->
   <main class="games-section" id="available-games-section">
     <div class="section-header">
       <h2 class="section-title">Available Games</h2>
@@ -393,7 +394,7 @@
     </div>
   </div>
 
-  <!-- BOOKINGS HISTORY MODAL -->
+  <!-- USER RESERVATION HISTORY MODAL -->
   <div class="modal-overlay" id="bookings-modal">
     <div class="modal-card">
       <span class="close-modal" onclick="closeModal('bookings-modal')">&times;</span>
@@ -461,11 +462,12 @@
     <p>© 2026 GameHubArena Lounge. Powered by Node.js, Express & MongoDB.</p>
   </footer>
 
+  <!-- APPLICATION LOGIC & INTERACTION SCRIPT -->
   <script>
     let currentSelectedGame = null;
     const fallbackImage = "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop";
 
-    /* Base Default Fallback Games Array */
+    /* Default Showcase Games Array */
     const defaultGames = [
       { 
         _id: "ps1", 
@@ -580,7 +582,7 @@
       document.getElementById('modal-register-view').style.display = view === 'register' ? 'block' : 'none';
     }
 
-    /* FORM VALIDATION FUNCTIONS */
+    /* REAL-TIME INPUT VALIDATION FUNCTIONS */
     function validateCustName() {
       const val = document.getElementById('reg-name').value;
       const err = document.getElementById('cust-name-error');
@@ -625,7 +627,7 @@
       return true;
     }
 
-    /* PROFILE MANAGEMENT LOGIC */
+    /* PROFILE MANAGEMENT FUNCTIONS */
     function openProfileModal() {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) return;
@@ -663,7 +665,7 @@
       renderNavbar();
     }
 
-    /* GAME CARDS RENDER LOGIC */
+    /* GAMES FETCHING & RENDERING */
     async function loadGames() {
       const grid = document.getElementById('customer-games-grid');
       grid.innerHTML = '<p style="color:var(--text-muted);">Loading games...</p>';
@@ -676,7 +678,7 @@
           if (Array.isArray(apiGames) && apiGames.length > 0) games = apiGames;
         }
       } catch (err) {
-        console.log("Backend offline. Loading local showcase.");
+        console.log("Backend API offline. Loading local showcase fallback.");
       }
 
       const customGames = JSON.parse(localStorage.getItem('custom_games') || '[]');
@@ -759,6 +761,7 @@
       });
     }
 
+    /* BOOKING & POLICY FLOW */
     function initiateBookingProcess(id, name, basePrice) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) {
@@ -843,12 +846,12 @@
         alert(`📲 Payment collect request for ₹${currentSelectedGame.paidAmount} sent to ${customerUpi}!\n\nPlease check your UPI App to approve.`);
       }
 
-      // Schedule Session Date (2 days ahead for demonstration)
+      // Session date set 2 days ahead for demonstration
       const sessionDateObj = new Date();
       sessionDateObj.setDate(sessionDateObj.getDate() + 2);
       const sessionDate = sessionDateObj.toLocaleDateString();
 
-      // Schedule 1-Day Before Alert Date
+      // Scheduled 1-day reminder alert date
       const alertDateObj = new Date(sessionDateObj);
       alertDateObj.setDate(alertDateObj.getDate() - 1);
       const scheduledAlertDate = alertDateObj.toLocaleDateString();
@@ -875,12 +878,12 @@
           body: JSON.stringify(newBooking)
         });
       } catch (err) {
-        console.log("Saved locally due to offline server.");
+        console.log("Database offline. Reservation stored locally.");
       }
 
       saveLocalBooking(newBooking);
 
-      // Send Instant Confirmation SMS
+      // Send Instant Confirmation SMS Notification
       sendSMSNotification(
         user.mobile,
         `🎮 GameHubArena Confirmation: Hi ${user.name}, your slot for "${newBooking.gameName}" is BOOKED for ${sessionDate}! Total paid: ₹${newBooking.amount}.`
@@ -903,7 +906,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ to: mobileNumber, message: messageText })
-      }).catch(() => console.log("SMS logged locally."));
+      }).catch(() => console.log("SMS fallback logged locally."));
     }
 
     function checkAndSend1DayReminders() {
@@ -923,6 +926,7 @@
       localStorage.setItem('my_bookings', JSON.stringify(localBookings));
     }
 
+    /* MY BOOKINGS USER HISTORY */
     async function openMyBookings() {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) return;
@@ -936,7 +940,7 @@
         const res = await fetch(`/api/bookings/user/${user.id}`);
         if (res.ok) userBookings = await res.json();
       } catch (err) {
-        console.log("Database offline, using local cache.");
+        console.log("Database offline, fetching local cache.");
       }
 
       if (!userBookings || userBookings.length === 0) {
@@ -970,7 +974,7 @@
       try {
         await fetch(`/api/bookings/${bookingId}`, { method: 'DELETE' });
       } catch (err) {
-        console.log("Cancelled locally.");
+        console.log("Booking cancelled locally.");
       }
 
       let localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
@@ -981,7 +985,7 @@
       openMyBookings();
     }
 
-    /* CUSTOMER LOGIN LOGIC */
+    /* CUSTOMER LOGIN SUBMISSION */
     document.getElementById('login-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
@@ -1000,7 +1004,7 @@
       renderNavbar();
     });
 
-    /* CUSTOMER REGISTER LOGIC */
+    /* CUSTOMER REGISTRATION SUBMISSION */
     document.getElementById('register-form').addEventListener('submit', (e) => {
       e.preventDefault();
       
