@@ -45,7 +45,6 @@
       background: rgba(96, 165, 250, 0.1);
       border: 1px solid rgba(96, 165, 250, 0.3);
       transition: all 0.2s;
-      cursor: pointer;
     }
     .top-admin-link:hover {
       background: rgba(96, 165, 250, 0.25);
@@ -199,9 +198,9 @@
 </head>
 <body>
 
-  <!-- TOP ADMIN BAR WITH MOBILE NUMBER & EDITABLE ADMIN ROUTING -->
+  <!-- TOP ADMIN BAR -->
   <div class="top-bar">
-    <a onclick="openAdminPortal()" class="top-admin-link">⚙️ Admin Portal</a>
+    <a href="admin.html" class="top-admin-link">⚙️ Admin Portal</a>
   </div>
 
   <!-- ANNOUNCEMENT BANNER -->
@@ -525,53 +524,6 @@
       renderNavbar();
       loadGames();
     };
-
-    /* ADMIN OPEN & EDITABLE PORTAL LOGIC WITH MOBILE NUMBER PROMPT */
-    async function openAdminPortal() {
-      let token = localStorage.getItem('token');
-      let adminMobile = localStorage.getItem('adminMobile');
-
-      // If no admin token or mobile number stored, prompt for mobile number
-      if (!token || !adminMobile) {
-        adminMobile = prompt("Enter Admin Mobile Number to Open Admin Portal:");
-        
-        if (!adminMobile) return; // Prompt cancelled
-
-        const mobileRegex = /^[6-9]\d{9}$/;
-        if (!mobileRegex.test(adminMobile.trim())) {
-          alert("Please enter a valid 10-digit mobile number.");
-          return;
-        }
-
-        try {
-          const res = await fetch('/api/admin/login-mobile', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mobile: adminMobile.trim() })
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('adminMobile', adminMobile.trim());
-            token = data.token;
-          } else {
-            // Local fallback store for opening editable view if server is offline
-            localStorage.setItem('token', 'admin_local_token_' + Date.now());
-            localStorage.setItem('adminMobile', adminMobile.trim());
-            token = localStorage.getItem('token');
-          }
-        } catch (err) {
-          console.log("Server unreachable. Opening admin in local mode.");
-          localStorage.setItem('token', 'admin_local_token_' + Date.now());
-          localStorage.setItem('adminMobile', adminMobile.trim());
-          token = localStorage.getItem('token');
-        }
-      }
-
-      // Open Admin Portal Directly
-      window.location.href = 'admin.html';
-    }
 
     function renderNavbar() {
       const user = JSON.parse(localStorage.getItem('currentUser'));
