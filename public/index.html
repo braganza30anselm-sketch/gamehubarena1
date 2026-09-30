@@ -3,761 +3,386 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GameHubArena - Experience Ultimate Gaming</title>
+  <title>GameHubArena - Premier Gaming Lounge & Station Booking</title>
   <style>
     :root {
-      --bg-dark: #0b0f19;
-      --card-bg: #151c2e;
-      --modal-bg: #1a233a;
-      --input-bg: #0f172a;
-      --text-main: #f8fafc;
+      --bg-dark: #0b132b;
+      --bg-card: #1c2541;
+      --bg-card-border: #2a385b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --accent-blue: #60a5fa;
+      --accent-green: #4ade80;
+      --accent-gold: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #ffffff;
       --text-muted: #94a3b8;
-      --accent-blue: #3b82f6;
-      --accent-blue-hover: #2563eb;
-      --accent-green: #10b981;
-      --accent-green-hover: #059669;
-      --accent-red: #ef4444;
-      --accent-red-hover: #dc2626;
-      --border-color: #334155;
-      --badge-ps: #2563eb;
-      --badge-pc: #8b5cf6;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      line-height: 1.5;
-    }
-
-    /* TOP BANNER & NAVBAR */
-    .admin-bar {
-      background-color: #050811;
-      text-align: right;
-      padding: 6px 24px;
-    }
-
-    .admin-btn {
-      background-color: #1e293b;
-      color: #94a3b8;
-      border: 1px solid var(--border-color);
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .admin-btn:hover {
-      color: #ffffff;
-    }
-
-    .promo-banner {
-      background: linear-gradient(90deg, #f59e0b, #ef4444);
-      color: #ffffff;
-      text-align: center;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .navbar {
+    /* Top Admin Utility Bar */
+    .top-bar {
+      background-color: #090f20;
+      padding: 6px 8%;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
-      padding: 16px 32px;
-      background-color: rgba(11, 15, 25, 0.95);
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      border-bottom: 1px solid #1c2541;
+      font-size: 13px;
     }
-
-    .nav-brand {
-      font-size: 20px;
-      font-weight: 800;
+    .top-admin-link {
       color: var(--accent-blue);
-      cursor: pointer;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .nav-btn {
-      background-color: var(--accent-blue);
-      color: white;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .nav-btn:hover {
-      background-color: var(--accent-blue-hover);
-    }
-
-    .nav-btn-secondary {
-      background-color: transparent;
-      color: var(--text-main);
-      border: 1px solid var(--border-color);
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .nav-btn-secondary:hover {
-      background-color: #1e293b;
-    }
-
-    .nav-btn-danger {
-      background-color: var(--accent-red);
-    }
-
-    .nav-btn-danger:hover {
-      background-color: var(--accent-red-hover);
-    }
-
-    /* HERO SECTION */
-    .hero-section {
-      text-align: center;
-      padding: 50px 20px 40px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .hero-title-sub {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--accent-blue);
-      margin-bottom: 12px;
-    }
-
-    .hero-heading {
-      font-size: 40px;
-      font-weight: 900;
-      line-height: 1.2;
-      margin-bottom: 16px;
-    }
-
-    .hero-subtext {
-      color: var(--text-muted);
-      font-size: 16px;
-      margin-bottom: 24px;
-    }
-
-    /* HARDWARE SHOWCASE CARDS */
-    .hardware-showcase {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .hardware-card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      overflow: hidden;
-      text-align: left;
-    }
-
-    .hardware-img-container {
-      height: 190px;
-      width: 100%;
-      overflow: hidden;
-      background: #000;
-    }
-
-    .hardware-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .hardware-body {
-      padding: 16px;
-    }
-
-    .hardware-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-
-    .hardware-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    /* GAMES SECTION */
-    .games-section {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 24px 80px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      border-left: 4px solid var(--accent-blue);
-      padding-left: 12px;
-    }
-
-    .section-title {
-      font-size: 24px;
-      font-weight: 800;
-    }
-
-    .refresh-btn {
-      background-color: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 6px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
-    }
-
-    .game-card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-
-    .game-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent-blue);
-    }
-
-    .img-wrapper {
-      height: 190px;
-      width: 100%;
-      overflow: hidden;
-      background-color: #0f172a;
-    }
-
-    .game-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .game-content {
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 11px;
+      text-decoration: none;
       font-weight: 700;
-      background-color: var(--badge-ps);
-      color: white;
-    }
-
-    .badge-pc {
-      background-color: var(--badge-pc);
-    }
-
-    .game-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .game-desc {
-      color: var(--text-muted);
-      font-size: 13px;
-      margin-bottom: 14px;
-      flex: 1;
-    }
-
-    .game-meta-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .meta-tag {
-      background-color: #0f172a;
-      border: 1px solid #1e293b;
-      color: #cbd5e1;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-    }
-
-    .star-tag {
-      color: #f59e0b;
-      border-color: #78350f;
-      background-color: #451a03;
-    }
-
-    .game-footer {
-      display: flex;
-      justify-content: space-between;
+      display: inline-flex;
       align-items: center;
-      border-top: 1px solid var(--border-color);
-      padding-top: 12px;
-    }
-
-    .rate-box {
-      display: flex;
-      align-items: baseline;
       gap: 6px;
-    }
-
-    .base-rate {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-decoration: line-through;
-    }
-
-    .price {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--accent-green);
-    }
-
-    .discount-tag {
-      display: block;
-      font-size: 10px;
-      color: #f59e0b;
-      font-weight: 700;
-    }
-
-    .book-btn {
-      background-color: var(--accent-blue);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .book-btn:hover {
-      background-color: var(--accent-blue-hover);
-    }
-
-    /* MODAL STYLING */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 100;
-    }
-
-    .modal-card {
-      background-color: var(--modal-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      width: 100%;
-      max-width: 480px;
-      padding: 24px;
-      position: relative;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 12px;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--text-muted);
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 10px 12px;
-      background-color: var(--input-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      color: white;
-      font-size: 14px;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--accent-blue);
-    }
-
-    .error-msg {
-      color: var(--accent-red);
-      font-size: 11px;
-      margin-top: 4px;
-      display: none;
-    }
-
-    .submit-btn {
-      width: 100%;
-      background-color: var(--accent-blue);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-
-    .submit-btn:hover {
-      background-color: var(--accent-blue-hover);
-    }
-
-    .switch-text {
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 14px;
-    }
-
-    .switch-link {
-      color: var(--accent-blue);
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    /* POLICY & SUMMARY MODAL SPECIFICS */
-    .policy-box {
-      background-color: var(--input-bg);
-      border: 1px solid var(--border-color);
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      color: var(--text-muted);
-      max-height: 150px;
-      overflow-y: auto;
-      margin-bottom: 12px;
-    }
-
-    .summary-box {
-      background-color: var(--input-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 16px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      margin-bottom: 6px;
-    }
-
-    .summary-row.total {
-      font-size: 15px;
-      font-weight: 800;
-      border-top: 1px dashed var(--border-color);
-      padding-top: 6px;
-      margin-bottom: 0;
-      color: var(--accent-green);
-    }
-
-    .booking-card {
-      background: var(--input-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .booking-title { font-weight: 700; font-size: 14px; }
-    .booking-meta { font-size: 12px; color: var(--text-muted); }
-
-    .cancel-booking-btn {
-      background: transparent;
-      border: 1px solid var(--accent-red);
-      color: var(--accent-red);
       padding: 4px 10px;
       border-radius: 4px;
-      font-size: 12px;
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      transition: all 0.2s;
       cursor: pointer;
     }
-
-    .cancel-booking-btn:hover {
-      background: var(--accent-red);
-      color: white;
+    .top-admin-link:hover {
+      background: rgba(96, 165, 250, 0.25);
+      color: #ffffff;
     }
+
+    /* Announcement Banner */
+    .weekend-banner { 
+      background: linear-gradient(90deg, #f59e0b, #ef4444); 
+      text-align: center; 
+      padding: 10px; 
+      font-weight: 800; 
+      font-size: 14px; 
+      letter-spacing: 0.5px; 
+    }
+
+    /* Navbar */
+    .navbar { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 18px 8%; 
+      background: var(--bg-card); 
+      border-bottom: 1px solid var(--bg-card-border); 
+      position: sticky; 
+      top: 0; 
+      z-index: 100; 
+    }
+    .nav-brand { font-size: 22px; font-weight: 800; color: var(--accent-blue); letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .nav-btn { background-color: var(--primary); color: white; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; }
+    .nav-btn:hover { background-color: var(--primary-hover); }
+    .nav-btn-secondary { background: var(--bg-card); border: 1px solid #3b82f6; color: #3b82f6; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+    .nav-btn-secondary:hover { background: var(--primary); color: white; }
+    .nav-btn-danger { background-color: var(--danger); border: none; color: white; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+
+    /* Hero Section */
+    .hero { 
+      background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-dark) 100%); 
+      padding: 50px 8% 45px; 
+      text-align: center; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+    }
+    .hero-brand { font-size: 32px; font-weight: 900; color: var(--accent-blue); margin-bottom: 10px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; justify-content: center; }
+    .hero h1 { font-size: 38px; font-weight: 900; background: linear-gradient(90deg, #ffffff, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+    .hero p { color: var(--text-muted); max-width: 620px; margin: 0 auto 22px; font-size: 16px; line-height: 1.5; }
+
+    /* Console Showcase */
+    .console-showcase { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 22px; flex-wrap: wrap; }
+    .console-badge { display: flex; align-items: center; gap: 10px; background: var(--bg-dark); border: 1px solid var(--bg-card-border); padding: 6px 14px; border-radius: 30px; }
+    .console-badge img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
+    .console-badge span { font-size: 14px; font-weight: 700; color: #93c5fd; }
+
+    .explore-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(90deg, #2563eb, #3b82f6); color: white; padding: 12px 30px; border-radius: 30px; font-weight: 700; font-size: 15px; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); transition: all 0.2s ease; }
+    .explore-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6); }
+
+    /* Games Section */
+    .games-section { padding: 50px 8%; max-width: 1300px; margin: 0 auto; flex-grow: 1; width: 100%; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .section-title { font-size: 26px; font-weight: 800; border-left: 4px solid var(--primary); padding-left: 12px; }
+    .refresh-btn { background: var(--bg-card); border: 1px solid #3b82f6; color: #3b82f6; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .refresh-btn:hover { background: var(--primary); color: white; }
+
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+
+    .game-card { background-color: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; }
+    .game-card:hover { transform: translateY(-4px); }
+    .img-wrapper { width: 100%; height: 180px; background-color: var(--bg-dark); }
+    .game-img { width: 100%; height: 100%; object-fit: cover; }
+
+    .game-content { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
+    .badge { display: inline-block; background-color: var(--primary); color: white; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; margin-bottom: 8px; align-self: flex-start; }
+    .badge-pc { background-color: #10b981; }
+    .game-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .game-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; margin-bottom: 12px; flex-grow: 1; }
+    
+    .game-meta-tags { display: flex; gap: 8px; font-size: 12px; color: #cbd5e1; margin-bottom: 14px; flex-wrap: wrap; }
+    .meta-tag { background: var(--bg-dark); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--bg-card-border); display: flex; align-items: center; gap: 5px; font-weight: 600; }
+    .star-tag { border-color: var(--accent-gold); color: var(--accent-gold); }
+    
+    .game-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--bg-card-border); padding-top: 12px; }
+    .price-container { display: flex; flex-direction: column; }
+    .rate-box { display: flex; align-items: baseline; gap: 6px; }
+    .base-rate { font-size: 12px; color: var(--text-muted); text-decoration: line-through; }
+    .price { font-size: 17px; font-weight: 800; color: var(--accent-green); }
+    .discount-tag { font-size: 10px; color: var(--accent-gold); font-weight: 800; text-transform: uppercase; }
+    .book-btn { background-color: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .book-btn:hover { background-color: var(--primary-hover); }
+
+    /* Modals System */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-card { background: var(--bg-card); padding: 25px; border-radius: 12px; width: 100%; max-width: 460px; border: 1px solid var(--bg-card-border); position: relative; max-height: 90vh; overflow-y: auto; }
+    .close-modal { position: absolute; top: 15px; right: 20px; color: var(--text-muted); font-size: 22px; cursor: pointer; }
+    .form-group { margin-bottom: 15px; text-align: left; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 5px; }
+    .form-group input, .form-group select { width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid var(--bg-card-border); border-radius: 6px; color: white; outline: none; }
+    .submit-btn { width: 100%; background-color: var(--primary); color: white; border: none; padding: 11px; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 14px; }
+    .submit-btn:disabled { background-color: #475569; cursor: not-allowed; }
+
+    .auth-switch { text-align: center; margin-top: 15px; font-size: 13px; color: #9ca3af; }
+    .auth-switch a { color: var(--accent-blue); cursor: pointer; font-weight: 700; text-decoration: none; }
+    .auth-switch a:hover { text-decoration: underline; }
+
+    /* Profile UI Specifics */
+    .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--bg-card-border); }
+    .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #10b981); display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; border: 2px solid var(--accent-blue); }
+    .profile-info h3 { font-size: 18px; font-weight: 800; color: #ffffff; }
+    .profile-info p { font-size: 12px; color: var(--text-muted); }
+    .profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .stat-card { background: var(--bg-dark); border: 1px solid var(--bg-card-border); padding: 12px; border-radius: 8px; text-align: center; }
+    .stat-val { font-size: 18px; font-weight: 900; color: var(--accent-green); }
+    .stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+
+    /* Policy Rules Box */
+    .policy-box { background: var(--bg-dark); border: 1px solid var(--bg-card-border); border-radius: 8px; padding: 14px; margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
+    .policy-box ul { margin-left: 18px; margin-top: 8px; margin-bottom: 8px; }
+    .checkbox-container { display: flex; align-items: center; gap: 8px; margin-top: 15px; font-size: 13px; color: #cbd5e1; }
+    .checkbox-container input { width: 16px; height: 16px; cursor: pointer; }
+
+    /* Summary Box */
+    .summary-box { background: var(--bg-dark); padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--bg-card-border); }
+    .summary-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+    .summary-total { font-weight: 800; color: var(--accent-green); font-size: 15px; border-top: 1px dashed var(--bg-card-border); padding-top: 6px; }
+
+    /* QR Code Display */
+    .qr-container { text-align: center; background: var(--bg-dark); padding: 15px; border-radius: 8px; border: 1px solid var(--bg-card-border); margin-bottom: 15px; }
+    .qr-container img { width: 160px; height: 160px; border-radius: 8px; border: 2px solid var(--primary); }
+    .upi-id { font-size: 13px; color: var(--accent-blue); font-weight: 700; margin-top: 8px; }
+
+    /* Bookings Card List */
+    .booking-card { background: var(--bg-dark); border: 1px solid var(--bg-card-border); padding: 14px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .booking-title { font-size: 15px; font-weight: 700; color: #ffffff; }
+    .booking-meta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .cancel-booking-btn { background: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .cancel-booking-btn:hover { background: #dc2626; }
+
+    .error-msg {
+      color: #f87171;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer { background: #090f20; padding: 25px 8%; text-align: center; border-top: 1px solid var(--bg-card-border); font-size: 13px; color: var(--text-muted); margin-top: auto; }
+    footer a { color: var(--accent-blue); text-decoration: none; font-weight: 600; }
   </style>
 </head>
 <body>
 
-  <!-- ADMIN BAR -->
-  <div class="admin-bar">
-    <button class="admin-btn" onclick="alert('Admin Portal demo view.')">⚙️ Admin Portal</button>
+  <!-- TOP ADMIN BAR WITH MOBILE NUMBER & EDITABLE ADMIN ROUTING -->
+  <div class="top-bar">
+    <a onclick="openAdminPortal()" class="top-admin-link">⚙️ Admin Portal</a>
   </div>
 
-  <!-- PROMO BANNER -->
-  <div class="promo-banner">
-    🔥 WEEKEND SPECIAL: Get 20% OFF on all PS5 & RTX PC Gaming Slots every Saturday & Sunday!
-  </div>
+  <!-- ANNOUNCEMENT BANNER -->
+  <div class="weekend-banner">🔥 WEEKEND SPECIAL: Get 20% OFF on all PS5 & PC Gaming Slots every Saturday & Sunday!</div>
 
-  <!-- NAVBAR -->
+  <!-- NAVIGATION BAR -->
   <nav class="navbar">
-    <div class="nav-brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">🎮 GameHubArena</div>
-    <div class="nav-actions" id="nav-actions">
-      <button class="nav-btn" onclick="openAuthModal('login')">Login / Register</button>
-    </div>
+    <div class="nav-brand">🎮 GameHubArena</div>
+    <div class="nav-actions" id="nav-actions"></div>
   </nav>
 
-  <!-- HERO SECTION WITH PS5 & RTX PC STATIONS -->
-  <header class="hero-section">
-    <div class="hero-title-sub">🎮 GameHubArena</div>
-    <h1 class="hero-heading">Experience Ultimate Gaming Power & 4K Performance</h1>
-    <p class="hero-subtext">Reserve slots for top PlayStation 5 & RTX PC games at competitive hourly rates.</p>
-    
-    <!-- HARDWARE CARDS WITH PROPER IMAGES -->
-    <div class="hardware-showcase">
-      <div class="hardware-card">
-        <div class="hardware-img-container">
-          <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=600&q=80" class="hardware-img" alt="PlayStation 5 Gaming Station" />
-        </div>
-        <div class="hardware-body">
-          <div class="hardware-title">🎮 PlayStation 5 Station</div>
-          <div class="hardware-desc">4K HDR TV Setup, DualSense Haptic Controllers & Surround Sound Experience.</div>
-        </div>
-      </div>
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-brand">🎮 GameHubArena</div>
+    <h1>Experience Ultimate Gaming Power & 4K Performance</h1>
+    <p>Reserve slots for top PlayStation 5 & RTX PC games at competitive hourly rates.</p>
 
-      <div class="hardware-card">
-        <div class="hardware-img-container">
-          <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80" class="hardware-img" alt="RTX PC Gaming Rig" />
-        </div>
-        <div class="hardware-body">
-          <div class="hardware-title">🖥️ RTX PC Gaming Rig</div>
-          <div class="hardware-desc">NVIDIA RTX 4080 GPU, 240Hz Gaming Monitors & Mechanical RGB Peripherals.</div>
-        </div>
+    <div class="console-showcase">
+      <div class="console-badge">
+        <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=150&auto=format&fit=crop" alt="PlayStation 5" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1486401899868-0e435ed85128?w=150';" />
+        <span>PS5 Station</span>
+      </div>
+      <div class="console-badge">
+        <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=150&auto=format&fit=crop" alt="RTX PC Rig" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=150';" />
+        <span>RTX PC Rig</span>
       </div>
     </div>
 
-    <button class="nav-btn" style="padding: 12px 28px; font-size: 16px;" onclick="document.getElementById('games-anchor').scrollIntoView({behavior: 'smooth'})">
-      🎮 Explore All Games & Reserve
-    </button>
+    <a href="#available-games-section" class="explore-btn">🎮 Explore Games</a>
   </header>
 
-  <!-- AVAILABLE GAMES SECTION -->
-  <main class="games-section" id="games-anchor">
+  <!-- GAMES MAIN LIST -->
+  <main class="games-section" id="available-games-section">
     <div class="section-header">
       <h2 class="section-title">Available Games</h2>
       <button class="refresh-btn" onclick="loadGames()">🔄 Refresh List</button>
     </div>
-
-    <div class="games-grid" id="customer-games-grid">
-      <!-- Dynamic Games List Rendered Here -->
-    </div>
+    <div class="games-grid" id="customer-games-grid"></div>
   </main>
 
-  <!-- AUTHENTICATION MODAL (LOGIN / REGISTER) -->
-  <div class="modal-overlay" id="auth-modal">
+  <!-- USER PROFILE MODAL -->
+  <div class="modal-overlay" id="profile-modal">
     <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title" id="auth-modal-title">Account Access</h3>
-        <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+      <span class="close-modal" onclick="closeModal('profile-modal')">&times;</span>
+      <h2>👤 Gamer Profile</h2>
+      <br />
+      
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar-initial">G</div>
+        <div class="profile-info">
+          <h3 id="profile-display-name">Gamer</h3>
+          <p id="profile-display-email">user@example.com</p>
+        </div>
       </div>
 
-      <!-- LOGIN VIEW -->
-      <div id="modal-login-view">
-        <form id="login-form">
-          <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="login-email" class="form-input" placeholder="gamer@example.com" required />
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
-          </div>
-          <button type="submit" class="submit-btn">Log In</button>
-        </form>
-        <p class="switch-text">
-          Don't have an account? <span class="switch-link" onclick="toggleAuthView('register')">Register Now</span>
-        </p>
+      <div class="profile-stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="profile-stat-bookings">0</div>
+          <div class="stat-lbl">Reserved Slots</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="profile-stat-points">150 PTS</div>
+          <div class="stat-lbl">XP Rewards</div>
+        </div>
       </div>
 
-      <!-- REGISTER VIEW WITH STRICT MOBILE VALIDATION -->
-      <div id="modal-register-view" style="display: none;">
-        <form id="register-form">
-          <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="reg-name" class="form-input" placeholder="Alex Mercer" onkeyup="validateCustName()" required />
-            <div id="cust-name-error" class="error-msg">Only letters and spaces are allowed.</div>
-          </div>
-          <div class="form-group">
-            <label>Mobile Number (10 Digits)</label>
-            <input type="tel" id="reg-mobile" class="form-input" placeholder="9876543210" maxlength="10" onkeyup="validateCustMobile()" required />
-            <div id="cust-mobile-error" class="error-msg">Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.</div>
-          </div>
-          <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="reg-email" class="form-input" placeholder="alex@example.com" onkeyup="validateCustEmail()" required />
-            <div id="cust-email-error" class="error-msg">Please enter a valid email address.</div>
-          </div>
-          <div class="form-group">
-            <label>Password (Min. 6 chars)</label>
-            <input type="password" id="reg-password" class="form-input" placeholder="••••••••" onkeyup="validateCustPassword()" required />
-            <div id="cust-password-error" class="error-msg">Password must be at least 6 characters.</div>
-          </div>
-          <button type="submit" class="submit-btn">Create Account</button>
-        </form>
-        <p class="switch-text">
-          Already have an account? <span class="switch-link" onclick="toggleAuthView('login')">Log In</span>
-        </p>
-      </div>
+      <form id="profile-form" onsubmit="handleProfileUpdate(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="profile-input-name" required />
+        </div>
+        <div class="form-group">
+          <label>Gamer Tag</label>
+          <input type="text" id="profile-input-tag" placeholder="e.g. ShadowRiderX" />
+        </div>
+        <div class="form-group">
+          <label>Preferred Platform</label>
+          <select id="profile-input-platform">
+            <option value="PlayStation 5">PlayStation 5 (PS5)</option>
+            <option value="RTX Gaming PC">RTX Gaming PC</option>
+            <option value="Both PS5 & PC">Both PS5 & PC</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn">Save Profile Updates</button>
+      </form>
     </div>
   </div>
 
-  <!-- REFUND POLICY MODAL -->
+  <!-- CANCELLATION & REFUND POLICY MODAL -->
   <div class="modal-overlay" id="refund-policy-modal">
     <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">Booking & Refund Policy</h3>
-        <button class="close-btn" onclick="closeModal('refund-policy-modal')">&times;</button>
-      </div>
-      <p style="font-size: 13px; font-weight: 700; color: var(--accent-blue); margin-bottom: 8px;" id="policy-game-title">Game Title</p>
+      <span class="close-modal" onclick="closeModal('refund-policy-modal')">&times;</span>
+      <h2>📜 Cancellation & Refund Policy</h2>
+      <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;" id="policy-game-title"></p>
+      
       <div class="policy-box">
-        <p><strong>1. Cancellation & Refunds:</strong> Full refund if cancelled 24 hours prior to slot start time. 50% refund within 12-24 hours. No refunds within 12 hours of the slot.</p><br>
-        <p><strong>2. Arrival Time:</strong> Please arrive 10 minutes before your scheduled gaming slot. Late arrivals will not receive extended time.</p><br>
-        <p><strong>3. Equipment Safety:</strong> Users are responsible for controllers, headsets, and hardware handling during their session.</p>
+        <strong>Please review our refund rules before paying:</strong>
+        <ul>
+          <li><strong>100% Full Refund:</strong> Canceled 2+ hours before session start.</li>
+          <li><strong>80% Partial Refund:</strong> Canceled within 2 hours of session start.</li>
+          <li><strong>Store Cash Option:</strong> Reserved slots must be paid before session start time.</li>
+        </ul>
       </div>
-      <div style="margin-bottom: 16px;">
-        <label style="font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-          <input type="checkbox" id="accept-policy-check" onchange="togglePolicyButton()" />
-          I have read and agree to the booking terms & refund policy.
-        </label>
+
+      <div class="checkbox-container">
+        <input type="checkbox" id="accept-policy-check" onchange="togglePolicyButton()" />
+        <label for="accept-policy-check">I have read and agree to the Refund Policy.</label>
       </div>
-      <button class="submit-btn" id="proceed-pay-btn" disabled onclick="proceedToPaymentModal()">Proceed to Payment</button>
+
+      <button id="proceed-pay-btn" class="submit-btn" disabled onclick="proceedToPaymentModal()">Proceed to Payment →</button>
     </div>
   </div>
 
-  <!-- PAYMENT MODAL -->
+  <!-- PAYMENT & SLOT BOOKING MODAL -->
   <div class="modal-overlay" id="payment-modal">
     <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">Complete Reservation</h3>
-        <button class="close-btn" onclick="closeModal('payment-modal')">&times;</button>
-      </div>
-      
-      <p style="font-size: 13px; font-weight: 700; color: var(--accent-blue); margin-bottom: 8px;" id="selected-game-title">Selected Game</p>
+      <span class="close-modal" onclick="closeModal('payment-modal')">&times;</span>
+      <h2>Complete Booking</h2>
+      <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;" id="selected-game-title"></p>
       
       <div class="summary-box">
-        <div class="summary-row"><span>Base Hourly Rate:</span><span id="summary-base">₹0</span></div>
-        <div class="summary-row"><span>Discount:</span><span id="summary-discount" style="color: var(--accent-green)">-₹0</span></div>
-        <div class="summary-row total"><span>Total Payable:</span><span id="summary-total">₹0</span></div>
+        <div class="summary-row"><span>Base Hourly Rate:</span> <span id="summary-base">₹0</span></div>
+        <div class="summary-row" style="color:#f59e0b;"><span>Weekend Discount (20%):</span> <span id="summary-discount">-₹0</span></div>
+        <div class="summary-row summary-total"><span>Total Payable:</span> <span id="summary-total">₹0</span></div>
       </div>
 
-      <form onsubmit="handleFormSubmission(event)">
+      <form id="payment-form" onsubmit="handleFormSubmission(event)">
         <input type="hidden" id="pay-game-id" />
         
         <div class="form-group">
           <label>Select Payment Method</label>
-          <select id="payment-method" class="form-input" onchange="togglePaymentFields()">
-            <option value="UPI Direct App Request">UPI Direct App Request (GPay/PhonePe/Paytm)</option>
-            <option value="UPI QR Code">UPI QR Code Scan</option>
+          <select id="payment-method" onchange="togglePaymentFields()">
+            <option value="UPI Direct App Request">Google Pay / PhonePe / Paytm (Send UPI Request)</option>
+            <option value="UPI QR Code">Scan Store UPI QR Code</option>
             <option value="Debit Card">Debit / Credit Card</option>
-            <option value="Cash Payment on Gaming Store">Cash Payment at Store</option>
+            <option value="Cash Payment on Gaming Store">Cash Payment on Gaming Store</option>
           </select>
         </div>
 
-        <div id="upi-request-fields" class="form-group">
-          <label>Your UPI ID</label>
-          <input type="text" id="customer-upi-id" class="form-input" placeholder="username@okaxis or 9876543210@paytm" />
+        <div id="upi-request-fields">
+          <div class="form-group">
+            <label>Enter Your UPI ID (VPA)</label>
+            <input type="text" id="customer-upi-id" placeholder="e.g. username@okaxis or 9876543210@paytm" />
+          </div>
+          <p style="font-size:12px; color:#60a5fa; margin-bottom:12px;">
+            📲 We will send a payment collect request directly to your UPI App.
+          </p>
         </div>
 
-        <div id="upi-qr-fields" class="form-group" style="display: none; text-align: center;">
-          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Scan QR Code using any UPI App to Pay</p>
-          <img id="upi-qr-image" src="" alt="UPI QR Code" style="background: white; padding: 8px; border-radius: 8px; width: 160px; height: 160px;" />
+        <div id="upi-qr-fields" style="display: none;">
+          <div class="qr-container">
+            <p style="font-size:12px; color:#cbd5e1; margin-bottom:8px;">Scan with Google Pay, PhonePe, or Paytm</p>
+            <img id="upi-qr-image" src="" alt="UPI Payment QR Code" />
+            <div class="upi-id">UPI ID: gamehubarena@upi</div>
+          </div>
         </div>
 
         <div id="debit-card-fields" style="display: none;">
           <div class="form-group">
-            <label>Card Number</label>
-            <input type="text" class="form-input" placeholder="4532 •••• •••• 8921" />
+            <label>Cardholder Name</label>
+            <input type="text" id="card-name" placeholder="John Doe" />
           </div>
-          <div style="display: flex; gap: 8px;">
-            <div class="form-group" style="flex: 1;">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" id="card-number" placeholder="4532 •••• •••• 8890" maxlength="16" />
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex:1;">
               <label>Expiry Date</label>
-              <input type="text" class="form-input" placeholder="MM/YY" />
+              <input type="text" id="card-exp" placeholder="MM/YY" maxlength="5" />
             </div>
-            <div class="form-group" style="flex: 1;">
+            <div class="form-group" style="flex:1;">
               <label>CVV</label>
-              <input type="password" class="form-input" placeholder="•••" maxlength="4" />
+              <input type="password" id="card-cvv" placeholder="123" maxlength="3" />
             </div>
           </div>
         </div>
 
-        <div id="cash-store-fields" style="display: none;">
-          <p style="font-size: 12px; color: var(--accent-green); background: rgba(16,185,129,0.1); padding: 8px; border-radius: 6px;">
-            💵 Pay cash directly at the GameHubArena counter before your slot starts.
-          </p>
+        <div id="cash-store-fields" style="display: none; background: #0b132b; padding: 12px; border-radius: 6px; font-size: 12.5px; color: #cbd5e1; margin-bottom: 15px; border: 1px solid #2a385b;">
+          📌 <strong>Store Payment Note:</strong> Your slot will be reserved. Please pay cash at the store counter before your session starts.
         </div>
 
         <button type="submit" class="submit-btn" id="pay-submit-btn">Confirm & Reserve Slot</button>
@@ -765,78 +390,74 @@
     </div>
   </div>
 
-  <!-- PROFILE MODAL WITH MOBILE UPDATE & VALIDATION -->
-  <div class="modal-overlay" id="profile-modal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">Gamer Profile</h3>
-        <button class="close-btn" onclick="closeModal('profile-modal')">&times;</button>
-      </div>
-      
-      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-        <div id="profile-avatar-initial" style="width: 50px; height: 50px; border-radius: 50%; background: var(--accent-blue); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800;">G</div>
-        <div>
-          <h4 id="profile-display-name" style="font-size: 16px;">Gamer Name</h4>
-          <p id="profile-display-email" style="font-size: 12px; color: var(--text-muted);">gamer@example.com</p>
-        </div>
-      </div>
-
-      <div class="summary-box" style="display: flex; justify-content: space-around; text-align: center;">
-        <div>
-          <div style="font-size: 11px; color: var(--text-muted);">Total Bookings</div>
-          <div id="profile-stat-bookings" style="font-size: 18px; font-weight: 800; color: var(--accent-blue);">0</div>
-        </div>
-        <div style="border-left: 1px solid var(--border-color);"></div>
-        <div>
-          <div style="font-size: 11px; color: var(--text-muted);">Gamer Points</div>
-          <div id="profile-stat-points" style="font-size: 18px; font-weight: 800; color: var(--accent-green);">150 PTS</div>
-        </div>
-      </div>
-
-      <form onsubmit="handleProfileUpdate(event)">
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="profile-input-name" class="form-input" required />
-        </div>
-        <div class="form-group">
-          <label>Mobile Number (10 Digits)</label>
-          <input type="tel" id="profile-input-mobile" class="form-input" maxlength="10" onkeyup="validateProfileMobile()" required />
-          <div id="profile-mobile-error" class="error-msg">Must be a valid 10-digit mobile number starting with 6, 7, 8, or 9.</div>
-        </div>
-        <div class="form-group">
-          <label>Gamer Tag</label>
-          <input type="text" id="profile-input-tag" class="form-input" />
-        </div>
-        <div class="form-group">
-          <label>Preferred Platform</label>
-          <select id="profile-input-platform" class="form-input">
-            <option value="PlayStation 5">PlayStation 5</option>
-            <option value="PC Gaming Rig">PC Gaming Rig</option>
-          </select>
-        </div>
-        <button type="submit" class="submit-btn">Save Profile Changes</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MY BOOKINGS MODAL -->
+  <!-- BOOKINGS HISTORY MODAL -->
   <div class="modal-overlay" id="bookings-modal">
     <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">My Gaming Reservations</h3>
-        <button class="close-btn" onclick="closeModal('bookings-modal')">&times;</button>
-      </div>
-      <div id="user-bookings-list" style="max-height: 300px; overflow-y: auto;">
-        <!-- Dynamic Bookings Render Here -->
+      <span class="close-modal" onclick="closeModal('bookings-modal')">&times;</span>
+      <h2 style="margin-bottom: 15px;">📋 My Reserved Bookings</h2>
+      <div id="user-bookings-list">
+        <p style="color:#94a3b8; font-size: 13px;">Loading your reservations...</p>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT LOGIC WITH MOBILE NUMBER SYSTEM & HD GAME IMAGES -->
+  <!-- AUTHENTICATION MODAL (LOGIN & REGISTER) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-card">
+      <span class="close-modal" onclick="closeAuthModal()">&times;</span>
+      
+      <!-- LOGIN VIEW -->
+      <div id="modal-login-view">
+        <h2 style="margin-bottom:15px;">Customer Login</h2>
+        <form id="login-form">
+          <div class="form-group"><label>Email</label><input type="email" id="login-email" required placeholder="customer@example.com" /></div>
+          <div class="form-group"><label>Password</label><input type="password" id="login-password" required placeholder="••••••••" /></div>
+          <button type="submit" class="submit-btn">Login</button>
+        </form>
+        <div class="auth-switch">
+          Don't have an account? <a onclick="toggleAuthView('register')">Register here</a>
+        </div>
+      </div>
+
+      <!-- REGISTER VIEW -->
+      <div id="modal-register-view" style="display: none;">
+        <h2 style="margin-bottom:15px;">Customer Registration</h2>
+        <form id="register-form" novalidate>
+          <div class="form-group">
+            <label>Full Name [Letters Only]</label>
+            <input type="text" id="reg-name" required placeholder="John Doe" oninput="validateCustName()" />
+            <div class="error-msg" id="cust-name-error">Please enter a valid full name (letters and spaces only).</div>
+          </div>
+          <div class="form-group">
+            <label>Email [Must include '@']</label>
+            <input type="email" id="reg-email" required placeholder="customer@example.com" oninput="validateCustEmail()" />
+            <div class="error-msg" id="cust-email-error">Please enter a valid email address with '@'.</div>
+          </div>
+          <div class="form-group">
+            <label>Password [Min 6 Characters]</label>
+            <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" oninput="validateCustPassword()" />
+            <div class="error-msg" id="cust-password-error">Password must be at least 6 characters long.</div>
+          </div>
+          <button type="submit" class="submit-btn">Create Account</button>
+        </form>
+        <div class="auth-switch">
+          Already registered? <a onclick="toggleAuthView('login')">Login here</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 GameHubArena Lounge. Powered by Node.js, Express & MongoDB.</p>
+  </footer>
+
   <script>
     let currentSelectedGame = null;
-    const fallbackImage = "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80";
+    const fallbackImage = "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop";
 
+    /* Base Default Fallback Games Array */
     const defaultGames = [
       { 
         _id: "ps1", 
@@ -845,7 +466,7 @@
         price: 250, 
         rating: 4.8,
         players: "1 - 2 Players", 
-        imageUrl: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80", 
+        imageUrl: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&auto=format&fit=crop", 
         description: "Experience 4K 120Hz football gaming with dual-sense haptic feedback." 
       },
       { 
@@ -855,7 +476,7 @@
         price: 300, 
         rating: 4.9,
         players: "1 Player (Single)", 
-        imageUrl: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80", 
+        imageUrl: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&auto=format&fit=crop", 
         description: "Epic Norse action adventure on PlayStation 5 OLED setup." 
       },
       { 
@@ -865,7 +486,7 @@
         price: 150, 
         rating: 4.6,
         players: "5 Players (5v5)", 
-        imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80", 
+        imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop", 
         description: "A 5v5 character-based tactical shooter optimized for ultra-high refresh rate monitors." 
       },
       { 
@@ -875,7 +496,7 @@
         price: 200, 
         rating: 4.7,
         players: "5 Players (5v5)", 
-        imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80", 
+        imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop", 
         description: "Competitive tactical shooter built on Source 2 with sub-tick accuracy." 
       },
       { 
@@ -885,7 +506,7 @@
         price: 250, 
         rating: 4.9,
         players: "1 Player (Single)", 
-        imageUrl: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80", 
+        imageUrl: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&auto=format&fit=crop", 
         description: "Explore Night City in full glory, powered by RTX Ray Tracing Overdrive graphics." 
       },
       { 
@@ -895,23 +516,68 @@
         price: 250, 
         rating: 4.5,
         players: "1 Player (Single)", 
-        imageUrl: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=600&q=80", 
+        imageUrl: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=500&auto=format&fit=crop", 
         description: "Experience Franklin, Michael, and Trevor in 4K 60FPS with DualSense haptics." 
       }
     ];
 
-    function renderNavbar() {
-      const navActions = document.getElementById('nav-actions');
-      if (!navActions) return;
+    window.onload = () => {
+      renderNavbar();
+      loadGames();
+    };
 
-      let user = null;
-      try {
-        user = JSON.parse(localStorage.getItem('currentUser'));
-      } catch (e) {
-        console.error("Invalid user session", e);
+    /* ADMIN OPEN & EDITABLE PORTAL LOGIC WITH MOBILE NUMBER PROMPT */
+    async function openAdminPortal() {
+      let token = localStorage.getItem('token');
+      let adminMobile = localStorage.getItem('adminMobile');
+
+      // If no admin token or mobile number stored, prompt for mobile number
+      if (!token || !adminMobile) {
+        adminMobile = prompt("Enter Admin Mobile Number to Open Admin Portal:");
+        
+        if (!adminMobile) return; // Prompt cancelled
+
+        const mobileRegex = /^[6-9]\d{9}$/;
+        if (!mobileRegex.test(adminMobile.trim())) {
+          alert("Please enter a valid 10-digit mobile number.");
+          return;
+        }
+
+        try {
+          const res = await fetch('/api/admin/login-mobile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mobile: adminMobile.trim() })
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('adminMobile', adminMobile.trim());
+            token = data.token;
+          } else {
+            // Local fallback store for opening editable view if server is offline
+            localStorage.setItem('token', 'admin_local_token_' + Date.now());
+            localStorage.setItem('adminMobile', adminMobile.trim());
+            token = localStorage.getItem('token');
+          }
+        } catch (err) {
+          console.log("Server unreachable. Opening admin in local mode.");
+          localStorage.setItem('token', 'admin_local_token_' + Date.now());
+          localStorage.setItem('adminMobile', adminMobile.trim());
+          token = localStorage.getItem('token');
+        }
       }
 
-      if (user && user.name) {
+      // Open Admin Portal Directly
+      window.location.href = 'admin.html';
+    }
+
+    function renderNavbar() {
+      const user = JSON.parse(localStorage.getItem('currentUser'));
+      const navActions = document.getElementById('nav-actions');
+
+      if (user) {
         navActions.innerHTML = `
           <button class="nav-btn-secondary" onclick="openProfileModal()">👤 Profile</button>
           <button class="nav-btn-secondary" onclick="openMyBookings()">📋 My Bookings</button>
@@ -952,37 +618,10 @@
       document.getElementById('modal-register-view').style.display = view === 'register' ? 'block' : 'none';
     }
 
-    /* REAL-TIME INPUT & MOBILE NUMBER VALIDATION SYSTEM */
-    function isMobileValid(mobileStr) {
-      return /^[6-9]\d{9}$/.test(mobileStr.trim());
-    }
-
     function validateCustName() {
       const val = document.getElementById('reg-name').value;
       const err = document.getElementById('cust-name-error');
-      if (val.length > 0 && !/^[a-zA-Z\s]{2,50}$/.test(val)) {
-        err.style.display = 'block';
-        return false;
-      }
-      err.style.display = 'none';
-      return true;
-    }
-
-    function validateCustMobile() {
-      const val = document.getElementById('reg-mobile').value;
-      const err = document.getElementById('cust-mobile-error');
-      if (val.length > 0 && !isMobileValid(val)) {
-        err.style.display = 'block';
-        return false;
-      }
-      err.style.display = 'none';
-      return true;
-    }
-
-    function validateProfileMobile() {
-      const val = document.getElementById('profile-input-mobile').value;
-      const err = document.getElementById('profile-mobile-error');
-      if (val.length > 0 && !isMobileValid(val)) {
+      if (val.length > 0 && !/^[a-zA-Z\s]+$/.test(val)) {
         err.style.display = 'block';
         return false;
       }
@@ -1012,13 +651,12 @@
       return true;
     }
 
-    /* PROFILE MANAGEMENT FUNCTIONS */
+    /* PROFILE MANAGEMENT LOGIC */
     function openProfileModal() {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) return;
 
-      let localBookings = [];
-      try { localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]'); } catch(e){}
+      const localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
       const userBookings = localBookings.filter(b => b.userId === user.id);
 
       document.getElementById('profile-display-name').innerText = user.name || 'Gamer';
@@ -1029,26 +667,17 @@
       document.getElementById('profile-stat-points').innerText = `${userBookings.length * 100 + 150} PTS`;
 
       document.getElementById('profile-input-name').value = user.name || '';
-      document.getElementById('profile-input-mobile').value = user.mobile || '';
       document.getElementById('profile-input-tag').value = user.gamerTag || `${user.name}X`;
       document.getElementById('profile-input-platform').value = user.preferredPlatform || 'PlayStation 5';
 
-      document.getElementById('profile-mobile-error').style.display = 'none';
       openModal('profile-modal');
     }
 
     function handleProfileUpdate(event) {
       event.preventDefault();
       const user = JSON.parse(localStorage.getItem('currentUser')) || {};
-      const mobileInput = document.getElementById('profile-input-mobile').value.trim();
-
-      if (!isMobileValid(mobileInput)) {
-        alert("Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.");
-        return;
-      }
       
       user.name = document.getElementById('profile-input-name').value.trim();
-      user.mobile = mobileInput;
       user.gamerTag = document.getElementById('profile-input-tag').value.trim();
       user.preferredPlatform = document.getElementById('profile-input-platform').value;
 
@@ -1058,38 +687,26 @@
       renderNavbar();
     }
 
-    /* GAMES FETCHING & RENDERING */
+    /* GAME CARDS RENDER LOGIC */
     async function loadGames() {
       const grid = document.getElementById('customer-games-grid');
-      if (!grid) return;
+      grid.innerHTML = '<p style="color:var(--text-muted);">Loading games...</p>';
 
       let games = [];
-
       try {
-        const customGames = JSON.parse(localStorage.getItem('custom_games') || '[]');
-        if (Array.isArray(customGames) && customGames.length > 0) {
-          games = customGames;
+        const res = await fetch('/api/games?t=' + new Date().getTime());
+        if (res.ok) {
+          const apiGames = await res.json();
+          if (Array.isArray(apiGames) && apiGames.length > 0) games = apiGames;
         }
-      } catch (e) {
-        console.error("Error reading custom games from localStorage", e);
+      } catch (err) {
+        console.log("Backend offline. Loading local showcase.");
       }
 
-      if (games.length === 0) {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 2000);
-          const res = await fetch('/api/games?t=' + new Date().getTime(), { signal: controller.signal });
-          clearTimeout(timeoutId);
-          if (res.ok) {
-            const apiGames = await res.json();
-            if (Array.isArray(apiGames) && apiGames.length > 0) games = apiGames;
-          }
-        } catch (err) {
-          console.log("Backend API unreachable. Falling back to default catalog.");
-        }
-      }
-
-      if (games.length === 0) {
+      const customGames = JSON.parse(localStorage.getItem('custom_games') || '[]');
+      if (customGames.length > 0) {
+        games = customGames;
+      } else if (games.length === 0) {
         games = defaultGames;
       }
 
@@ -1103,7 +720,8 @@
 
         let finalPlayerTag = game.players;
         let finalRating = game.rating;
-        const nameLower = (game.name || '').toLowerCase();
+
+        const nameLower = game.name.toLowerCase();
 
         if (nameLower.includes('fc 25') || nameLower.includes('ea sports') || nameLower.includes('fifa')) {
           finalPlayerTag = '1 - 2 Players';
@@ -1165,18 +783,11 @@
       });
     }
 
-    /* BOOKING & POLICY FLOW */
     function initiateBookingProcess(id, name, basePrice) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       if (!user) {
         alert('Please log in or register first to book a slot!');
         openAuthModal('login');
-        return;
-      }
-
-      if (!user.mobile || !isMobileValid(user.mobile)) {
-        alert('Please update a valid 10-digit mobile number in your profile first to receive SMS confirmation.');
-        openProfileModal();
         return;
       }
 
@@ -1256,27 +867,15 @@
         alert(`📲 Payment collect request for ₹${currentSelectedGame.paidAmount} sent to ${customerUpi}!\n\nPlease check your UPI App to approve.`);
       }
 
-      const sessionDateObj = new Date();
-      sessionDateObj.setDate(sessionDateObj.getDate() + 2);
-      const sessionDate = sessionDateObj.toLocaleDateString();
-
-      const alertDateObj = new Date(sessionDateObj);
-      alertDateObj.setDate(alertDateObj.getDate() - 1);
-      const scheduledAlertDate = alertDateObj.toLocaleDateString();
-
       const newBooking = {
         id: "bk_" + Date.now(),
         userId: user.id,
         userName: user.name,
-        userMobile: user.mobile,
         gameId: currentSelectedGame ? currentSelectedGame.id : 'ps1',
         gameName: currentSelectedGame ? currentSelectedGame.name : 'EA SPORTS FC 25',
         amount: currentSelectedGame ? currentSelectedGame.paidAmount : 200,
         paymentMethod: paymentMethod === 'UPI Direct App Request' ? `UPI (${customerUpi})` : paymentMethod,
-        bookingDate: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-        scheduledSessionDate: sessionDate,
-        scheduledAlertDate: scheduledAlertDate,
-        alertSent: false
+        date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
       };
 
       try {
@@ -1286,51 +885,17 @@
           body: JSON.stringify(newBooking)
         });
       } catch (err) {
-        console.log("Database offline. Reservation stored locally.");
+        console.log("Saved locally due to offline server.");
       }
 
       saveLocalBooking(newBooking);
-
-      sendSMSNotification(
-        user.mobile,
-        `🎮 GameHubArena Confirmation: Hi ${user.name}, your slot for "${newBooking.gameName}" is BOOKED for ${sessionDate}! Total paid: ₹${newBooking.amount}.`
-      );
-
-      alert(`🎉 Slot reserved successfully!\n\n📱 Instant SMS Confirmation sent to +91-${user.mobile}.\n⏰ A 1-Day Reminder SMS will be sent on ${scheduledAlertDate}.`);
+      alert(`🎉 Slot reserved successfully! See you at GameHubArena.`);
       closeModal('payment-modal');
     }
 
     function saveLocalBooking(booking) {
-      let localBookings = [];
-      try { localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]'); } catch(e){}
+      let localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
       localBookings.unshift(booking);
-      localStorage.setItem('my_bookings', JSON.stringify(localBookings));
-    }
-
-    function sendSMSNotification(mobileNumber, messageText) {
-      console.log(`[SMS Gateway Sent to +91 ${mobileNumber}]: ${messageText}`);
-      fetch('/api/notifications/send-sms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: mobileNumber, message: messageText })
-      }).catch(() => console.log("SMS fallback logged locally."));
-    }
-
-    function checkAndSend1DayReminders() {
-      let localBookings = [];
-      try { localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]'); } catch(e){}
-      const todayStr = new Date().toLocaleDateString();
-
-      localBookings.forEach(booking => {
-        if (booking.scheduledAlertDate === todayStr && !booking.alertSent) {
-          sendSMSNotification(
-            booking.userMobile,
-            `🔔 GameHubArena REMINDER: Hi ${booking.userName}, your booked gaming slot for "${booking.gameName}" is TOMORROW (${booking.scheduledSessionDate})! Get ready to play.`
-          );
-          booking.alertSent = true;
-        }
-      });
-
       localStorage.setItem('my_bookings', JSON.stringify(localBookings));
     }
 
@@ -1347,12 +912,11 @@
         const res = await fetch(`/api/bookings/user/${user.id}`);
         if (res.ok) userBookings = await res.json();
       } catch (err) {
-        console.log("Database offline, fetching local cache.");
+        console.log("Database offline, using local cache.");
       }
 
       if (!userBookings || userBookings.length === 0) {
-        let local = [];
-        try { local = JSON.parse(localStorage.getItem('my_bookings') || '[]'); } catch(e){}
+        const local = JSON.parse(localStorage.getItem('my_bookings') || '[]');
         userBookings = local.filter(b => b.userId === user.id);
       }
 
@@ -1368,7 +932,7 @@
         card.innerHTML = `
           <div>
             <div class="booking-title">🎮 ${b.gameName || 'Gaming Slot'}</div>
-            <div class="booking-meta">₹${b.amount || 200} via ${b.paymentMethod || 'UPI'} | Session: ${b.scheduledSessionDate || 'Upcoming'}</div>
+            <div class="booking-meta">₹${b.amount || 200} via ${b.paymentMethod || 'UPI'} | ${b.date || 'Recent'}</div>
           </div>
           <button class="cancel-booking-btn" onclick="cancelBooking('${b.id || b._id}')">Cancel Slot</button>
         `;
@@ -1382,11 +946,10 @@
       try {
         await fetch(`/api/bookings/${bookingId}`, { method: 'DELETE' });
       } catch (err) {
-        console.log("Booking cancelled locally.");
+        console.log("Cancelled locally.");
       }
 
-      let localBookings = [];
-      try { localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]'); } catch(e){}
+      let localBookings = JSON.parse(localStorage.getItem('my_bookings') || '[]');
       localBookings = localBookings.filter(b => b.id !== bookingId && b._id !== bookingId);
       localStorage.setItem('my_bookings', JSON.stringify(localBookings));
 
@@ -1394,13 +957,13 @@
       openMyBookings();
     }
 
+    /* CUSTOMER LOGIN LOGIC */
     document.getElementById('login-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
 
-      let customerUsers = [];
-      try { customerUsers = JSON.parse(localStorage.getItem('customer_users') || '[]'); } catch(e){}
+      const customerUsers = JSON.parse(localStorage.getItem('customer_users') || '[]');
       const existingUser = customerUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
       if (!existingUser) {
@@ -1413,21 +976,20 @@
       renderNavbar();
     });
 
+    /* CUSTOMER REGISTER LOGIC */
     document.getElementById('register-form').addEventListener('submit', (e) => {
       e.preventDefault();
       
       const nameInput = document.getElementById('reg-name').value.trim();
-      const mobileInput = document.getElementById('reg-mobile').value.trim();
       const emailInput = document.getElementById('reg-email').value.trim();
       const passwordInput = document.getElementById('reg-password').value;
 
-      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) || !isMobileValid(mobileInput) || !emailInput.includes('@') || passwordInput.length < 6) {
+      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) || !emailInput.includes('@') || passwordInput.length < 6) {
         alert("Please fix the validation errors before submitting.");
         return;
       }
 
-      let customerUsers = [];
-      try { customerUsers = JSON.parse(localStorage.getItem('customer_users') || '[]'); } catch(e){}
+      let customerUsers = JSON.parse(localStorage.getItem('customer_users') || '[]');
       if (customerUsers.some(u => u.email.toLowerCase() === emailInput.toLowerCase())) {
         alert("An account with this email already exists. Please log in.");
         toggleAuthView('login');
@@ -1437,12 +999,11 @@
       const newUser = {
         id: "usr_" + Date.now(),
         name: nameInput,
-        mobile: mobileInput,
         email: emailInput,
         password: passwordInput,
         gamerTag: `${nameInput.replace(/\s+/g, '')}X`,
         preferredPlatform: 'PlayStation 5',
-        regDate: new Date().toISOString().split('T')[0]
+        regDate: '2026-09-28'
       };
 
       customerUsers.push(newUser);
@@ -1452,16 +1013,6 @@
       toggleAuthView('login');
       clearAuthForms();
     });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      renderNavbar();
-      loadGames();
-      checkAndSend1DayReminders();
-    });
-
-    // Immediate fallback execution
-    renderNavbar();
-    loadGames();
   </script>
 </body>
 </html>
