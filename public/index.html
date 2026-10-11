@@ -273,6 +273,10 @@
           <input type="text" id="profile-input-name" required />
         </div>
         <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="tel" id="profile-input-mobile" placeholder="+91 9876543210" />
+        </div>
+        <div class="form-group">
           <label>Gamer Tag</label>
           <input type="text" id="profile-input-tag" placeholder="e.g. ShadowRiderX" />
         </div>
@@ -433,9 +437,18 @@
             <div class="error-msg" id="cust-email-error">Please enter a valid email address with '@'.</div>
           </div>
           <div class="form-group">
+            <label>Mobile Number [For Notifications & 1 Day Reminder]</label>
+            <input type="tel" id="reg-mobile" required placeholder="+91 9876543210" oninput="validateCustMobile()" />
+            <div class="error-msg" id="cust-mobile-error">Please enter a valid mobile number (10+ digits).</div>
+          </div>
+          <div class="form-group">
             <label>Password [Min 6 Characters]</label>
             <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" oninput="validateCustPassword()" />
             <div class="error-msg" id="cust-password-error">Password must be at least 6 characters long.</div>
+          </div>
+          <div class="checkbox-container" style="margin-bottom: 10px;">
+            <input type="checkbox" id="reg-reminder-opt" checked />
+            <label for="reg-reminder-opt">Enable 1-day advance reminder notifications</label>
           </div>
           <button type="submit" class="submit-btn">Create Account</button>
         </form>
@@ -592,6 +605,17 @@
       return true;
     }
 
+    function validateCustMobile() {
+      const val = document.getElementById('reg-mobile').value;
+      const err = document.getElementById('cust-mobile-error');
+      if (val.length > 0 && !/^[\d\+\-\s]{10,15}$/.test(val)) {
+        err.style.display = 'block';
+        return false;
+      }
+      err.style.display = 'none';
+      return true;
+    }
+
     function validateCustPassword() {
       const val = document.getElementById('reg-password').value;
       const err = document.getElementById('cust-password-error');
@@ -619,6 +643,7 @@
       document.getElementById('profile-stat-points').innerText = `${userBookings.length * 100 + 150} PTS`;
 
       document.getElementById('profile-input-name').value = user.name || '';
+      document.getElementById('profile-input-mobile').value = user.mobile || '';
       document.getElementById('profile-input-tag').value = user.gamerTag || `${user.name}X`;
       document.getElementById('profile-input-platform').value = user.preferredPlatform || 'PlayStation 5';
 
@@ -630,6 +655,7 @@
       const user = JSON.parse(localStorage.getItem('currentUser')) || {};
       
       user.name = document.getElementById('profile-input-name').value.trim();
+      user.mobile = document.getElementById('profile-input-mobile').value.trim();
       user.gamerTag = document.getElementById('profile-input-tag').value.trim();
       user.preferredPlatform = document.getElementById('profile-input-platform').value;
 
@@ -934,9 +960,11 @@
       
       const nameInput = document.getElementById('reg-name').value.trim();
       const emailInput = document.getElementById('reg-email').value.trim();
+      const mobileInput = document.getElementById('reg-mobile').value.trim();
       const passwordInput = document.getElementById('reg-password').value;
+      const reminderOpt = document.getElementById('reg-reminder-opt').checked;
 
-      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) || !emailInput.includes('@') || passwordInput.length < 6) {
+      if (!/^[a-zA-Z\s]{2,50}$/.test(nameInput) || !emailInput.includes('@') || !mobileInput || passwordInput.length < 6) {
         alert("Please fix the validation errors before submitting.");
         return;
       }
@@ -952,6 +980,8 @@
         id: "usr_" + Date.now(),
         name: nameInput,
         email: emailInput,
+        mobile: mobileInput,
+        reminderEnabled: reminderOpt,
         password: passwordInput,
         gamerTag: `${nameInput.replace(/\s+/g, '')}X`,
         preferredPlatform: 'PlayStation 5',
