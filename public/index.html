@@ -492,6 +492,16 @@
         description: "Epic Norse action adventure on PlayStation 5 OLED setup." 
       },
       { 
+        _id: "ps3", 
+        name: "Marvel's Spider-Man 2", 
+        platform: "PS5", 
+        price: 360, 
+        rating: 4.8,
+        players: "1 Player (Single)", 
+        imageUrl: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=500&auto=format&fit=crop", 
+        description: "Swing through Marvel's New York as Peter Parker and Miles Morales." 
+      },
+      { 
         _id: "pc1", 
         name: "Valorant", 
         platform: "PC", 
@@ -520,16 +530,6 @@
         players: "1 Player (Single)", 
         imageUrl: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500&auto=format&fit=crop", 
         description: "Explore Night City in full glory, powered by RTX Ray Tracing Overdrive graphics." 
-      },
-      { 
-        _id: "ps3", 
-        name: "Grand Theft Auto V", 
-        platform: "PS5", 
-        price: 250, 
-        rating: 4.5,
-        players: "1 Player (Single)", 
-        imageUrl: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=500&auto=format&fit=crop", 
-        description: "Experience Franklin, Michael, and Trevor in 4K 60FPS with DualSense haptics." 
       }
     ];
 
@@ -716,6 +716,9 @@
         } else if (nameLower.includes('valorant')) {
           finalPlayerTag = '5 Players (5v5)';
           finalRating = 4.6;
+        } else if (nameLower.includes('spider-man')) {
+          finalPlayerTag = '1 Player (Single)';
+          finalRating = 4.8;
         } else if (nameLower.includes('god of war')) {
           finalPlayerTag = '1 Player (Single)';
           finalRating = 4.9;
@@ -725,6 +728,9 @@
         }
 
         const imgSrc = game.imageUrl || fallbackImage;
+        const safeId = game._id || game.id || 'ps_item';
+        const safeName = (game.name || 'Game').replace(/'/g, "\\'");
+        const safePrice = game.price || 200;
 
         const card = document.createElement('div');
         card.className = 'game-card';
@@ -753,7 +759,7 @@
                 </div>
                 ${isWeekend ? '<span class="discount-tag">Weekend 20% OFF</span>' : ''}
               </div>
-              <button class="book-btn" onclick="initiateBookingProcess('${game._id}', '${game.name}', ${game.price})">Book Slot</button>
+              <button class="book-btn" onclick="initiateBookingProcess('${safeId}', '${safeName}', ${safePrice})">Book Slot</button>
             </div>
           </div>
         `;
