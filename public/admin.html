@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ArenaZero - Admin Dashboard</title>
+  <title>GameHubArena - Admin Dashboard</title>
   <style>
     * {
       box-sizing: border-box;
@@ -274,7 +274,7 @@
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 10px;
-      background: #f1f8e9;
+      background: #e8f5e9;
       border: 1px solid #a5d6a7;
       border-radius: 6px;
       color: #000000;
@@ -339,28 +339,6 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     }
 
-    .auth-switch {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 13px;
-      color: #333333;
-    }
-
-    .auth-switch a {
-      color: #2e7d32;
-      font-weight: 800;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-
-    .error-msg {
-      color: #d32f2f;
-      font-size: 12px;
-      margin-top: 4px;
-      display: none;
-      font-weight: 600;
-    }
-
     .status-badge {
       padding: 4px 8px;
       border-radius: 4px;
@@ -376,7 +354,7 @@
   <!-- Top Navigation Bar -->
   <div class="top-bar">
     <div class="brand-section">
-      <div class="brand">🎮 ArenaZero - Admin Panel</div>
+      <div class="brand">🎮 GameHubArena - Admin Panel</div>
       <a href="index.html" class="return-store-btn">← Return to Customer Website</a>
     </div>
     <div class="user-nav-controls" id="nav-controls"></div>
@@ -563,48 +541,18 @@
   <!-- AUTHENTICATION MODAL -->
   <div class="modal-overlay" id="auth-modal" style="display: none;">
     <div class="modal-card">
-      <div id="modal-login-view">
-        <h2 style="margin-bottom: 15px; border-left: 4px solid #66bb6a; padding-left: 8px;">Admin Login</h2>
-        <form id="admin-login-form" onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="login-email" required placeholder="admin@gamehub.com" />
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="login-password" required placeholder="••••••••" />
-          </div>
-          <button type="submit" class="submit-btn" style="width: 100%;">Login to Admin Panel</button>
-        </form>
-        <div class="auth-switch">
-          Need an admin account? <a onclick="toggleAuthView('register')">Register here</a>
+      <h2 style="margin-bottom: 15px; border-left: 4px solid #66bb6a; padding-left: 8px;">Admin Login</h2>
+      <form id="admin-login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="login-email" required placeholder="admin@gamehub.com" />
         </div>
-      </div>
-
-      <div id="modal-register-view" style="display: none;">
-        <h2 style="margin-bottom: 15px; border-left: 4px solid #66bb6a; padding-left: 8px;">Admin Registration</h2>
-        <form id="admin-register-form" onsubmit="handleRegister(event)" novalidate>
-          <div class="form-group">
-            <label>Full Name [Letters Only]</label>
-            <input type="text" id="reg-name" required placeholder="John Doe" oninput="validateNameInput()" />
-            <div class="error-msg" id="name-error">Only letters and spaces are allowed.</div>
-          </div>
-          <div class="form-group">
-            <label>Email Address [Must include '@']</label>
-            <input type="email" id="reg-email" required placeholder="admin@gamehub.com" oninput="validateEmailInput()" />
-            <div class="error-msg" id="email-error">Please enter a valid email address with '@'.</div>
-          </div>
-          <div class="form-group">
-            <label>Password [Min 6 Characters]</label>
-            <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" oninput="validatePasswordInput()" />
-            <div class="error-msg" id="password-error">Password must be at least 6 characters long.</div>
-          </div>
-          <button type="submit" class="submit-btn" style="width: 100%;">Register Admin Account</button>
-        </form>
-        <div class="auth-switch">
-          Already registered? <a onclick="toggleAuthView('login')">Login here</a>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" required placeholder="••••••••" />
         </div>
-      </div>
+        <button type="submit" class="submit-btn" style="width: 100%;">Login to Admin Panel</button>
+      </form>
     </div>
   </div>
 
@@ -668,78 +616,13 @@
         authModal.style.display = 'flex';
         mainContent.style.display = 'none';
         navControls.innerHTML = `
-          <button class="nav-btn" onclick="toggleAuthView('login')">Login</button>
+          <button class="nav-btn" onclick="openLoginModal()">Login</button>
         `;
       }
     }
 
-    function toggleAuthView(view) {
-      document.getElementById('modal-login-view').style.display = view === 'login' ? 'block' : 'none';
-      document.getElementById('modal-register-view').style.display = view === 'register' ? 'block' : 'none';
-      clearErrors();
-    }
-
-    function clearErrors() {
-      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-    }
-
-    function validateNameInput() {
-      const nameVal = document.getElementById('reg-name').value;
-      const errorEl = document.getElementById('name-error');
-      if (nameVal.length > 0 && !/^[a-zA-Z\s]+$/.test(nameVal)) {
-        errorEl.style.display = 'block';
-        return false;
-      }
-      errorEl.style.display = 'none';
-      return true;
-    }
-
-    function validateEmailInput() {
-      const emailVal = document.getElementById('reg-email').value;
-      const errorEl = document.getElementById('email-error');
-      if (emailVal.length > 0 && (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal) || !emailVal.includes('@'))) {
-        errorEl.style.display = 'block';
-        return false;
-      }
-      errorEl.style.display = 'none';
-      return true;
-    }
-
-    function validatePasswordInput() {
-      const passVal = document.getElementById('reg-password').value;
-      const errorEl = document.getElementById('password-error');
-      if (passVal.length > 0 && passVal.length < 6) {
-        errorEl.style.display = 'block';
-        return false;
-      }
-      errorEl.style.display = 'none';
-      return true;
-    }
-
-    function handleRegister(e) {
-      e.preventDefault();
-      const nameVal = document.getElementById('reg-name').value.trim();
-      const emailVal = document.getElementById('reg-email').value.trim();
-      const passwordVal = document.getElementById('reg-password').value;
-
-      if (!/^[a-zA-Z\s]{2,50}$/.test(nameVal) || !emailVal.includes('@') || passwordVal.length < 6) {
-        alert("Please fix the validation errors before submitting.");
-        return;
-      }
-
-      let adminUsers = JSON.parse(localStorage.getItem('admin_users') || '[]');
-      if (adminUsers.some(u => u.email.toLowerCase() === emailVal.toLowerCase())) {
-        alert("An admin account with this email already exists.");
-        toggleAuthView('login');
-        return;
-      }
-
-      adminUsers.push({ id: "adm_" + Date.now(), name: nameVal, email: emailVal, password: passwordVal, role: "Administrator" });
-      localStorage.setItem('admin_users', JSON.stringify(adminUsers));
-
-      alert("🎉 Admin registration successful! Please log in.");
-      toggleAuthView('login');
-      document.getElementById('admin-register-form').reset();
+    function openLoginModal() {
+      document.getElementById('auth-modal').style.display = 'flex';
     }
 
     function handleLogin(e) {
@@ -747,16 +630,14 @@
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
 
-      const adminUsers = JSON.parse(localStorage.getItem('admin_users') || '[]');
-      const user = adminUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
-
-      if (!user) {
-        alert("Invalid credentials! Check email and password.");
-        return;
+      // Single hardcoded admin check
+      if (email === 'admin@gamehub.com' && password === 'admin123') {
+        const adminUser = { id: "adm_single", name: "System Administrator", email: "admin@gamehub.com", role: "Administrator" };
+        localStorage.setItem('currentAdminUser', JSON.stringify(adminUser));
+        checkAdminSession();
+      } else {
+        alert("Invalid admin credentials! Email: admin@gamehub.com | Password: admin123");
       }
-
-      localStorage.setItem('currentAdminUser', JSON.stringify(user));
-      checkAdminSession();
     }
 
     function handleLogout() {
