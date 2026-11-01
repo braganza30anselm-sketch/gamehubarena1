@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ArenaZero - Premier Gaming Lounge & Station Booking</title>
+  <title>GameHubArena - Premier Gaming Lounge & Station Booking</title>
   <style>
     :root {
       --bg-dark: #0b132b;
@@ -208,13 +208,13 @@
 
   <!-- NAVIGATION BAR -->
   <nav class="navbar">
-    <div class="nav-brand">🎮 ArenaZero</div>
+    <div class="nav-brand">🎮 GameHubArena</div>
     <div class="nav-actions" id="nav-actions"></div>
   </nav>
 
   <!-- HERO SECTION -->
   <header class="hero">
-    <div class="hero-brand">🎮 ArenaZero</div>
+    <div class="hero-brand">🎮 GameHubArena</div>
     <h1>Experience Ultimate Gaming Power & 4K Performance</h1>
     <p>Reserve slots for top PlayStation 5 & RTX PC games at competitive hourly rates.</p>
 
@@ -338,14 +338,13 @@
         <div class="form-group">
           <label>Select Payment Method</label>
           <select id="payment-method" onchange="togglePaymentFields()">
-            <option value="UPI Direct App Request">Google Pay / PhonePe / Paytm (Send UPI Request)</option>
+            <option value="Cash Payment on Gaming Store" selected>Cash Payment on Gaming Store (Recommended)</option>
             <option value="UPI QR Code">Scan Store UPI QR Code</option>
-            <option value="Debit Card">Debit / Credit Card</option>
-            <option value="Cash Payment on Gaming Store">Cash Payment on Gaming Store</option>
+            <option value="UPI Direct App Request">Google Pay / PhonePe / Paytm (Send UPI Request)</option>
           </select>
         </div>
 
-        <div id="upi-request-fields">
+        <div id="upi-request-fields" style="display: none;">
           <div class="form-group">
             <label>Enter Your UPI ID (VPA)</label>
             <input type="text" id="customer-upi-id" placeholder="e.g. username@okaxis or 9876543210@paytm" />
@@ -363,28 +362,7 @@
           </div>
         </div>
 
-        <div id="debit-card-fields" style="display: none;">
-          <div class="form-group">
-            <label>Cardholder Name</label>
-            <input type="text" id="card-name" placeholder="John Doe" />
-          </div>
-          <div class="form-group">
-            <label>Card Number</label>
-            <input type="text" id="card-number" placeholder="4532 •••• •••• 8890" maxlength="16" />
-          </div>
-          <div style="display: flex; gap: 10px;">
-            <div class="form-group" style="flex:1;">
-              <label>Expiry Date</label>
-              <input type="text" id="card-exp" placeholder="MM/YY" maxlength="5" />
-            </div>
-            <div class="form-group" style="flex:1;">
-              <label>CVV</label>
-              <input type="password" id="card-cvv" placeholder="123" maxlength="3" />
-            </div>
-          </div>
-        </div>
-
-        <div id="cash-store-fields" style="display: none; background: #0b132b; padding: 12px; border-radius: 6px; font-size: 12.5px; color: #cbd5e1; margin-bottom: 15px; border: 1px solid #2a385b;">
+        <div id="cash-store-fields" style="background: #0b132b; padding: 12px; border-radius: 6px; font-size: 12.5px; color: #cbd5e1; margin-bottom: 15px; border: 1px solid #2a385b;">
           📌 <strong>Store Payment Note:</strong> Your slot will be reserved. Please pay cash at the store counter before your session starts.
         </div>
 
@@ -821,7 +799,6 @@
 
       document.getElementById('upi-request-fields').style.display = method === 'UPI Direct App Request' ? 'block' : 'none';
       document.getElementById('upi-qr-fields').style.display = method === 'UPI QR Code' ? 'block' : 'none';
-      document.getElementById('debit-card-fields').style.display = method === 'Debit Card' ? 'block' : 'none';
       document.getElementById('cash-store-fields').style.display = method === 'Cash Payment on Gaming Store' ? 'block' : 'none';
 
       if (method === 'UPI Direct App Request') {
@@ -841,6 +818,12 @@
       }
 
       const paymentMethod = document.getElementById('payment-method').value;
+
+      if (paymentMethod !== 'Cash Payment on Gaming Store' && paymentMethod !== 'UPI QR Code' && paymentMethod !== 'UPI Direct App Request') {
+        alert("Online slot reservation is restricted to Store Cash or verified QR payments to protect your details.");
+        return;
+      }
+
       const customerUpi = document.getElementById('customer-upi-id').value.trim();
 
       if (paymentMethod === 'UPI Direct App Request') {
@@ -873,7 +856,7 @@
       }
 
       saveLocalBooking(newBooking);
-      alert(`🎉 Slot reserved successfully! See you at GameHubArena.`);
+      alert(`🎉 Slot reserved successfully! Please pay via cash at the store counter to confirm your session.`);
       closeModal('payment-modal');
     }
 
